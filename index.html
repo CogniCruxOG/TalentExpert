@@ -32,16 +32,6 @@
 </head>
 <body data-page="home">
 <div class="x-progress" id="xProgress" aria-hidden="true"></div>
-<nav class="x-spine" id="xSpine" aria-label="Journey progress">
-  <span class="fill" id="spineFill"></span>
-  <a data-to="hero"><span class="dot"></span><span class="lbl">Start</span></a>
-  <a data-to="gap"><span class="dot"></span><span class="lbl">The Gap</span></a>
-  <a data-to="journey"><span class="dot"></span><span class="lbl">The Bridge</span></a>
-  <a data-to="rail"><span class="dot"></span><span class="lbl">Who We Place</span></a>
-  <a data-to="why"><span class="dot"></span><span class="lbl">Why Us</span></a>
-  <a data-to="voices"><span class="dot"></span><span class="lbl">Voices</span></a>
-  <a data-to="paths"><span class="dot"></span><span class="lbl">Your Path</span></a>
-</nav>
 
 <!-- ============ HEADER ============ -->
 <header class="nav" id="nav">
@@ -99,49 +89,10 @@
   <div class="m-cta"><a class="btn btn-blue" href="employers.html">Get Talent Now</a><a class="btn btn-orange" href="job-seekers.html">Find Jobs</a></div>
 </div>
 
-<!-- ============ HERO — Village → City ============ -->
+<!-- ============ HERO — Temple (Kovil) illustration + fade/rise stats ============ -->
 <section class="x-hero" id="hero">
-  <div class="x-hero-scene">
-    <div class="x-layer x-sky" data-parallax="0.06"><span class="x-sun" id="xSun"></span></div>
-    <div class="x-layer x-scene-svg" data-parallax="0.14">
-      <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-        <!-- ground -->
-        <path class="x-stroke" d="M0 522 H1440" stroke="rgba(36,48,64,.18)" stroke-width="2"/>
-        <!-- VILLAGE (left) -->
-        <g class="x-village-g" opacity=".9">
-          <path class="x-stroke s-g" d="M70 522v-60h70v60" stroke="#12A074" stroke-width="2.5"/>
-          <path class="x-stroke s-a" d="M60 462l45-34 45 34" stroke="#E8A83A" stroke-width="2.5"/>
-          <path class="x-stroke s-g" d="M180 522v-42h52v42" stroke="#12A074" stroke-width="2.5"/>
-          <path class="x-stroke s-a" d="M172 480l34-26 34 26" stroke="#E8A83A" stroke-width="2.5"/>
-          <path class="x-stroke s-g" d="M300 522v-30" stroke="#12A074" stroke-width="2.5"/>
-          <path class="x-stroke s-g" d="M300 492c-26 0-40-16-40-30 22 0 40 12 40 30zM300 500c0-20 16-34 40-34 0 20-16 34-40 34z" stroke="#12A074" stroke-width="2.2" fill="rgba(18,160,116,.06)"/>
-          <path class="x-stroke" d="M40 540c60-14 120-14 180 0M60 556c70-12 150-12 220 0" stroke="rgba(18,160,116,.4)" stroke-width="2" stroke-dasharray="3 10"/>
-        </g>
-        <!-- CITY (right) -->
-        <g class="x-city-g" id="xCity">
-          <path class="x-stroke s-b" d="M1010 522V360h70v162" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.04)"/>
-          <path class="x-stroke s-b" d="M1100 522V300h60v222" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.05)"/>
-          <path class="x-stroke s-b" d="M1180 522V230h74v292" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.06)"/>
-          <path class="x-stroke s-b" d="M1274 522V320h56v202" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.04)"/>
-          <path class="x-stroke s-b" d="M1350 522V270h58v252" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.05)"/>
-          <g stroke="rgba(26,60,107,.35)" stroke-width="2">
-            <path d="M1022 384h46M1022 410h46M1022 436h46M1112 330h36M1112 360h36M1112 392h36M1196 262h42M1196 296h42M1196 330h42M1196 364h42"/>
-          </g>
-        </g>
-        <!-- BRIDGE arc + talent path -->
-        <path id="bridgePath" class="x-bridge-path" d="M300 486 Q720 300 1010 486"/>
-        <path class="x-stroke" d="M300 486 Q720 300 1010 486" stroke="rgba(232,119,34,.18)" stroke-width="8" fill="none"/>
-        <g id="bridgeNodes">
-          <circle class="x-node" r="7" cx="300" cy="486"/>
-          <circle class="x-node" r="7" cx="300" cy="486"/>
-          <circle class="x-node" r="7" cx="300" cy="486"/>
-        </g>
-      </svg>
-    </div>
-  </div>
-
-  <div class="wrap x-hero-content" data-parallax="-0.05">
-    <span class="x-eyebrow" id="xEyebrow"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg>Serving Tamil Nadu &amp; Beyond</span>
+  <div class="x-hero-top">
+    <span class="x-eyebrow"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg>Serving Tamil Nadu &amp; Beyond</span>
     <h1 class="x-title" data-split>Bridging <em>rural talent</em> with <span class="grow">business growth</span></h1>
     <p class="x-sub">India's most people-first recruitment company.</p>
     <p class="x-rhythm">We Discover. <span>We Develop.</span> We Deliver.</p>
@@ -149,11 +100,54 @@
       <a class="btn btn-blue lg magnetic" href="employers.html" data-portal-choice="business">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
       <a class="btn btn-orange lg magnetic" href="job-seekers.html" data-portal-choice="jobseeker">Find Your Job <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
     </div>
-    <div class="x-hero-stats" data-statgroup>
-      <div class="stat-card c-b" data-drift="0.10"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-building"/></svg></span><div class="stat-num" data-count="500" data-suffix="+">0</div><div class="stat-lab">Businesses Served</div></div>
-      <div class="stat-card c-o" data-drift="0.18"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-target"/></svg></span><div class="stat-num" data-count="2000" data-suffix="+" data-comma="1">0</div><div class="stat-lab">Placements Made</div></div>
-      <div class="stat-card c-g" data-drift="0.14"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg></span><div class="stat-num" data-count="316">0</div><div class="stat-lab">Taluks Covered</div></div>
-      <div class="stat-card c-a" data-drift="0.22"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-clock"/></svg></span><div class="stat-num" data-count="30" data-suffix="+">0</div><div class="stat-lab">Years of Expertise</div></div>
+  </div>
+
+  <div class="wrap">
+    <div class="x-showcase">
+      <div class="x-stats">
+        <div class="x-stat"><div class="n">500+</div><div class="l">Businesses Served</div></div>
+        <div class="x-stat"><div class="n">2,000+</div><div class="l">Placements Made</div></div>
+        <div class="x-stat"><div class="n">316</div><div class="l">Taluks Covered</div></div>
+        <div class="x-stat"><div class="n">30+</div><div class="l">Years of Expertise</div></div>
+      </div>
+      <div class="x-temple" id="xTemple" aria-hidden="true">
+        <svg viewBox="0 0 400 420" preserveAspectRatio="xMidYMax meet">
+          <!-- ground -->
+          <path class="x-tline thin" d="M28 400 H372"/>
+          <!-- base shrubs -->
+          <path class="x-tline thin" d="M64 400c-13 0-20-8-20-17 11 0 20 6 20 17zM64 400c0-9 8-17 20-17 0 10-8 17-20 17"/>
+          <path class="x-tline thin" d="M336 400c13 0 20-8 20-17-11 0-20 6-20 17zM336 400c0-9-8-17-20-17 0 10 8 17 20 17"/>
+          <!-- plinth -->
+          <path class="x-tline" d="M52 400 L60 386 H340 L348 400"/>
+          <!-- gopuram outline (tapering tiers) -->
+          <path class="x-tline x-tower" d="M56 386 L72 350 L88 314 L102 278 L115 244 L127 212 L138 182 L148 156 L156 132 Q200 102 244 132 L252 156 L262 182 L273 212 L285 244 L298 278 L312 314 L328 350 L344 386 Z" fill="var(--orange-wash)"/>
+          <!-- tier cornice lines -->
+          <g class="x-tcornice">
+            <path class="x-tline thin" d="M72 350 H328"/>
+            <path class="x-tline thin" d="M88 314 H312"/>
+            <path class="x-tline thin" d="M102 278 H298"/>
+            <path class="x-tline thin" d="M115 244 H285"/>
+            <path class="x-tline thin" d="M127 212 H273"/>
+            <path class="x-tline thin" d="M138 182 H262"/>
+            <path class="x-tline thin" d="M148 156 H252"/>
+          </g>
+          <!-- niches -->
+          <g class="x-tniche">
+            <path class="x-tline thin" d="M188 350 V326 Q200 318 212 326 V350"/>
+            <path class="x-tline thin" d="M192 314 V296 Q200 290 208 296 V314"/>
+            <path class="x-tline thin" d="M194 278 V264 Q200 260 206 264 V278"/>
+          </g>
+          <!-- doorway -->
+          <path class="x-tline" d="M182 386 V344 Q200 328 218 344 V386"/>
+          <!-- crown arc + kalasam finials -->
+          <path class="x-tline accent" d="M156 132 Q200 104 244 132"/>
+          <g class="x-tfinial">
+            <path class="x-tline accent" d="M200 108 V92"/><circle class="x-tline accent" cx="200" cy="86" r="5"/>
+            <path class="x-tline accent" d="M174 122 V110"/><circle class="x-tline accent" cx="174" cy="105" r="3.5"/>
+            <path class="x-tline accent" d="M226 122 V110"/><circle class="x-tline accent" cx="226" cy="105" r="3.5"/>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
   <div class="x-cue"><span class="mouse"></span>Begin the journey</div>
@@ -166,12 +160,12 @@
     <div class="inner">
       <p class="k" data-gap="k">The problem worth solving</p>
       <h2 data-gap="head">Two Indias.<br><em>One missing bridge.</em></h2>
-      <div class="sides" data-statgroup>
+      <div class="sides">
         <div class="pillar l" data-gap="pillar"><div class="big">1000s</div><div class="cap">of businesses that can't find reliable, job-ready people.</div></div>
         <div class="link" data-gap="link" aria-hidden="true">
           <svg viewBox="0 0 120 60" preserveAspectRatio="none"><path id="gapPath" d="M4 30 C40 6 80 54 116 30"/><circle class="spark" id="gapSpark" r="4" cx="4" cy="30"/></svg>
         </div>
-        <div class="pillar r" data-gap="pillar"><div class="big"><span class="stat-num" data-count="10" data-suffix=" lakh+">0</span></div><div class="cap">rural youth who are ready — but overlooked.</div></div>
+        <div class="pillar r" data-gap="pillar"><div class="big">10 lakh+</div><div class="cap">rural youth who are ready — but overlooked.</div></div>
       </div>
       <p class="close" data-gap="close">We exist to close this gap — <b>and we won't stop until every rural talent finds a worthy stage.</b></p>
     </div>

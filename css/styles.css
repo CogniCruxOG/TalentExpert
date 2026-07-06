@@ -1,24 +1,25 @@
 /* ==========================================================================
    TALENT EXPERT — Shared Design System
    Bridging Rural Talent with Business Growth
-   Brand: Blue #1A3C6B · Orange #E87722 · Growth Green #12A074
+   Brand palette: Orange #F26F21 · Charcoal #1A1A1A · Grey #8C8C8C (no navy)
    ========================================================================== */
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
 :root{
+  /* ===== Official Talent Expert palette — Orange + Charcoal + Grey only ===== */
   /* Surfaces */
-  --paper:#FCFBF9; --paper2:#F6F3EE; --mist:#EEF3F8;
-  /* Ink */
-  --ink:#243040; --ink2:#5A6472; --ink3:#96A0AD; --hair:rgba(36,48,64,.10);
-  /* Brand — Talent Expert: warm Orange + elegant Navy only.
-     Secondary tones are on-brand tints (steel-navy, warm amber, soft peach) — no off-brand hues. */
-  --orange:#E4801F; --orange-soft:#F0A868; --orange-t:rgba(228,128,31,.12); --orange-t2:rgba(228,128,31,.18);
-  --blue:#1A3C6B; --blue-soft:#26507F; --blue-t:rgba(26,60,107,.10);
-  --steel:#3C6193; --steel-t:rgba(60,97,147,.12);
-  /* legacy aliases kept so existing markup stays on-palette (green->steel, amber->warm) */
-  --green:#3C6193; --green-t:rgba(60,97,147,.12);
-  --amber:#CF8331;
+  --paper:#FFFFFF; --paper2:#F4F2F0; --mist:#F4F2F0; --orange-wash:#FDEDE1;
+  /* Ink (charcoal / grey) */
+  --ink:#1A1A1A; --ink2:#4A4A4A; --ink3:#8C8C8C; --hair:rgba(26,26,26,.10);
+  /* Brand */
+  --orange:#F26F21; --orange-soft:#F9A56A; --orange-t:rgba(242,111,33,.10); --orange-t2:rgba(242,111,33,.16);
+  --charcoal:#1A1A1A; --charcoal-soft:#4A4A4A; --grey:#8C8C8C;
+  /* legacy aliases → remapped to new palette so existing markup restyles automatically (NO navy) */
+  --blue:#1A1A1A; --blue-soft:#4A4A4A; --blue-t:rgba(26,26,26,.07);
+  --steel:#8C8C8C; --steel-t:rgba(140,140,140,.14);
+  --green:#8C8C8C; --green-t:rgba(140,140,140,.12);
+  --amber:#F26F21;
   /* Portal accents (set per <body data-portal>) */
   --accent:var(--orange); --accent-t:var(--orange-t); --accent-t2:var(--orange-t2);
   /* Glass */
@@ -330,7 +331,7 @@ table.data td strong{color:var(--ink)}
 .faq-a p{padding:0 24px 22px;font-size:.96rem;color:var(--ink2)}
 
 /* ============ CAREER TIPS ============ */
-.tips-hero{background:linear-gradient(135deg,var(--green),#0d7d5a);color:#fff;padding:40px;border-radius:var(--r-lg);box-shadow:var(--sh-m)}
+.tips-hero{background:linear-gradient(135deg,var(--orange),#d85f16);color:#fff;padding:40px;border-radius:var(--r-lg);box-shadow:var(--sh-m)}
 .tips-hero .kick{font-size:.82rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin-bottom:10px}
 .tips-hero h1,.tips-hero h2{color:#fff;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400}
 .tip{display:grid;grid-template-columns:80px 1fr;gap:0;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-s);border:1px solid var(--hair);background:var(--glass2)}
@@ -353,7 +354,7 @@ table.data td strong{color:var(--ink)}
 
 /* ============ CTA BAND ============ */
 .cta{padding:96px 0}
-.cta-inner{max-width:940px;margin:0 auto;text-align:center;padding:56px;border-radius:var(--r-xl);background:linear-gradient(135deg,var(--blue),#16386a);color:#fff;box-shadow:var(--sh-m);position:relative;overflow:hidden}
+.cta-inner{max-width:940px;margin:0 auto;text-align:center;padding:56px;border-radius:var(--r-xl);background:linear-gradient(135deg,#242424,#131313);color:#fff;box-shadow:var(--sh-m);position:relative;overflow:hidden}
 .cta-inner h2{color:#fff;font-size:clamp(1.8rem,3.4vw,2.7rem);font-weight:300;margin-bottom:12px}
 .cta-inner p{color:rgba(255,255,255,.82);margin-bottom:28px}
 .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}

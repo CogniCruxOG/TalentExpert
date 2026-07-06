@@ -32,14 +32,6 @@
     });
   }
 
-  /* ---------- Journey spine: click to travel (works in all modes) ---------- */
-  const scrollToEl = (el) => {
-    if (!el) return;
-    if (lenis) lenis.scrollTo(el, { offset: -10, duration: 1.1 });
-    else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-  };
-  $$('#xSpine a').forEach((a) => a.addEventListener('click', () => scrollToEl($('#' + a.dataset.to))));
-
   /* ---------- Reduced motion: show a clean static page, no animation ---------- */
   if (reduce) {
     $$('.x-jstep').forEach(s => s.classList.add('on'));
@@ -48,70 +40,39 @@
     return;
   }
 
-  /* ================= HERO ================= */
+  /* ================= HERO — kinetic headline + temple reveal + rising stats ============ */
   // Kinetic headline
   const title = $('.x-title');
-  if (title && typeof SplitType !== 'undefined' && !reduce) {
+  if (title && typeof SplitType !== 'undefined') {
     const split = new SplitType(title, { types: 'words,chars' });
     gsap.set(title, { opacity: 1 });
     gsap.from(split.chars, {
       yPercent: 118, opacity: 0, rotateX: -40, transformOrigin: '0% 100%',
-      stagger: 0.018, duration: 0.9, ease: 'power3.out', delay: 0.15
+      stagger: 0.018, duration: 0.9, ease: 'power3.out', delay: 0.1
     });
     const grow = $('.x-title .grow');
-    if (grow) gsap.delayedCall(0.15 + split.chars.length * 0.018 + 0.2, () => grow.classList.add('drawn'));
+    if (grow) gsap.delayedCall(0.1 + split.chars.length * 0.018 + 0.2, () => grow.classList.add('drawn'));
   }
-  // Sub / rhythm / actions / stats fade-up
-  gsap.from('.x-eyebrow, .x-sub, .x-rhythm, .x-hero .hero-actions, .x-hero-stats', {
-    y: 26, opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.09, delay: reduce ? 0 : 0.5
+  // Eyebrow / sub / rhythm / actions fade-up
+  gsap.from('.x-eyebrow, .x-sub, .x-rhythm, .x-hero .hero-actions', {
+    y: 26, opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.09, delay: 0.45
   });
 
-  // Bridge draw + travelling talent nodes
-  const path = $('#bridgePath');
-  if (path && path.getTotalLength) {
-    const len = path.getTotalLength();
-    path.style.strokeDasharray = len;
-    path.style.strokeDashoffset = reduce ? 0 : len;
-    if (!reduce) gsap.to(path, { strokeDashoffset: 0, duration: 1.7, ease: 'power2.inOut', delay: 0.4 });
-    if (!reduce) {
-      $$('#bridgeNodes circle').forEach((n, i) => {
-        const o = { t: 0 };
-        gsap.to(o, {
-          t: 1, duration: 3.6, repeat: -1, ease: 'none', delay: 1 + i * 1.15,
-          onUpdate: () => {
-            const p = path.getPointAtLength(o.t * len);
-            n.setAttribute('cx', p.x); n.setAttribute('cy', p.y);
-            n.style.opacity = Math.min(1, Math.min(o.t, 1 - o.t) * 8).toFixed(2);
-          }
-        });
-      });
+  // Temple: build up from the ground (clip reveal) + outline draw + gentle parallax
+  const temple = $('#xTemple');
+  if (temple) {
+    gsap.fromTo(temple, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'power2.out', delay: 0.6 });
+    const tower = $('.x-tower', temple);
+    if (tower && tower.getTotalLength) {
+      const L = tower.getTotalLength();
+      tower.style.strokeDasharray = L; tower.style.strokeDashoffset = L;
+      gsap.to(tower, { strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut', delay: 0.7 });
     }
-  }
-
-  // Parallax layers on hero scroll-out + city rise
-  if (!reduce) {
-    $$('#hero [data-parallax]').forEach((el) => {
-      const f = parseFloat(el.dataset.parallax) || 0;
-      gsap.to(el, {
-        yPercent: f * 42, ease: 'none',
-        scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
-      });
-    });
-    gsap.fromTo('#xCity', { scaleY: 0.86, opacity: 0.65 }, {
-      scaleY: 1, opacity: 1, ease: 'none',
-      scrollTrigger: { trigger: '#hero', start: 'top top', end: 'center top', scrub: true }
-    });
-    // Cursor drift (hero content + stat cards)
-    const driftEls = $$('#hero [data-drift]').map(el => ({ el, f: parseFloat(el.dataset.drift), x: gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power3' }), y: gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power3' }) }));
-    const hero = $('#hero');
-    hero.addEventListener('mousemove', (e) => {
-      const r = hero.getBoundingClientRect();
-      const dx = (e.clientX - r.left - r.width / 2), dy = (e.clientY - r.top - r.height / 2);
-      driftEls.forEach(d => { d.x(dx * d.f * 0.12); d.y(dy * d.f * 0.12); });
-    });
-    hero.addEventListener('mouseleave', () => driftEls.forEach(d => { d.x(0); d.y(0); }));
-    // Sun gentle float
-    gsap.to('#xSun', { y: -14, duration: 4, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    // stats fade + rise into place (no counting)
+    gsap.from('.x-stat', { y: 34, opacity: 0, duration: 0.85, ease: 'power2.out', stagger: 0.13, delay: 0.85 });
+    // subtle layered parallax as the hero scrolls away
+    gsap.to(temple, { yPercent: -7, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.x-stats', { yPercent: 4, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   /* ============ matchMedia: heavy pinned scenes (desktop only) ============ */
@@ -170,10 +131,12 @@
     });
   });
 
-  // Split-panel paths pop
-  gsap.from('.x-path', {
-    scrollTrigger: { trigger: '.x-paths', start: 'top 80%' },
-    y: 50, opacity: 0, scale: 0.98, duration: 0.8, ease: 'power3.out', stagger: 0.14
+  // Split-panel paths — reveal each card as it enters (no dead zone)
+  $$('.x-path').forEach((el, i) => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 92%' },
+      y: 44, opacity: 0, scale: 0.985, duration: 0.75, ease: 'power3.out', delay: i * 0.08
+    });
   });
 
   // Founder: word-by-word fade
@@ -198,22 +161,6 @@
       });
       btn.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
     });
-  }
-
-  /* ============ Journey spine — active-station tracking ============ */
-  const spineLinks = $$('#xSpine a');
-  const spineFill = $('#spineFill');
-  if (spineLinks.length) {
-    const setActive = (i) => {
-      spineLinks.forEach((a, k) => a.classList.toggle('on', k === i));
-      if (spineFill) spineFill.style.height = ((i) / (spineLinks.length - 1) * 100) + '%';
-    };
-    spineLinks.forEach((a, i) => {
-      const sec = $('#' + a.dataset.to);
-      if (!sec) return;
-      ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 45%', onToggle: (self) => { if (self.isActive) setActive(i); } });
-    });
-    setActive(0);
   }
 
   /* ============ THE GAP — kinetic mission reveal ============ */
