@@ -17,10 +17,10 @@
   let lenis = null;
   if (!reduce && typeof Lenis !== 'undefined') {
     lenis = new Lenis({
-      lerp: 0.075,            // smoother, floatier catch-up
-      wheelMultiplier: 1.15,  // a little more responsive to the wheel
+      lerp: 0.16,             // tight coupling: small scroll moves right away (and reverses)
+      wheelMultiplier: 1.35,  // more sensitive to small wheel input
       smoothWheel: true,
-      touchMultiplier: 1.8,
+      touchMultiplier: 2,
       syncTouch: false        // native (crisp) scrolling on touch devices
     });
     lenis.on('scroll', ScrollTrigger.update);
@@ -130,7 +130,7 @@
     doTrackLis.forEach((li, i) => li.addEventListener('click', () => doStage.go(i)));
     ScrollTrigger.create({
       trigger: '#rail', start: 'top top', end: '+=' + (doPanels.length * 320),
-      pin: '.x-do-pin', scrub: 0.35,
+      pin: '.x-do-pin', scrub: 0.25,
       onUpdate: (self) => doStage.go(Math.min(doPanels.length - 1, Math.floor(self.progress * doPanels.length * 0.999)))
     });
 
@@ -237,7 +237,7 @@
     wNodes.forEach((n, i) => n.addEventListener('click', () => wStage.go(i)));
     mm.add('(min-width:821px)', () => {
       const st = ScrollTrigger.create({
-        trigger: '#why', start: 'top top', end: '+=' + (proofs.length * 320), pin: '.x-why-pin', scrub: 0.4,
+        trigger: '#why', start: 'top top', end: '+=' + (proofs.length * 320), pin: '.x-why-pin', scrub: 0.25,
         onUpdate: (self) => wStage.go(Math.min(proofs.length - 1, Math.floor(self.progress * proofs.length * 0.999)))
       });
       return () => { st.kill(); wStage.reset(); };
@@ -260,7 +260,7 @@
     segs.forEach((s, i) => s.addEventListener('click', () => vStage.go(i)));
     mm.add('(min-width:821px)', () => {
       const st = ScrollTrigger.create({
-        trigger: '#voices', start: 'top top', end: '+=' + (voices.length * 360), pin: '.x-voices-pin', scrub: 0.4,
+        trigger: '#voices', start: 'top top', end: '+=' + (voices.length * 360), pin: '.x-voices-pin', scrub: 0.25,
         onUpdate: (self) => vStage.go(Math.min(voices.length - 1, Math.floor(self.progress * voices.length * 0.999)))
       });
       return () => { st.kill(); vStage.reset(); };
