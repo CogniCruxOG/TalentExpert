@@ -45,7 +45,7 @@ html.lenis,html.lenis body{height:auto}
 .x-stat{border-left:2px solid var(--orange);padding-left:18px;will-change:transform,opacity}
 .x-stat .n{font-family:'Fraunces';font-weight:500;font-size:clamp(2rem,3.2vw,2.9rem);color:var(--ink);line-height:1}
 .x-stat .l{color:var(--ink2);font-size:.92rem;margin-top:6px;line-height:1.35}
-.x-temple{position:relative;align-self:end;justify-self:center;width:100%;max-width:440px}
+.x-temple{position:relative;align-self:end;justify-self:center;width:100%;max-width:480px}
 .x-temple svg{width:100%;height:auto;display:block;overflow:visible}
 .x-tline{fill:none;stroke:var(--charcoal-soft);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .x-tline.thin{stroke-width:1.2;stroke:var(--grey)}

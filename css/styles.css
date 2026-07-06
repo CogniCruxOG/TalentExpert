@@ -48,9 +48,11 @@ p,.lead,li{text-wrap:pretty}
 ::selection{background:var(--accent-t2);color:var(--ink)}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
 
-/* Global ambient cursor glow (injected by main.js; brand-orange, very soft) */
-.cursor-glow{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .6s ease;will-change:opacity;
-  background:radial-gradient(600px circle at var(--cx,50%) var(--cy,50%),rgba(242,111,33,.06),rgba(249,165,106,.035) 26%,transparent 52%)}
+/* Global cursor spotlight (injected by main.js): bright warm centre + soft dark vignette */
+.cursor-glow{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .5s ease;will-change:opacity;
+  background:
+    radial-gradient(480px circle at var(--cx,50%) var(--cy,50%),rgba(242,111,33,.20),rgba(249,165,106,.11) 20%,transparent 45%),
+    radial-gradient(1000px circle at var(--cx,50%) var(--cy,50%),transparent 34%,rgba(26,26,26,.10) 100%)}
 .cursor-glow.on{opacity:1}
 @media(hover:none){.cursor-glow{display:none}}
 
