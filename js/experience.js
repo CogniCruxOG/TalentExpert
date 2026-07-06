@@ -113,16 +113,6 @@
   mm.add('(max-width:820px)', () => { $$('.x-jstep').forEach(s => s.classList.add('on')); });
 
   /* ============ Universal reveals (all viewports) ============ */
-  // Why-choose items stagger
-  gsap.from('.x-why-item', {
-    scrollTrigger: { trigger: '.x-why-list', start: 'top 78%' },
-    y: 40, opacity: 0, duration: 0.7, ease: 'power2.out', stagger: 0.12
-  });
-  gsap.from('.x-why-sticky > *', {
-    scrollTrigger: { trigger: '.x-why-sticky', start: 'top 80%' },
-    y: 26, opacity: 0, duration: 0.7, ease: 'power2.out', stagger: 0.08
-  });
-
   // Generic data-reveal
   $$('[data-reveal]').forEach((el) => {
     gsap.from(el, {
@@ -163,6 +153,23 @@
     });
   }
 
+  /* ============ Interactive cards — cursor glow + 3D tilt ============ */
+  if (matchMedia('(hover:hover)').matches) {
+    $$('[data-tilt]').forEach((card) => {
+      const rY = gsap.quickTo(card, 'rotationY', { duration: 0.5, ease: 'power2' });
+      const rX = gsap.quickTo(card, 'rotationX', { duration: 0.5, ease: 'power2' });
+      gsap.set(card, { transformPerspective: 900, transformOrigin: 'center' });
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+        rY((px - 0.5) * 6); rX((0.5 - py) * 6);
+      });
+      card.addEventListener('mouseleave', () => { rY(0); rX(0); });
+    });
+  }
+
   /* ============ THE GAP — kinetic mission reveal ============ */
   const gap = $('#gap');
   if (gap) {
@@ -190,50 +197,68 @@
     }
   }
 
-  /* ============ VS comparison — sweep-in the "new" side ============ */
-  gsap.from('.x-vs .new [data-vs]', {
-    scrollTrigger: { trigger: '#xVs', start: 'top 70%' },
-    x: 30, opacity: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1
-  });
+  /* ============ VS comparison — pinned, progressive pair-by-pair reveal ============ */
   gsap.from('.x-vs .mid span', {
-    scrollTrigger: { trigger: '#xVs', start: 'top 70%' },
-    scale: 0, rotate: -60, duration: 0.7, ease: 'back.out(1.7)', delay: 0.2
+    scrollTrigger: { trigger: '#xVs', start: 'top 72%' },
+    scale: 0, rotate: -60, duration: 0.7, ease: 'back.out(1.7)', delay: 0.15
+  });
+  const oldLis = $$('.x-vs .old li'), newLis = $$('.x-vs .new li');
+  // desktop: pin and reveal each row (left + right) as the user scrolls
+  mm.add('(min-width:821px)', () => {
+    gsap.set(oldLis, { opacity: 0, x: -26 });
+    gsap.set(newLis, { opacity: 0, x: 26 });
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: '#why', start: 'top top', end: '+=' + (oldLis.length * 240 + 200), pin: true, scrub: 0.6, anticipatePin: 1 }
+    });
+    oldLis.forEach((ol, i) => {
+      tl.to(ol, { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' }, i * 0.9)
+        .to(newLis[i], { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' }, i * 0.9 + 0.3);
+    });
+    tl.to({}, { duration: 0.6 });   // brief hold on the completed comparison
+    return () => gsap.set([...oldLis, ...newLis], { clearProps: 'all' });
+  });
+  // mobile: simple stagger, no pin
+  mm.add('(max-width:820px)', () => {
+    gsap.from([...oldLis, ...newLis], {
+      scrollTrigger: { trigger: '#xVs', start: 'top 82%' },
+      opacity: 0, y: 16, duration: 0.5, ease: 'power2.out', stagger: 0.06
+    });
   });
 
-  /* ============ VOICES — auto + manual + swipe rotator ============ */
+  /* ============ VOICES — scroll-driven stories (desktop) / swipe (mobile) ============ */
   const stage = $('#voiceStage');
   if (stage) {
     const voices = $$('.x-voice', stage);
     const dotWrap = $('#voiceDots');
-    const DUR = 5200;
-    let cur = 0, timer = null;
-    dotWrap.style.setProperty('--vodur', DUR + 'ms');
+    let cur = 0;
     voices.forEach((_, i) => {
       const b = document.createElement('button');
       b.setAttribute('role', 'tab'); b.setAttribute('aria-label', 'Story ' + (i + 1));
-      b.addEventListener('click', () => go(i, true));
       dotWrap.appendChild(b);
     });
     const dots = $$('button', dotWrap);
-    const paint = () => {
-      voices.forEach((v, i) => v.classList.toggle('on', i === cur));
-      dots.forEach((d, i) => { d.classList.remove('on'); });   // clear first so ::after restarts
-      void dots[cur].offsetWidth;
-      dots[cur].classList.add('on');
+    const show = (i) => {
+      if (i === cur) return;
+      cur = i;
+      voices.forEach((v, k) => v.classList.toggle('on', k === i));
+      dots.forEach((d, k) => d.classList.toggle('on', k === i));
     };
-    const go = (i, manual) => { cur = (i + voices.length) % voices.length; paint(); if (manual) arm(); };
-    const arm = () => { clearInterval(timer); timer = setInterval(() => go(cur + 1), DUR); };
-    paint();
-    ScrollTrigger.create({ trigger: stage, start: 'top 82%', end: 'bottom 18%', onToggle: (s) => { if (s.isActive) arm(); else clearInterval(timer); } });
-    // pause on hover
-    stage.addEventListener('mouseenter', () => { clearInterval(timer); dotWrap.classList.add('paused'); });
-    stage.addEventListener('mouseleave', () => { dotWrap.classList.remove('paused'); go(cur, true); });
-    // swipe on touch
+    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
+    voices.forEach((v, k) => v.classList.toggle('on', k === 0)); dots[0].classList.add('on');
+    // desktop: pin the section and advance stories with scroll
+    mm.add('(min-width:821px)', () => {
+      const st = ScrollTrigger.create({
+        trigger: '#voices', start: 'top top', end: '+=' + (voices.length * 320), pin: true, scrub: 0.4,
+        onUpdate: (self) => show(Math.min(voices.length - 1, Math.floor(self.progress * voices.length * 0.999)))
+      });
+      return () => st.kill();
+    });
+    // mobile: swipe
     let sx = 0, sy = 0;
     stage.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
     stage.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1), true);
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) show((cur + (dx < 0 ? 1 : -1) + voices.length) % voices.length);
     });
   }
 
