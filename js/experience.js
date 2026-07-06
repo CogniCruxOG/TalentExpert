@@ -76,45 +76,62 @@
   }
 
   /* ============ matchMedia: heavy pinned scenes (desktop only) ============ */
+  /* Reusable one-at-a-time stage: outgoing panel fully exits BEFORE incoming enters
+     (no overlap, ever). Queues the latest target while a transition is in flight. */
+  function makeStage(panels, onChange) {
+    let cur = 0, animating = false, pending = null;
+    gsap.set(panels, { autoAlpha: 0, y: 22 });
+    gsap.set(panels[0], { autoAlpha: 1, y: 0 });
+    if (onChange) onChange(0);
+    const go = (i) => {
+      i = Math.max(0, Math.min(panels.length - 1, i));
+      if (i === cur) return;
+      if (animating) { pending = i; return; }
+      animating = true;
+      const outEl = panels[cur], inEl = panels[i]; cur = i;
+      if (onChange) onChange(i);
+      gsap.timeline({ onComplete() { animating = false; if (pending !== null) { const p = pending; pending = null; go(p); } } })
+        .to(outEl, { autoAlpha: 0, y: -18, duration: 0.3, ease: 'power2.in' })
+        .fromTo(inEl, { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' }, '+=0.07');
+    };
+    return { go, reset: () => gsap.set(panels, { clearProps: 'all' }), get index() { return cur; } };
+  }
+
   const mm = gsap.matchMedia();
 
   mm.add('(min-width:821px) and (prefers-reduced-motion: no-preference)', () => {
     /* ---- Pinned Who We Are: progressive story + Discover/Develop/Sustain ---- */
     const wps = $$('.x-who .wp');
     const stages = $$('.x-who .ddd-stage');
-    const dddFill = $('#dddFill');
+    const N = Math.max(wps.length, stages.length);
     ScrollTrigger.create({
       trigger: '#journey', start: 'top top', end: '+=1900',
       pin: '.x-who-pin', scrub: true,
       onUpdate: (self) => {
-        const p = self.progress;
-        wps.forEach((w, i) => w.classList.toggle('on', p >= i / wps.length - 0.03));
-        const active = Math.min(stages.length - 1, Math.floor(p * stages.length + 0.001));
-        stages.forEach((s, i) => s.classList.toggle('on', i <= active));
-        if (dddFill) dddFill.style.height = (p * 100) + '%';
+        const active = Math.min(N - 1, Math.floor(self.progress * N + 0.0001));
+        wps.forEach((w, i) => w.classList.toggle('on', i === active));       // active paragraph is the focus
+        stages.forEach((s, i) => {
+          s.classList.toggle('on', i === active);                            // matching step lights up
+          s.classList.toggle('reached', i < active);                         // completed connectors fill orange
+        });
       }
     });
 
-    /* ---- Horizontal rail: What We Do ---- */
-    const track = $('#railTrack');
-    const dots = $$('#railDots i');
-    const cards = $$('.x-rail-card', track);
-    const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+    /* ---- What We Do: sticky-left / changing-right, one level at a time ---- */
+    const doPanels = $$('#doStage .do-panel');
+    const doTrackLis = $$('#doTrack li');
+    const doStage = makeStage(doPanels, (i) => doTrackLis.forEach((li, k) => li.classList.toggle('on', k === i)));
+    doTrackLis.forEach((li, i) => li.addEventListener('click', () => doStage.go(i)));
     ScrollTrigger.create({
-      trigger: '#rail', start: 'top top', end: () => '+=' + (distance() + window.innerHeight * 0.4),
-      pin: true, scrub: 1, invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        gsap.set(track, { x: -distance() * self.progress });
-        // emphasise the card nearest the viewport centre
-        const cx = window.innerWidth / 2;
-        let best = 0, bestD = Infinity;
-        cards.forEach((c, i) => { const r = c.getBoundingClientRect(); const d = Math.abs(r.left + r.width / 2 - cx); if (d < bestD) { bestD = d; best = i; } });
-        cards.forEach((c, i) => c.classList.toggle('focus', i === best));
-        dots.forEach((d, i) => d.classList.toggle('on', i === best));
-      }
+      trigger: '#rail', start: 'top top', end: '+=' + (doPanels.length * 320),
+      pin: '.x-do-pin', scrub: 0.35,
+      onUpdate: (self) => doStage.go(Math.min(doPanels.length - 1, Math.floor(self.progress * doPanels.length * 0.999)))
     });
 
-    return () => { gsap.set(track, { x: 0 }); wps.forEach(w => w.classList.add('on')); stages.forEach(s => s.classList.add('on')); };
+    return () => {
+      wps.forEach(w => w.classList.add('on')); stages.forEach(s => s.classList.add('on'));
+      doStage.reset();
+    };
   });
 
   // Mobile: reveal all Who-We-Are content (no pin)
@@ -205,73 +222,49 @@
     }
   }
 
-  /* ============ WHY CHOOSE US — scroll-driven proof-point spotlight ============ */
+  /* ============ WHY CHOOSE US — pinned spotlight, one proof at a time (no overlap) ============ */
   const whyStage = $('#whyStage');
   if (whyStage) {
     const proofs = $$('.proof', whyStage);
-    const wDots = $('#whyDots');
-    let wcur = 0;
-    proofs.forEach((_, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', 'Reason ' + (i + 1)); wDots.appendChild(b); });
-    const wdotEls = $$('button', wDots);
-    const wshow = (i) => {
-      if (i === wcur) return;
-      wcur = i;
-      proofs.forEach((p, k) => p.classList.toggle('on', k === i));
-      wdotEls.forEach((d, k) => d.classList.toggle('on', k === i));
-    };
-    proofs.forEach((p, k) => p.classList.toggle('on', k === 0)); wdotEls[0].classList.add('on');
-    wdotEls.forEach((d, i) => d.addEventListener('click', () => wshow(i)));
-    // desktop: pin section and advance proofs with scroll
+    const wNodes = $$('#whyNodes button');
+    const wStage = makeStage(proofs, (i) => wNodes.forEach((n, k) => n.classList.toggle('on', k === i)));
+    wNodes.forEach((n, i) => n.addEventListener('click', () => wStage.go(i)));
     mm.add('(min-width:821px)', () => {
       const st = ScrollTrigger.create({
-        trigger: '#why', start: 'top top', end: '+=' + (proofs.length * 300), pin: '.x-why-pin', scrub: 0.4,
-        onUpdate: (self) => wshow(Math.min(proofs.length - 1, Math.floor(self.progress * proofs.length * 0.999)))
+        trigger: '#why', start: 'top top', end: '+=' + (proofs.length * 320), pin: '.x-why-pin', scrub: 0.4,
+        onUpdate: (self) => wStage.go(Math.min(proofs.length - 1, Math.floor(self.progress * proofs.length * 0.999)))
       });
-      return () => st.kill();
+      return () => { st.kill(); wStage.reset(); };
     });
-    // mobile: stack all (handled by CSS) — no pin
+    // mobile: swipe through proofs
     let wsx = 0, wsy = 0;
     whyStage.addEventListener('touchstart', (e) => { wsx = e.touches[0].clientX; wsy = e.touches[0].clientY; }, { passive: true });
     whyStage.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - wsx, dy = e.changedTouches[0].clientY - wsy;
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) wshow((wcur + (dx < 0 ? 1 : -1) + proofs.length) % proofs.length);
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) wStage.go((wStage.index + (dx < 0 ? 1 : -1) + proofs.length) % proofs.length);
     });
   }
 
-  /* ============ VOICES — scroll-driven stories (desktop) / swipe (mobile) ============ */
+  /* ============ REAL STORIES — pinned, one complete story at a time (no overlap) ============ */
   const stage = $('#voiceStage');
   if (stage) {
     const voices = $$('.x-voice', stage);
-    const dotWrap = $('#voiceDots');
-    let cur = 0;
-    voices.forEach((_, i) => {
-      const b = document.createElement('button');
-      b.setAttribute('role', 'tab'); b.setAttribute('aria-label', 'Story ' + (i + 1));
-      dotWrap.appendChild(b);
-    });
-    const dots = $$('button', dotWrap);
-    const show = (i) => {
-      if (i === cur) return;
-      cur = i;
-      voices.forEach((v, k) => v.classList.toggle('on', k === i));
-      dots.forEach((d, k) => d.classList.toggle('on', k === i));
-    };
-    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
-    voices.forEach((v, k) => v.classList.toggle('on', k === 0)); dots[0].classList.add('on');
-    // desktop: pin the section and advance stories with scroll
+    const segs = $$('#voiceDots .seg');
+    const vStage = makeStage(voices, (i) => segs.forEach((s, k) => s.classList.toggle('on', k === i)));
+    segs.forEach((s, i) => s.addEventListener('click', () => vStage.go(i)));
     mm.add('(min-width:821px)', () => {
       const st = ScrollTrigger.create({
-        trigger: '#voices', start: 'top top', end: '+=' + (voices.length * 320), pin: true, scrub: 0.4,
-        onUpdate: (self) => show(Math.min(voices.length - 1, Math.floor(self.progress * voices.length * 0.999)))
+        trigger: '#voices', start: 'top top', end: '+=' + (voices.length * 360), pin: '.x-voices-pin', scrub: 0.4,
+        onUpdate: (self) => vStage.go(Math.min(voices.length - 1, Math.floor(self.progress * voices.length * 0.999)))
       });
-      return () => st.kill();
+      return () => { st.kill(); vStage.reset(); };
     });
     // mobile: swipe
     let sx = 0, sy = 0;
     stage.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
     stage.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) show((cur + (dx < 0 ? 1 : -1) + voices.length) % voices.length);
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) vStage.go((vStage.index + (dx < 0 ? 1 : -1) + voices.length) % voices.length);
     });
   }
 

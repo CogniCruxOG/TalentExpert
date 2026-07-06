@@ -48,6 +48,12 @@ p,.lead,li{text-wrap:pretty}
 ::selection{background:var(--accent-t2);color:var(--ink)}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
 
+/* Global ambient cursor glow (injected by main.js; brand-orange, very soft) */
+.cursor-glow{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .6s ease;will-change:opacity;
+  background:radial-gradient(600px circle at var(--cx,50%) var(--cy,50%),rgba(242,111,33,.06),rgba(249,165,106,.035) 26%,transparent 52%)}
+.cursor-glow.on{opacity:1}
+@media(hover:none){.cursor-glow{display:none}}
+
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
 .section{padding:104px 0;position:relative}
 .section.tight{padding:72px 0}

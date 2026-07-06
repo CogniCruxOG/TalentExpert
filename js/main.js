@@ -140,6 +140,26 @@
   $$('[data-portal-choice]').forEach(el =>
     el.addEventListener('click', () => window.rememberPortal(el.dataset.portalChoice)));
 
+  /* ---- Global ambient cursor glow (site-wide) ---- */
+  if (matchMedia('(hover:hover)').matches && !reduce) {
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    document.body.appendChild(glow);
+    let tx = innerWidth / 2, ty = innerHeight / 2, gx = tx, gy = ty, shown = false, raf = 0;
+    const tick = () => {
+      gx += (tx - gx) * 0.12; gy += (ty - gy) * 0.12;
+      glow.style.setProperty('--cx', gx.toFixed(1) + 'px');
+      glow.style.setProperty('--cy', gy.toFixed(1) + 'px');
+      raf = requestAnimationFrame(tick);
+    };
+    addEventListener('mousemove', (e) => {
+      tx = e.clientX; ty = e.clientY;
+      if (!shown) { shown = true; glow.classList.add('on'); }
+    }, { passive: true });
+    document.addEventListener('mouseleave', () => { shown = false; glow.classList.remove('on'); });
+    tick();
+  }
+
   /* ---- Footer year ---- */
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
 })();
