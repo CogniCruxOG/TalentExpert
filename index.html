@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/experience.css">
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"Organization","name":"Talent Expert",
@@ -30,6 +31,7 @@
 </script>
 </head>
 <body data-page="home">
+<div class="x-progress" id="xProgress" aria-hidden="true"></div>
 
 <!-- ============ HEADER ============ -->
 <header class="nav" id="nav">
@@ -52,7 +54,7 @@
         <div class="mega">
           <a class="mega-link" href="employers.html#why"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-shield"/></svg></span><span><h5>Why Partner With Us</h5><p>Your on-demand HR department</p></span></a>
           <a class="mega-link" href="process.html"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><span><h5>Our Process</h5><p>7 steps that deliver results</p></span></a>
-          <a class="mega-link" href="hiring-models.html"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-layers"/></svg></span><span><h5>Hiring Models</h5><p>Raw Placement · Capability Dev.</p></span></a>
+          <a class="mega-link" href="hiring-models.html"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-layers"/></svg></span><span><h5>Hiring Models</h5><p>Raw Placement &middot; Capability Dev.</p></span></a>
           <a class="mega-link" href="industries.html"><span class="chip a"><svg class="ic"><use href="assets/icons/sprite.svg#i-factory"/></svg></span><span><h5>Industries We Serve</h5><p>8 high-growth sectors</p></span></a>
           <a class="mega-link" href="employers.html#stories"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></span><span><h5>Success Stories</h5><p>What business leaders say</p></span></a>
           <a class="mega-link" href="employers.html#contact"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-target"/></svg></span><span><h5>Get Talent Now</h5><p>Free consultation</p></span></a>
@@ -72,123 +74,139 @@
       <div class="nav-item"><a href="contact.html">Contact</a></div>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-blue" href="employers.html" data-portal-choice="business">Get Talent Now</a>
-      <a class="btn btn-orange" href="job-seekers.html" data-portal-choice="jobseeker">Find Jobs</a>
+      <a class="btn btn-blue magnetic" href="employers.html" data-portal-choice="business">Get Talent Now</a>
+      <a class="btn btn-orange magnetic" href="job-seekers.html" data-portal-choice="jobseeker">Find Jobs</a>
       <button class="burger" onclick="toggleMenu(true)" aria-label="Open menu"><span></span></button>
     </div>
   </div>
 </header>
 <div class="mnav" id="mnav">
   <button class="burger mnav-close" onclick="toggleMenu(false)" aria-label="Close menu"><span></span></button>
-  <a href="index.html">Home</a>
-  <a href="about.html">About Us</a>
-  <a href="services.html">Services</a>
-  <a href="employers.html">For Business Owners</a>
-  <a href="job-seekers.html">For Job Seekers</a>
-  <a href="industries.html" class="sub">Industries We Serve</a>
-  <a href="hiring-models.html" class="sub">Hiring Models</a>
-  <a href="career-tips.html" class="sub">Career Tips</a>
-  <a href="contact.html">Contact</a>
-  <div class="m-cta">
-    <a class="btn btn-blue" href="employers.html" data-portal-choice="business">Get Talent Now</a>
-    <a class="btn btn-orange" href="job-seekers.html" data-portal-choice="jobseeker">Find Jobs</a>
-  </div>
+  <a href="index.html">Home</a><a href="about.html">About Us</a><a href="services.html">Services</a>
+  <a href="employers.html">For Business Owners</a><a href="job-seekers.html">For Job Seekers</a>
+  <a href="industries.html" class="sub">Industries We Serve</a><a href="hiring-models.html" class="sub">Hiring Models</a>
+  <a href="career-tips.html" class="sub">Career Tips</a><a href="contact.html">Contact</a>
+  <div class="m-cta"><a class="btn btn-blue" href="employers.html">Get Talent Now</a><a class="btn btn-orange" href="job-seekers.html">Find Jobs</a></div>
 </div>
 
-<!-- ============ HERO ============ -->
-<section class="hero" id="top">
-  <div class="bg-doodle">
-    <svg viewBox="0 0 400 200" width="640" style="top:80px;right:-60px;opacity:.7"><path class="stroke s-b" d="M10 180L60 120 90 150 140 80 180 110 240 40 300 90 360 30"/><path class="stroke s-o" d="M10 190c80-20 160-20 240 4s130 20 150 8" style="stroke-dasharray:4 10"/></svg>
-    <svg viewBox="0 0 200 200" width="260" style="bottom:-30px;left:-40px"><circle class="stroke s-g" cx="100" cy="100" r="70"/><circle class="stroke s-g" cx="100" cy="100" r="46"/><path class="stroke s-a" d="M40 100h120M100 40v120"/></svg>
+<!-- ============ HERO — Village → City ============ -->
+<section class="x-hero" id="hero">
+  <div class="x-hero-scene">
+    <div class="x-layer x-sky" data-parallax="0.06"><span class="x-sun" id="xSun"></span></div>
+    <div class="x-layer x-scene-svg" data-parallax="0.14">
+      <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <!-- ground -->
+        <path class="x-stroke" d="M0 522 H1440" stroke="rgba(36,48,64,.18)" stroke-width="2"/>
+        <!-- VILLAGE (left) -->
+        <g class="x-village-g" opacity=".9">
+          <path class="x-stroke s-g" d="M70 522v-60h70v60" stroke="#12A074" stroke-width="2.5"/>
+          <path class="x-stroke s-a" d="M60 462l45-34 45 34" stroke="#E8A83A" stroke-width="2.5"/>
+          <path class="x-stroke s-g" d="M180 522v-42h52v42" stroke="#12A074" stroke-width="2.5"/>
+          <path class="x-stroke s-a" d="M172 480l34-26 34 26" stroke="#E8A83A" stroke-width="2.5"/>
+          <path class="x-stroke s-g" d="M300 522v-30" stroke="#12A074" stroke-width="2.5"/>
+          <path class="x-stroke s-g" d="M300 492c-26 0-40-16-40-30 22 0 40 12 40 30zM300 500c0-20 16-34 40-34 0 20-16 34-40 34z" stroke="#12A074" stroke-width="2.2" fill="rgba(18,160,116,.06)"/>
+          <path class="x-stroke" d="M40 540c60-14 120-14 180 0M60 556c70-12 150-12 220 0" stroke="rgba(18,160,116,.4)" stroke-width="2" stroke-dasharray="3 10"/>
+        </g>
+        <!-- CITY (right) -->
+        <g class="x-city-g" id="xCity">
+          <path class="x-stroke s-b" d="M1010 522V360h70v162" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.04)"/>
+          <path class="x-stroke s-b" d="M1100 522V300h60v222" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.05)"/>
+          <path class="x-stroke s-b" d="M1180 522V230h74v292" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.06)"/>
+          <path class="x-stroke s-b" d="M1274 522V320h56v202" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.04)"/>
+          <path class="x-stroke s-b" d="M1350 522V270h58v252" stroke="#1A3C6B" stroke-width="2.5" fill="rgba(26,60,107,.05)"/>
+          <g stroke="rgba(26,60,107,.35)" stroke-width="2">
+            <path d="M1022 384h46M1022 410h46M1022 436h46M1112 330h36M1112 360h36M1112 392h36M1196 262h42M1196 296h42M1196 330h42M1196 364h42"/>
+          </g>
+        </g>
+        <!-- BRIDGE arc + talent path -->
+        <path id="bridgePath" class="x-bridge-path" d="M300 486 Q720 300 1010 486"/>
+        <path class="x-stroke" d="M300 486 Q720 300 1010 486" stroke="rgba(232,119,34,.18)" stroke-width="8" fill="none"/>
+        <g id="bridgeNodes">
+          <circle class="x-node" r="7" cx="300" cy="486"/>
+          <circle class="x-node" r="7" cx="300" cy="486"/>
+          <circle class="x-node" r="7" cx="300" cy="486"/>
+        </g>
+      </svg>
+    </div>
   </div>
-  <div class="wrap">
-    <div class="hero-grid">
-      <div class="hero-copy reveal">
-        <h1 class="display">Bridging <em>rural talent</em> with <span class="mark">business growth<svg viewBox="0 0 300 16" preserveAspectRatio="none"><path d="M3 11c60-9 234-9 294-2"/></svg></span></h1>
-        <p class="sub">India's most people-first recruitment company.</p>
-        <p class="hero-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg>Serving Tamil Nadu &amp; Beyond</p>
-        <p class="rhythm">We Discover. <span>We Develop.</span> We Deliver.</p>
-        <div class="hero-actions">
-          <a class="btn btn-blue lg" href="employers.html" data-portal-choice="business">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
-          <a class="btn btn-orange lg" href="job-seekers.html" data-portal-choice="jobseeker">Find Your Job <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
+
+  <div class="wrap x-hero-content" data-parallax="-0.05">
+    <span class="x-eyebrow" id="xEyebrow"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg>Serving Tamil Nadu &amp; Beyond</span>
+    <h1 class="x-title" data-split>Bridging <em>rural talent</em> with <span class="grow">business growth</span></h1>
+    <p class="x-sub">India's most people-first recruitment company.</p>
+    <p class="x-rhythm">We Discover. <span>We Develop.</span> We Deliver.</p>
+    <div class="hero-actions">
+      <a class="btn btn-blue lg magnetic" href="employers.html" data-portal-choice="business">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
+      <a class="btn btn-orange lg magnetic" href="job-seekers.html" data-portal-choice="jobseeker">Find Your Job <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
+    </div>
+    <div class="x-hero-stats" data-statgroup>
+      <div class="stat-card c-b" data-drift="0.10"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-building"/></svg></span><div class="stat-num" data-count="500" data-suffix="+">0</div><div class="stat-lab">Businesses Served</div></div>
+      <div class="stat-card c-o" data-drift="0.18"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-target"/></svg></span><div class="stat-num" data-count="2000" data-suffix="+" data-comma="1">0</div><div class="stat-lab">Placements Made</div></div>
+      <div class="stat-card c-g" data-drift="0.14"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg></span><div class="stat-num" data-count="316">0</div><div class="stat-lab">Taluks Covered</div></div>
+      <div class="stat-card c-a" data-drift="0.22"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-clock"/></svg></span><div class="stat-num" data-count="30" data-suffix="+">0</div><div class="stat-lab">Years of Expertise</div></div>
+    </div>
+  </div>
+  <div class="x-cue"><span class="mouse"></span>Scroll</div>
+</section>
+
+<!-- ============ PINNED JOURNEY — Who We Are ============ -->
+<section class="x-journey" id="journey">
+  <div class="x-journey-pin">
+    <div class="wrap">
+      <div class="x-journey-head">
+        <span class="eyebrow" style="justify-content:center">Who We Are</span>
+        <h2 class="title">More than a recruitment agency — <b>a growth engine.</b></h2>
+        <p class="lead" style="margin:14px auto 0">We discover potential across 316 Taluks, develop it through real training, and sustain it long after placement.</p>
+      </div>
+      <div class="x-jtrack">
+        <div class="x-jline"><span class="x-jline-fill" id="jFill"></span></div>
+        <div class="x-jsteps">
+          <div class="x-jstep" data-step="0"><div class="x-jdot"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-map"/></svg></span></div><span class="k">Step 01</span><h3>Discover</h3><p>Grassroots talent identification through trusted networks across Tamil Nadu's 316 Taluks.</p></div>
+          <div class="x-jstep" data-step="1"><div class="x-jdot"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span></div><span class="k">Step 02</span><h3>Develop</h3><p>Holistic guidance in life skills, communication, and workplace confidence.</p></div>
+          <div class="x-jstep" data-step="2"><div class="x-jdot"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-heart"/></svg></span></div><span class="k">Step 03</span><h3>Sustain</h3><p>Post-placement support, monitoring, and coaching for long-term success.</p></div>
         </div>
       </div>
-      <div class="hero-art reveal d2">
-        <div class="stat-dash" data-statgroup>
-          <div class="stat-card c-b"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-building"/></svg></span><div class="stat-num" data-count="500" data-suffix="+">0</div><div class="stat-lab">Businesses Served</div></div>
-          <div class="stat-card c-o"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-target"/></svg></span><div class="stat-num" data-count="2000" data-suffix="+" data-comma="1">0</div><div class="stat-lab">Placements Made</div></div>
-          <div class="stat-card c-g"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg></span><div class="stat-num" data-count="316">0</div><div class="stat-lab">Taluks Covered</div></div>
-          <div class="stat-card c-a"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-clock"/></svg></span><div class="stat-num" data-count="30" data-suffix="+">0</div><div class="stat-lab">Years of HR Expertise</div></div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ WHO WE ARE ============ -->
-<section class="section" id="who">
-  <div class="bg-doodle">
-    <svg viewBox="0 0 240 240" width="300" style="top:20px;right:-40px;opacity:.5"><path class="stroke s-o" d="M180 60c26 18 34 54 18 84s-58 44-92 36-58-40-52-72 42-56 74-58 34-8 52 10z"/></svg>
+<!-- ============ HORIZONTAL RAIL — What We Do ============ -->
+<section class="x-rail" id="rail">
+  <div class="x-rail-head">
+    <span class="eyebrow">What We Do</span>
+    <h2 class="title">One partner. <em>Every</em> level of hire.</h2>
   </div>
-  <div class="wrap">
-    <div class="split" style="margin-bottom:60px">
-      <div class="reveal">
-        <span class="eyebrow">Who We Are</span>
-        <h2 class="title">More than a recruitment agency — we are a <b>growth engine.</b></h2>
-      </div>
-      <div class="body reveal d1">
-        <p>Talent Expert is Tamil Nadu's most trusted HR recruitment and staffing company, purpose-built to bridge India's most critical gap: connecting ambitious rural youth with growth-hungry businesses.</p>
-        <p>We go beyond placement. We discover potential through grassroots networks across Tamil Nadu's <strong>316 Taluks</strong>, transform it through structured life skills and technical training, and sustain it through continuous post-placement monitoring — creating workforce solutions built to last, not just to fill.</p>
-        <p>With <strong>30+ years</strong> of combined HR and training expertise, we are the recruitment partner that businesses and job seekers trust equally — because when both sides win, India wins.</p>
-      </div>
-    </div>
-    <div class="ddd">
-      <span class="ddd-arrow" style="left:31%"><svg class="ic" style="width:28px;height:28px"><use href="assets/icons/sprite.svg#i-arrow"/></svg></span>
-      <span class="ddd-arrow" style="left:64.5%"><svg class="ic" style="width:28px;height:28px"><use href="assets/icons/sprite.svg#i-arrow"/></svg></span>
-      <div class="card reveal d1"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-map"/></svg></span><h3>Discover</h3><p>Grassroots talent identification through trusted networks across Tamil Nadu's 316 Taluks.</p></div>
-      <div class="card reveal d2"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span><h3>Develop</h3><p>Holistic training in life skills, technical expertise, communication, and workplace confidence.</p></div>
-      <div class="card reveal d3"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-heart"/></svg></span><h3>Sustain</h3><p>Post-placement support, performance monitoring, and ongoing coaching for long-term success.</p></div>
+  <div class="x-rail-viewport">
+    <div class="x-rail-track" id="railTrack">
+      <article class="x-rail-card c-b"><div class="idx">01 / 06</div><span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-users"/></svg></span><h3>Mid-Management</h3><p>Managers, team leads &amp; senior executives filling functional leadership roles across all 8 focus industries.</p></article>
+      <article class="x-rail-card c-o"><div class="idx">02 / 06</div><span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-briefcase"/></svg></span><h3>Senior Management</h3><p>VPs, GMs, directors &amp; business heads for companies undergoing scale or transformation.</p></article>
+      <article class="x-rail-card c-g"><div class="idx">03 / 06</div><span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></span><h3>CXO &amp; Leadership</h3><p>CEO, COO, CFO, CTO, CMO &amp; CHRO search for PE-backed firms and fast-scaling SMEs.</p></article>
+      <article class="x-rail-card c-a"><div class="idx">04 / 06</div><span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-sprout"/></svg></span><h3>Fresher &amp; Trainees</h3><p>Build your white-collar pipeline from the ground up with job-ready entry-level talent.</p></article>
+      <article class="x-rail-card c-b"><div class="idx">05 / 06</div><span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span><h3>Training &amp; Development</h3><p>Role-specific upskilling for organisations investing in their existing workforce.</p></article>
+      <article class="x-rail-card c-o"><div class="idx">06 / 06</div><span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><h3>End-to-End Recruitment</h3><p>A fully managed hiring pipeline for companies without an in-house talent-acquisition team.</p></article>
     </div>
   </div>
+  <div class="x-rail-progress" id="railDots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
 </section>
 
-<!-- ============ WHAT WE DO ============ -->
-<section class="section alt" id="what">
+<!-- ============ WHY CHOOSE — sticky + scrubbed ============ -->
+<section class="section x-why" id="why">
   <div class="wrap">
-    <div class="sec-head center reveal">
-      <span class="eyebrow">What We Do</span>
-      <h2 class="title">One partner. <b>Complete white-collar hiring.</b></h2>
-      <p class="lead">From your first management hire to your most critical CXO search — we handle the entire talent lifecycle for SMEs and corporates, across mid-management, senior leadership, and board-level roles.</p>
-    </div>
-    <div class="grid-3">
-      <div class="card feat-card reveal d1"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-users"/></svg></span><h3>Mid-Management</h3><p>Managers, team leads &amp; senior executives filling functional leadership roles across all 8 focus industries.</p></div>
-      <div class="card feat-card reveal d2"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-briefcase"/></svg></span><h3>Senior Management</h3><p>VPs, GMs, directors &amp; business heads for companies undergoing scale or transformation.</p></div>
-      <div class="card feat-card reveal d3"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></span><h3>CXO &amp; Leadership</h3><p>CEO, COO, CFO, CTO, CMO &amp; CHRO search for PE-backed firms and fast-scaling SMEs.</p></div>
-      <div class="card feat-card reveal d1"><span class="chip a"><svg class="ic"><use href="assets/icons/sprite.svg#i-sprout"/></svg></span><h3>Fresher &amp; Graduate Trainees</h3><p>Build your white-collar pipeline from the ground up with trained, job-ready entry-level talent.</p></div>
-      <div class="card feat-card reveal d2"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span><h3>Training &amp; Development</h3><p>Role-specific upskilling programmes for organisations investing in their existing workforce.</p></div>
-      <div class="card feat-card reveal d3"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><h3>End-to-End Recruitment</h3><p>A fully managed hiring pipeline for companies without an in-house talent acquisition team.</p></div>
-    </div>
-    <div style="text-align:center;margin-top:40px" class="reveal"><a class="btn btn-ghost" href="services.html">Explore all services <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a></div>
-  </div>
-</section>
-
-<!-- ============ WHY CHOOSE US ============ -->
-<section class="section" id="why">
-  <div class="bg-doodle">
-    <svg viewBox="0 0 240 240" width="300" style="top:20px;right:-30px;opacity:.35"><path class="stroke s-o" d="M120 30l16 50 52 4-42 32 16 50-42-30-42 30 16-50-42-32 52-4z"/></svg>
-  </div>
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <span class="eyebrow">Why Choose Us</span>
-      <h2 class="title">Smart hiring isn't about finding people — <b>it's about the RIGHT people.</b></h2>
-    </div>
-    <div class="grid-3">
-      <div class="card feat-card reveal d1"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><h3>End-to-End HR</h3><p>From sourcing to onboarding, we manage the complete hiring lifecycle so you don't have to.</p></div>
-      <div class="card feat-card reveal d2"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-map"/></svg></span><h3>Rural Talent Network</h3><p>Access skilled candidates from rural &amp; semi-urban Tamil Nadu — an untapped, motivated workforce.</p></div>
-      <div class="card feat-card reveal d3"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-gear"/></svg></span><h3>Technology-Driven</h3><p>HR tech tools streamline sourcing, screening, and tracking for faster, smarter decisions.</p></div>
-      <div class="card feat-card reveal d1"><span class="chip a"><svg class="ic"><use href="assets/icons/sprite.svg#i-factory"/></svg></span><h3>Multi-Industry Expertise</h3><p>We understand diverse industry needs and hire talent that fits both role and culture.</p></div>
-      <div class="card feat-card reveal d2"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-chart"/></svg></span><h3>Proven Growth Partner</h3><p>Consistent quality, better retention, and long-term hiring success across 500+ businesses.</p></div>
-      <div class="card feat-card reveal d3"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-handshake"/></svg></span><h3>People-First Promise</h3><p>We measure success only when both employers and employees win. That's our only KPI.</p></div>
+    <div class="x-why-grid">
+      <div class="x-why-sticky">
+        <span class="eyebrow">Why Choose Us</span>
+        <p class="big">Not about finding people — <b>finding the RIGHT people.</b></p>
+        <p class="lead">Six reasons SMEs and corporates across Tamil Nadu trust us with their most important hires.</p>
+        <a class="btn btn-blue magnetic" style="margin-top:24px" href="employers.html" data-portal-choice="business">Partner with us <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
+      </div>
+      <div class="x-why-list">
+        <div class="x-why-item"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><div><h3>End-to-End HR</h3><p>From sourcing to onboarding, we manage the complete hiring lifecycle so you don't have to.</p></div></div>
+        <div class="x-why-item"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-map"/></svg></span><div><h3>Rural Talent Network</h3><p>Skilled candidates from rural &amp; semi-urban Tamil Nadu — an untapped, motivated workforce.</p></div></div>
+        <div class="x-why-item"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-gear"/></svg></span><div><h3>Technology-Driven</h3><p>HR-tech streamlines sourcing, screening, and tracking for faster, smarter decisions.</p></div></div>
+        <div class="x-why-item"><span class="chip a"><svg class="ic"><use href="assets/icons/sprite.svg#i-factory"/></svg></span><div><h3>Multi-Industry Expertise</h3><p>We understand diverse industry needs and hire talent that fits both role and culture.</p></div></div>
+        <div class="x-why-item"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-shield"/></svg></span><div><h3>Replacement Guarantee</h3><p>Not satisfied? A 30-day replacement ensures the right fit for your team.</p></div></div>
+        <div class="x-why-item"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-handshake"/></svg></span><div><h3>People-First Promise</h3><p>We measure success only when both employers and employees win. That's our only KPI.</p></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -196,53 +214,48 @@
 <!-- ============ CHOOSE YOUR PATH ============ -->
 <section class="section alt" id="paths">
   <div class="wrap">
-    <div class="sec-head center reveal">
+    <div class="sec-head center" data-reveal>
       <span class="eyebrow">Choose Your Path</span>
       <h2 class="title">Who are you <b>here for?</b></h2>
       <p class="lead">Choose your path — and let us take you from there.</p>
     </div>
-    <div class="aud-grid">
-      <a class="aud-card biz reveal d1" href="employers.html" data-portal-choice="business">
-        <span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-building"/></svg></span>
+    <div class="x-paths">
+      <a class="x-path biz" href="employers.html" data-portal-choice="business" data-reveal>
+        <span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-building"/></svg></span>
         <h3>I am a Business Owner</h3>
         <p>Great businesses are built by great teams. Find trained, job-ready talent for your business.</p>
-        <span class="btn btn-ghost">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></span>
         <div class="checks"><span><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Zero hiring risk</span><span><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Replacement guarantee</span><span><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Trained from Day 1</span></div>
+        <span class="go">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></span>
       </a>
-      <a class="aud-card job reveal d2" href="job-seekers.html" data-portal-choice="jobseeker">
-        <span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span>
+      <a class="x-path job" href="job-seekers.html" data-portal-choice="jobseeker" data-reveal>
+        <span class="chip"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span>
         <h3>I am a Job Seeker</h3>
         <p>Young talents deserve a chance to succeed. Get placed and grow in your career.</p>
-        <span class="btn btn-ghost">Start My Career <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></span>
         <div class="checks"><span><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Free to register</span><span><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>100% placement support</span><span><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Career coaching</span></div>
+        <span class="go">Start My Career <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></span>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ============ FOUNDER QUOTE ============ -->
-<section class="quote-band">
+<!-- ============ FOUNDER ============ -->
+<section class="x-founder">
   <div class="wrap">
-    <div class="quote-inner reveal">
-      <span class="quote-mark">&ldquo;</span>
-      <blockquote>Every business leader I speak with says their number one problem is getting the right manpower. On the other side, lakhs of rural youth have <em>untapped potential</em>. We exist to bridge this gap — and we will not stop until every rural talent finds a worthy stage.</blockquote>
-      <cite>— Founder, Talent Expert&nbsp; |&nbsp; 30+ Years in HR, Training &amp; Talent Development</cite>
-    </div>
+    <blockquote data-words>Every business leader says their number one problem is getting the right manpower. On the other side, lakhs of rural youth have <em>untapped potential</em>. We exist to bridge this gap — and we will not stop until every rural talent finds a worthy stage.</blockquote>
+    <cite>— Founder, Talent Expert · 30+ Years in HR, Training &amp; Talent Development</cite>
   </div>
 </section>
 
-<!-- ============ FINAL CTA ============ -->
-<section class="cta">
+<!-- ============ FINALE ============ -->
+<section class="x-finale">
+  <span class="glow" style="top:-120px;left:8%"></span>
+  <span class="glow" style="bottom:-140px;right:6%"></span>
   <div class="wrap">
-    <div class="cta-inner reveal">
-      <span class="cta-glow" style="top:-80px;left:-40px"></span>
-      <span class="cta-glow" style="bottom:-100px;right:-40px"></span>
-      <h2>Ready to build your dream team or launch your career?</h2>
-      <p>Join 500+ businesses and 2,000+ job seekers who trust Talent Expert.</p>
-      <div class="cta-actions">
-        <a class="btn btn-white" href="employers.html" data-portal-choice="business">For Business Owners: Get Started</a>
-        <a class="btn btn-orange" href="job-seekers.html" data-portal-choice="jobseeker">For Job Seekers: Register Free</a>
-      </div>
+    <h2 data-reveal>Ready to build your dream team or launch your career?</h2>
+    <p data-reveal>Join 500+ businesses and 2,000+ job seekers who trust Talent Expert.</p>
+    <div class="cta-actions" data-reveal>
+      <a class="btn btn-white magnetic" href="employers.html" data-portal-choice="business">For Business Owners: Get Started</a>
+      <a class="btn btn-orange magnetic" href="job-seekers.html" data-portal-choice="jobseeker">For Job Seekers: Register Free</a>
     </div>
   </div>
 </section>
@@ -266,36 +279,15 @@
           <a href="#" aria-label="YouTube"><svg class="ic"><use href="assets/icons/sprite.svg#i-youtube"/></svg></a>
         </div>
       </div>
-      <div class="foot-col">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="industries.html">Industries</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-        </ul>
-      </div>
-      <div class="foot-col">
-        <h4>For Business Owners</h4>
-        <ul>
-          <li><a href="employers.html#contact">Get Talent Now</a></li>
-          <li><a href="process.html">Our Process</a></li>
-          <li><a href="industries.html">Industries We Serve</a></li>
-          <li><a href="hiring-models.html">Hiring Models</a></li>
-          <li><a href="employers.html#stories">Success Stories</a></li>
-        </ul>
-        <h4 style="margin-top:20px">For Job Seekers</h4>
-        <ul>
-          <li><a href="job-seekers.html#register">Register Free</a></li>
-          <li><a href="job-seekers.html#categories">Job Categories</a></li>
-          <li><a href="career-tips.html">Career Tips</a></li>
-        </ul>
-      </div>
-      <div class="foot-col foot-news">
-        <h4>Newsletter</h4>
+      <div class="foot-col"><h4>Quick Links</h4><ul>
+        <li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="industries.html">Industries</a></li><li><a href="contact.html">Contact Us</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li>
+      </ul></div>
+      <div class="foot-col"><h4>For Business Owners</h4><ul>
+        <li><a href="employers.html#contact">Get Talent Now</a></li><li><a href="process.html">Our Process</a></li><li><a href="industries.html">Industries We Serve</a></li><li><a href="hiring-models.html">Hiring Models</a></li><li><a href="employers.html#stories">Success Stories</a></li>
+      </ul><h4 style="margin-top:20px">For Job Seekers</h4><ul>
+        <li><a href="job-seekers.html#register">Register Free</a></li><li><a href="job-seekers.html#categories">Job Categories</a></li><li><a href="career-tips.html">Career Tips</a></li>
+      </ul></div>
+      <div class="foot-col foot-news"><h4>Newsletter</h4>
         <p style="font-size:.9rem;color:var(--ink2)">Subscribe for hiring tips &amp; job-market insights.</p>
         <form data-formspree action="https://formspree.io/f/YOUR_FORM_ID" data-success="Subscribed! Watch your inbox.">
           <input type="email" name="email" placeholder="Your email" aria-label="Email" required>
@@ -313,6 +305,11 @@
 
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
 
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/vendor/split-type.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/experience.js"></script>
 </body>
 </html>

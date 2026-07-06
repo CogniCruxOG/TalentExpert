@@ -1,0 +1,186 @@
+/* ==========================================================================
+   TALENT EXPERT — Cinematic Experience Layer (Home flagship)
+   Loaded on top of styles.css. GSAP + ScrollTrigger + Lenis + SplitType.
+   ========================================================================== */
+
+/* ---- Lenis smooth scroll ---- */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* ---- Scroll progress rail ---- */
+.x-progress{position:fixed;top:0;left:0;height:3px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,var(--orange),var(--green),var(--blue));z-index:200;pointer-events:none}
+
+/* ---- Magnetic / premium buttons ---- */
+.btn.magnetic{will-change:transform}
+
+/* ---- Kinetic type ---- */
+.x-title .char{display:inline-block;will-change:transform,opacity}
+.x-title .word{display:inline-block}
+.reveal-line{overflow:hidden;display:block}
+
+/* =====================================================================
+   HERO — Village → City transformation
+   ===================================================================== */
+.x-hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding:120px 0 40px;isolation:isolate}
+.x-hero-scene{position:absolute;inset:0;z-index:0;pointer-events:none}
+.x-layer{position:absolute;inset:0;width:100%;height:100%}
+.x-layer svg{position:absolute;bottom:0;left:0;width:100%;height:auto}
+/* Sky wash + sun */
+.x-sky{background:
+  radial-gradient(900px 480px at 82% 12%,rgba(232,168,58,.20),transparent 60%),
+  radial-gradient(1100px 620px at 12% 96%,var(--green-t),transparent 60%),
+  linear-gradient(180deg,#fbfaf7,#f4efe7)}
+.x-sun{position:absolute;top:12%;right:14%;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,168,58,.55),rgba(232,119,34,.10) 60%,transparent 72%);filter:blur(2px)}
+.x-scene-svg{position:absolute;inset:0;width:100%;height:100%}
+.x-scene-svg svg{position:absolute;left:0;bottom:0;width:100%;height:62vh;min-height:420px}
+.x-stroke{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.x-village-g{}
+.x-city-g{transform-box:fill-box;transform-origin:bottom center}
+.x-bridge-path{stroke:var(--orange);stroke-width:3;fill:none;stroke-linecap:round}
+/* JS sets dasharray=length & animates dashoffset→0 for the draw-in (non-reduced-motion) */
+.x-node{fill:var(--orange)}
+.x-hero-content{position:relative;z-index:3;max-width:760px}
+.x-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);background:var(--glass2);border:1px solid var(--hair);padding:8px 16px;border-radius:100px;margin-bottom:22px;backdrop-filter:blur(8px)}
+.x-eyebrow .ic{width:15px;height:15px}
+.x-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(2.7rem,6.4vw,5rem);line-height:1.02;color:var(--ink);letter-spacing:-.015em;margin-bottom:20px}
+.x-title em{font-style:normal;font-weight:500;color:var(--orange)}
+.x-title .grow{position:relative;white-space:nowrap;font-weight:500;color:var(--blue)}
+.x-title .grow::after{content:"";position:absolute;left:0;bottom:-6px;width:100%;height:10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 12' preserveAspectRatio='none'%3E%3Cpath d='M3 8c60-7 234-7 294-2' fill='none' stroke='%23E87722' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat;background-size:100% 100%;transform:scaleX(0);transform-origin:0;opacity:0}
+.x-title .grow.drawn::after{transform:scaleX(1);opacity:1;transition:transform .9s var(--ease),opacity .4s}
+.x-sub{font-size:1.18rem;color:var(--ink2);max-width:46ch;margin-bottom:12px}
+.x-rhythm{font-family:'Fraunces';font-style:italic;font-size:1.25rem;color:var(--ink);margin-bottom:28px}
+.x-rhythm span{color:var(--orange)}
+.x-hero .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+/* Floating drift stats */
+.x-hero-stats{position:relative;z-index:3;margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:820px}
+.x-hero-stats .stat-card{will-change:transform}
+/* Scroll cue */
+.x-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink3);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+.x-cue .mouse{width:24px;height:38px;border:2px solid var(--ink3);border-radius:14px;position:relative}
+.x-cue .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;border-radius:3px;background:var(--ink3);animation:cue 1.6s var(--ease) infinite}
+@keyframes cue{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
+
+/* =====================================================================
+   PINNED JOURNEY — Who We Are (Discover / Develop / Sustain)
+   ===================================================================== */
+.x-journey{position:relative;background:var(--paper2)}
+.x-journey-pin{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0}
+.x-journey-head{max-width:760px;margin:0 auto 40px;text-align:center}
+.x-jtrack{position:relative;max-width:1000px;margin:0 auto;width:100%}
+.x-jline{position:absolute;top:52px;left:6%;right:6%;height:3px;background:var(--hair);border-radius:3px;overflow:hidden}
+.x-jline-fill{position:absolute;inset:0;background:linear-gradient(90deg,var(--blue),var(--green),var(--orange));transform:scaleX(0);transform-origin:0}
+.x-jsteps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative;z-index:2}
+.x-jstep{text-align:center;opacity:.35;transform:translateY(20px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.x-jstep.on{opacity:1;transform:none}
+.x-jdot{width:104px;height:104px;margin:0 auto 20px;border-radius:50%;display:grid;place-items:center;background:var(--glass2);border:1px solid rgba(255,255,255,.7);box-shadow:var(--sh-s);position:relative;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.x-jstep.on .x-jdot{transform:scale(1.06);box-shadow:var(--sh-m)}
+.x-jdot .chip{width:56px;height:56px;font-size:30px}
+.x-jstep h3{font-size:1.5rem;font-weight:500;margin-bottom:8px}
+.x-jstep p{font-size:.98rem;color:var(--ink2);max-width:30ch;margin:0 auto}
+.x-jstep .k{font-family:'Fraunces';font-style:italic;color:var(--accent);font-size:.9rem;margin-bottom:6px;display:block}
+
+/* =====================================================================
+   HORIZONTAL RAIL — What We Do
+   ===================================================================== */
+.x-rail{position:relative;background:var(--ink);color:#fff;overflow:hidden}
+.x-rail .x-rail-head{position:absolute;top:0;left:0;width:100%;padding:60px 26px 0;z-index:3;text-align:center;pointer-events:none}
+.x-rail .eyebrow{color:var(--amber);justify-content:center}
+.x-rail h2{color:#fff}
+.x-rail h2 b{color:#fff}
+.x-rail h2 em{color:var(--amber);font-style:italic}
+.x-rail-viewport{height:100vh;display:flex;align-items:center;overflow:hidden}
+.x-rail-track{display:flex;gap:28px;padding:0 8vw;will-change:transform}
+.x-rail-card{flex:0 0 clamp(280px,34vw,440px);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-xl);padding:40px;backdrop-filter:blur(6px);min-height:420px;display:flex;flex-direction:column}
+.x-rail-card .idx{font-family:'Fraunces';font-size:.9rem;color:var(--amber);margin-bottom:auto}
+.x-rail-card .chip{width:64px;height:64px;font-size:32px;border-radius:20px;margin:24px 0 18px;background:rgba(255,255,255,.08)}
+.x-rail-card.c-o .chip{color:var(--orange)} .x-rail-card.c-g .chip{color:var(--green)}
+.x-rail-card.c-b .chip{color:#7fb0e6} .x-rail-card.c-a .chip{color:var(--amber)}
+.x-rail-card h3{color:#fff;font-size:1.5rem;font-weight:500;margin-bottom:10px}
+.x-rail-card p{color:rgba(255,255,255,.72);font-size:.98rem}
+.x-rail-progress{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:8px}
+.x-rail-progress i{width:26px;height:4px;border-radius:4px;background:rgba(255,255,255,.25);transition:.4s}
+.x-rail-progress i.on{background:var(--amber);width:40px}
+
+/* =====================================================================
+   WHY CHOOSE — sticky title + scrubbed proof stack
+   ===================================================================== */
+.x-why{position:relative}
+.x-why-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:start}
+.x-why-sticky{position:sticky;top:120px}
+.x-why-sticky .big{font-family:'Fraunces';font-size:clamp(2.2rem,3.6vw,3.2rem);font-weight:300;line-height:1.05;margin:14px 0 18px}
+.x-why-sticky .big b{font-weight:600}
+.x-why-list{display:grid;gap:16px}
+.x-why-item{display:grid;grid-template-columns:64px 1fr;gap:22px;align-items:start;padding:26px;border-radius:var(--r-lg);background:var(--glass2);border:1px solid rgba(255,255,255,.7);box-shadow:var(--sh-s)}
+.x-why-item .chip{width:60px;height:60px;font-size:28px}
+.x-why-item h3{font-size:1.25rem;font-weight:500;margin-bottom:4px}
+.x-why-item p{font-size:.96rem}
+
+/* =====================================================================
+   PATHS split panels
+   ===================================================================== */
+.x-paths{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.x-path{position:relative;overflow:hidden;border-radius:var(--r-xl);min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;padding:44px;color:#fff;isolation:isolate}
+.x-path::before{content:"";position:absolute;inset:0;z-index:-1;transition:transform .6s var(--ease)}
+.x-path.biz::before{background:linear-gradient(150deg,#1f4e86,#12305c)}
+.x-path.job::before{background:linear-gradient(150deg,#e87722,#c85e12)}
+.x-path:hover::before{transform:scale(1.06)}
+.x-path .chip{width:64px;height:64px;font-size:30px;background:rgba(255,255,255,.14);color:#fff;margin-bottom:auto}
+.x-path h3{color:#fff;font-size:1.9rem;font-weight:400;margin:20px 0 10px}
+.x-path p{color:rgba(255,255,255,.85);margin-bottom:20px}
+.x-path .checks{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:22px}
+.x-path .checks span{display:flex;align-items:center;gap:8px;font-size:.86rem;color:rgba(255,255,255,.9)}
+.x-path .checks .ic{width:16px;height:16px}
+.x-path .go{display:inline-flex;align-items:center;gap:10px;font-weight:600;align-self:flex-start;background:#fff;color:var(--ink);padding:13px 24px;border-radius:100px;transition:transform .4s var(--ease)}
+.x-path:hover .go{transform:translateX(4px)}
+
+/* =====================================================================
+   FOUNDER + CONCLUSION
+   ===================================================================== */
+.x-founder{padding:130px 0;text-align:center;background:radial-gradient(900px 460px at 50% 0%,var(--green-t),transparent 65%)}
+.x-founder blockquote{font-family:'Fraunces';font-weight:300;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1.4;max-width:940px;margin:0 auto 22px;color:var(--ink)}
+.x-founder blockquote em{font-style:italic;color:var(--green)}
+.x-founder .word-fade{display:inline-block}
+.x-founder cite{font-style:normal;font-weight:600;color:var(--ink2);font-size:.92rem}
+
+.x-finale{position:relative;padding:120px 0;overflow:hidden;background:linear-gradient(135deg,#16386a,#0f2647);color:#fff;text-align:center}
+.x-finale h2{color:#fff;font-size:clamp(2rem,4.4vw,3.4rem);font-weight:300;max-width:16ch;margin:0 auto 14px}
+.x-finale p{color:rgba(255,255,255,.82);margin-bottom:30px}
+.x-finale .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.x-finale .glow{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(rgba(232,119,34,.35),transparent 70%);filter:blur(30px);pointer-events:none}
+
+/* =====================================================================
+   RESPONSIVE / MOTION
+   ===================================================================== */
+@media(max-width:1024px){
+  .x-why-grid{grid-template-columns:1fr;gap:30px}
+  .x-why-sticky{position:static}
+}
+/* Stacked rail — shared by mobile breakpoint and JS-flagged .static (reduced-motion) */
+.x-rail.static .x-rail-viewport{height:auto;overflow:visible;padding:120px 0 80px}
+.x-rail.static .x-rail-track{flex-direction:column;padding:0 26px;transform:none!important;gap:18px}
+.x-rail.static .x-rail-card{flex:none;min-height:0}
+.x-rail.static .x-rail-head{position:static;padding:0 26px 30px}
+.x-rail.static .x-rail-progress{display:none}
+
+@media(max-width:820px){
+  .x-hero-stats{grid-template-columns:1fr 1fr}
+  .x-jsteps{grid-template-columns:1fr;gap:34px}
+  .x-jline{display:none}
+  .x-paths{grid-template-columns:1fr}
+  .x-why-item{grid-template-columns:1fr}
+  .x-why-item .chip{margin-bottom:8px}
+  .x-cue{display:none}
+  .x-rail-viewport{height:auto;overflow:visible;padding:120px 0 80px}
+  .x-rail-track{flex-direction:column;padding:0 26px;transform:none!important;gap:18px}
+  .x-rail-card{flex:none;min-height:0}
+  .x-rail-head{position:static;padding:0 26px 30px}
+  .x-rail-progress{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .x-title .char{opacity:1!important;transform:none!important}
+  .x-jstep{opacity:1;transform:none}
+  .x-cue{display:none}
+}
