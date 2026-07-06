@@ -32,6 +32,14 @@
     });
   }
 
+  /* ---------- Journey spine: click to travel (works in all modes) ---------- */
+  const scrollToEl = (el) => {
+    if (!el) return;
+    if (lenis) lenis.scrollTo(el, { offset: -10, duration: 1.1 });
+    else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  };
+  $$('#xSpine a').forEach((a) => a.addEventListener('click', () => scrollToEl($('#' + a.dataset.to))));
+
   /* ---------- Reduced motion: show a clean static page, no animation ---------- */
   if (reduce) {
     $$('.x-jstep').forEach(s => s.classList.add('on'));
@@ -190,6 +198,81 @@
       });
       btn.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
     });
+  }
+
+  /* ============ Journey spine — active-station tracking ============ */
+  const spineLinks = $$('#xSpine a');
+  const spineFill = $('#spineFill');
+  if (spineLinks.length) {
+    const setActive = (i) => {
+      spineLinks.forEach((a, k) => a.classList.toggle('on', k === i));
+      if (spineFill) spineFill.style.height = ((i) / (spineLinks.length - 1) * 100) + '%';
+    };
+    spineLinks.forEach((a, i) => {
+      const sec = $('#' + a.dataset.to);
+      if (!sec) return;
+      ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 45%', onToggle: (self) => { if (self.isActive) setActive(i); } });
+    });
+    setActive(0);
+  }
+
+  /* ============ THE GAP — kinetic mission reveal ============ */
+  const gap = $('#gap');
+  if (gap) {
+    const gtl = gsap.timeline({ scrollTrigger: { trigger: gap, start: 'top 62%' } });
+    gtl.from('[data-gap="k"]', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out' })
+       .from('[data-gap="head"]', { y: 34, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
+       .from('[data-gap="pillar"]', { y: 30, opacity: 0, duration: 0.7, ease: 'power2.out', stagger: 0.15 }, '-=0.2')
+       .from('[data-gap="close"]', { y: 20, opacity: 0, duration: 0.7, ease: 'power2.out' }, '-=0.1');
+    // draw connecting line + spark travels across
+    const gp = $('#gapPath'), spark = $('#gapSpark');
+    if (gp && gp.getTotalLength) {
+      const L = gp.getTotalLength();
+      gp.style.strokeDasharray = L; gp.style.strokeDashoffset = L;
+      ScrollTrigger.create({
+        trigger: gap, start: 'top 55%',
+        onEnter: () => {
+          gsap.to(gp, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut', delay: 0.5 });
+          const o = { t: 0 };
+          gsap.to(o, {
+            t: 1, duration: 1.2, ease: 'power2.inOut', delay: 0.5,
+            onUpdate: () => { const p = gp.getPointAtLength(o.t * L); spark.setAttribute('cx', p.x); spark.setAttribute('cy', p.y); }
+          });
+        }, once: true
+      });
+    }
+  }
+
+  /* ============ VS comparison — sweep-in the "new" side ============ */
+  gsap.from('.x-vs .new [data-vs]', {
+    scrollTrigger: { trigger: '#xVs', start: 'top 70%' },
+    x: 30, opacity: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1
+  });
+  gsap.from('.x-vs .mid span', {
+    scrollTrigger: { trigger: '#xVs', start: 'top 70%' },
+    scale: 0, rotate: -60, duration: 0.7, ease: 'back.out(1.7)', delay: 0.2
+  });
+
+  /* ============ VOICES — auto + manual rotator ============ */
+  const stage = $('#voiceStage');
+  if (stage) {
+    const voices = $$('.x-voice', stage);
+    const dotWrap = $('#voiceDots');
+    let cur = 0, timer = null;
+    voices.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.className = i === 0 ? 'on' : ''; b.setAttribute('role', 'tab'); b.setAttribute('aria-label', 'Story ' + (i + 1));
+      b.addEventListener('click', () => { show(i); restart(); });
+      dotWrap.appendChild(b);
+    });
+    const dots = $$('button', dotWrap);
+    const show = (i) => {
+      voices[cur].classList.remove('on'); dots[cur].classList.remove('on');
+      cur = i; voices[cur].classList.add('on'); dots[cur].classList.add('on');
+    };
+    const next = () => show((cur + 1) % voices.length);
+    const restart = () => { clearInterval(timer); timer = setInterval(next, 5200); };
+    ScrollTrigger.create({ trigger: stage, start: 'top 80%', end: 'bottom 20%', onToggle: (s) => s.isActive ? restart() : clearInterval(timer) });
   }
 
   /* ---- keep ScrollTrigger in sync after fonts/images/load ---- */

@@ -32,6 +32,16 @@
 </head>
 <body data-page="home">
 <div class="x-progress" id="xProgress" aria-hidden="true"></div>
+<nav class="x-spine" id="xSpine" aria-label="Journey progress">
+  <span class="fill" id="spineFill"></span>
+  <a data-to="hero"><span class="dot"></span><span class="lbl">Start</span></a>
+  <a data-to="gap"><span class="dot"></span><span class="lbl">The Gap</span></a>
+  <a data-to="journey"><span class="dot"></span><span class="lbl">The Bridge</span></a>
+  <a data-to="rail"><span class="dot"></span><span class="lbl">Who We Place</span></a>
+  <a data-to="why"><span class="dot"></span><span class="lbl">Why Us</span></a>
+  <a data-to="voices"><span class="dot"></span><span class="lbl">Voices</span></a>
+  <a data-to="paths"><span class="dot"></span><span class="lbl">Your Path</span></a>
+</nav>
 
 <!-- ============ HEADER ============ -->
 <header class="nav" id="nav">
@@ -146,7 +156,26 @@
       <div class="stat-card c-a" data-drift="0.22"><span class="stat-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-clock"/></svg></span><div class="stat-num" data-count="30" data-suffix="+">0</div><div class="stat-lab">Years of Expertise</div></div>
     </div>
   </div>
-  <div class="x-cue"><span class="mouse"></span>Scroll</div>
+  <div class="x-cue"><span class="mouse"></span>Begin the journey</div>
+</section>
+
+<!-- ============ THE GAP — mission / problem ============ -->
+<section class="x-gap" id="gap">
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="inner">
+      <p class="k" data-gap="k">The problem worth solving</p>
+      <h2 data-gap="head">Two Indias.<br><em>One missing bridge.</em></h2>
+      <div class="sides" data-statgroup>
+        <div class="pillar l" data-gap="pillar"><div class="big">1000s</div><div class="cap">of businesses that can't find reliable, job-ready people.</div></div>
+        <div class="link" data-gap="link" aria-hidden="true">
+          <svg viewBox="0 0 120 60" preserveAspectRatio="none"><path id="gapPath" d="M4 30 C40 6 80 54 116 30"/><circle class="spark" id="gapSpark" r="4" cx="4" cy="30"/></svg>
+        </div>
+        <div class="pillar r" data-gap="pillar"><div class="big"><span class="stat-num" data-count="10" data-suffix=" lakh+">0</span></div><div class="cap">rural youth who are ready — but overlooked.</div></div>
+      </div>
+      <p class="close" data-gap="close">We exist to close this gap — <b>and we won't stop until every rural talent finds a worthy stage.</b></p>
+    </div>
+  </div>
 </section>
 
 <!-- ============ PINNED JOURNEY — Who We Are ============ -->
@@ -189,25 +218,68 @@
   <div class="x-rail-progress" id="railDots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
 </section>
 
-<!-- ============ WHY CHOOSE — sticky + scrubbed ============ -->
+<!-- ============ WHY — old way vs Talent Expert way ============ -->
 <section class="section x-why" id="why">
   <div class="wrap">
-    <div class="x-why-grid">
-      <div class="x-why-sticky">
-        <span class="eyebrow">Why Choose Us</span>
-        <p class="big">Not about finding people — <b>finding the RIGHT people.</b></p>
-        <p class="lead">Six reasons SMEs and corporates across Tamil Nadu trust us with their most important hires.</p>
-        <a class="btn btn-blue magnetic" style="margin-top:24px" href="employers.html" data-portal-choice="business">Partner with us <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a>
+    <div class="sec-head center" data-reveal>
+      <span class="eyebrow">Why Choose Us</span>
+      <h2 class="title">Same hire. <b>Two completely different outcomes.</b></h2>
+      <p class="lead">Watch the difference between hiring the usual way — and the Talent Expert way.</p>
+    </div>
+    <div class="x-vs" id="xVs">
+      <div class="col old">
+        <h3><svg class="ic" style="width:18px;height:18px"><use href="assets/icons/sprite.svg#i-x"/></svg>The usual way</h3>
+        <ul>
+          <li><svg class="ic"><use href="assets/icons/sprite.svg#i-x"/></svg>Endless CVs — few candidates even show up.</li>
+          <li><svg class="ic"><use href="assets/icons/sprite.svg#i-x"/></svg>New hires leave within 3 months; training wasted.</li>
+          <li><svg class="ic"><use href="assets/icons/sprite.svg#i-x"/></svg>No HR bandwidth to run a real hiring process.</li>
+          <li><svg class="ic"><use href="assets/icons/sprite.svg#i-x"/></svg>Great on paper, but they fail on the job.</li>
+          <li><svg class="ic"><use href="assets/icons/sprite.svg#i-x"/></svg>Agency fees paid — yet still average hires.</li>
+          <li><svg class="ic"><use href="assets/icons/sprite.svg#i-x"/></svg>You're on your own the moment they join.</li>
+        </ul>
       </div>
-      <div class="x-why-list">
-        <div class="x-why-item"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><div><h3>End-to-End HR</h3><p>From sourcing to onboarding, we manage the complete hiring lifecycle so you don't have to.</p></div></div>
-        <div class="x-why-item"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-map"/></svg></span><div><h3>Rural Talent Network</h3><p>Skilled candidates from rural &amp; semi-urban Tamil Nadu — an untapped, motivated workforce.</p></div></div>
-        <div class="x-why-item"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-gear"/></svg></span><div><h3>Technology-Driven</h3><p>HR-tech streamlines sourcing, screening, and tracking for faster, smarter decisions.</p></div></div>
-        <div class="x-why-item"><span class="chip a"><svg class="ic"><use href="assets/icons/sprite.svg#i-factory"/></svg></span><div><h3>Multi-Industry Expertise</h3><p>We understand diverse industry needs and hire talent that fits both role and culture.</p></div></div>
-        <div class="x-why-item"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-shield"/></svg></span><div><h3>Replacement Guarantee</h3><p>Not satisfied? A 30-day replacement ensures the right fit for your team.</p></div></div>
-        <div class="x-why-item"><span class="chip g"><svg class="ic"><use href="assets/icons/sprite.svg#i-handshake"/></svg></span><div><h3>People-First Promise</h3><p>We measure success only when both employers and employees win. That's our only KPI.</p></div></div>
+      <div class="mid"><span>vs</span></div>
+      <div class="col new">
+        <h3><svg class="ic" style="width:18px;height:18px"><use href="assets/icons/sprite.svg#i-check"/></svg>The Talent Expert way</h3>
+        <ul>
+          <li data-vs><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Pre-screened, job-ready candidates — end-to-end HR handled.</li>
+          <li data-vs><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Rural talent with high loyalty &amp; lower attrition.</li>
+          <li data-vs><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>We run the full pipeline from sourcing to onboarding.</li>
+          <li data-vs><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Guided &amp; readiness-checked before they reach you.</li>
+          <li data-vs><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Transparent, performance-linked — plus a 30-day replacement guarantee.</li>
+          <li data-vs><svg class="ic"><use href="assets/icons/sprite.svg#i-check"/></svg>Post-placement monitoring &amp; coaching. We stay.</li>
+        </ul>
       </div>
     </div>
+    <div style="text-align:center;margin-top:36px" data-reveal><a class="btn btn-blue magnetic" href="employers.html" data-portal-choice="business">Hire the Talent Expert way <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a></div>
+  </div>
+</section>
+
+<!-- ============ VOICES — transformation testimonials ============ -->
+<section class="section x-voices" id="voices">
+  <div class="wrap">
+    <div class="sec-head center" data-reveal>
+      <span class="eyebrow">Real Stories</span>
+      <h2 class="title">Behind every placement, <b>a life that changed.</b></h2>
+    </div>
+    <div class="x-voice-stage" id="voiceStage">
+      <figure class="x-voice on">
+        <span class="mk">&ldquo;</span>
+        <blockquote>Talent Expert delivered <em>12 perfectly matched candidates within 3 weeks</em> — and 10 of them are still with us 18 months later. The attrition we feared never happened.</blockquote>
+        <figcaption class="who"><span class="av" style="background:var(--blue)">RK</span><span class="nm"><b>Retail Chain Owner</b><span>Chennai · Business Owner</span></span></figcaption>
+      </figure>
+      <figure class="x-voice">
+        <span class="mk">&ldquo;</span>
+        <blockquote>We were amazed how job-ready the candidates were from day one. That right fit helped us <em>scale from 8 to 35 team members within a year.</em></blockquote>
+        <figcaption class="who"><span class="av" style="background:var(--green)">MS</span><span class="nm"><b>Logistics SME Founder</b><span>Coimbatore · Business Owner</span></span></figcaption>
+      </figure>
+      <figure class="x-voice">
+        <span class="mk">&ldquo;</span>
+        <blockquote>I was a fresher from a village near Madurai with no idea where to start. After their guidance and mock interviews, I walked in with <em>a completely different confidence — and got the offer the same day.</em></blockquote>
+        <figcaption class="who"><span class="av" style="background:var(--orange)">PM</span><span class="nm"><b>Priya M.</b><span>Sales Executive · Placed by Talent Expert</span></span></figcaption>
+      </figure>
+    </div>
+    <div class="x-voice-dots" id="voiceDots" role="tablist" aria-label="Testimonials"></div>
   </div>
 </section>
 
