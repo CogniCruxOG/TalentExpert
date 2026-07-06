@@ -36,13 +36,17 @@ body[data-portal="employer"]{--accent:var(--blue);--accent-t:var(--blue-t);--acc
 body[data-portal="seeker"]{--accent:var(--orange);--accent-t:var(--orange-t);--accent-t2:var(--orange-t2)}
 
 html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'Manrope',sans-serif;color:var(--ink2);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3,h4,h5{font-family:'Fraunces',serif;color:var(--ink);line-height:1.08;font-weight:300;letter-spacing:-.01em;text-wrap:balance}
+body{font-family:'Manrope',sans-serif;color:var(--ink2);background:var(--paper);line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Fraunces',serif;color:var(--ink);line-height:1.08;font-weight:300;letter-spacing:-.01em;text-wrap:balance;hyphens:none}
 a{text-decoration:none;color:inherit}
 img,svg{max-width:100%;display:block}
 ul{list-style:none}
 strong,b{color:var(--ink);font-weight:600}
-p,.lead,li{text-wrap:pretty}
+/* Typographic rhythm: comfortable measure, no orphans, no hyphenation */
+p{text-wrap:pretty;hyphens:none;max-width:68ch}
+li{text-wrap:pretty}
+.lead{text-wrap:balance;hyphens:none}
+.sec-head.center p,.sec-head.center .lead{margin-left:auto;margin-right:auto}
 /* keep meaningful phrases intact */
 .nb{white-space:nowrap}
 ::selection{background:var(--accent-t2);color:var(--ink)}

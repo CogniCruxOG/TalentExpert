@@ -16,7 +16,13 @@
   /* ---------- Lenis smooth scroll ---------- */
   let lenis = null;
   if (!reduce && typeof Lenis !== 'undefined') {
-    lenis = new Lenis({ lerp: 0.11, smoothWheel: true, wheelMultiplier: 1 });
+    lenis = new Lenis({
+      lerp: 0.075,            // smoother, floatier catch-up
+      wheelMultiplier: 1.15,  // a little more responsive to the wheel
+      smoothWheel: true,
+      touchMultiplier: 1.8,
+      syncTouch: false        // native (crisp) scrolling on touch devices
+    });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
