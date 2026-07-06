@@ -1,0 +1,145 @@
+/* ==========================================================================
+   TALENT EXPERT — Shared behaviour
+   ========================================================================== */
+(function () {
+  'use strict';
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ---- Sticky nav shadow ---- */
+  const nav = $('#nav');
+  if (nav) addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', scrollY > 30);
+  }, { passive: true });
+
+  /* ---- Mobile menu ---- */
+  const mnav = $('#mnav');
+  window.toggleMenu = (open) => { if (mnav) mnav.classList.toggle('open', open); };
+  $$('#mnav a').forEach(a => a.addEventListener('click', () => window.toggleMenu(false)));
+
+  /* ---- Reveal on scroll (replays) ---- */
+  const revO = new IntersectionObserver(es => {
+    es.forEach(e => e.target.classList.toggle('in', e.isIntersecting));
+  }, { threshold: 0.14 });
+  $$('.reveal').forEach(el => revO.observe(el));
+
+  /* ---- Animated counters ---- */
+  function animCount(el) {
+    const target = +el.dataset.count, suf = el.dataset.suffix || '', comma = el.dataset.comma;
+    const dur = 1500, t0 = performance.now();
+    (function tick(now) {
+      let p = Math.min((now - t0) / dur, 1);
+      p = 1 - Math.pow(1 - p, 3);
+      const v = Math.round(target * p);
+      el.textContent = (comma ? v.toLocaleString('en-IN') : v) + suf;
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+  $$('[data-statgroup]').forEach(group => {
+    new IntersectionObserver((es, o) => {
+      es.forEach(e => {
+        if (e.isIntersecting) {
+          $$('.stat-num', e.target).forEach(animCount);
+        } else {
+          $$('.stat-num', e.target).forEach(n => n.textContent = '0');
+        }
+      });
+    }, { threshold: 0.4 }).observe(group);
+  });
+
+  /* ---- Values roadmap: tap-to-expand on touch ---- */
+  const road = $('#road');
+  if (road && matchMedia('(hover:none)').matches) {
+    const cards = $$('.road-card', road);
+    cards.forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        const item = card.closest('.road-item');
+        const wasOpen = card.classList.contains('open');
+        cards.forEach(c => { c.classList.remove('open'); c.closest('.road-item').classList.remove('open'); });
+        if (!wasOpen) { card.classList.add('open'); item.classList.add('open'); }
+      });
+    });
+  }
+
+  /* ---- Services radial reveal ---- */
+  const svc = $('#svcFloat');
+  if (svc) {
+    const nodes = $$('.svc-node', svc);
+    nodes.forEach(n => { n.style.opacity = 0; n.style.transition = 'opacity .7s var(--ease)'; });
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) nodes.forEach((n, i) => { n.style.transitionDelay = (i * 0.1) + 's'; n.style.opacity = 1; });
+    }), { threshold: 0.25 }).observe(svc);
+  }
+
+  /* ---- Industries marquee: duplicate for seamless loop ---- */
+  const marq = $('#marqRow');
+  if (marq) marq.innerHTML += marq.innerHTML;
+
+  /* ---- Hiring-model switch ---- */
+  $$('[data-hm-switch]').forEach(sw => {
+    const faces = $$('.hm-face', sw.closest('section') || document);
+    $$('button', sw).forEach((btn, i) => btn.addEventListener('click', () => {
+      $$('button', sw).forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      faces.forEach(f => f.classList.toggle('on', +f.dataset.i === i));
+    }));
+  });
+
+  /* ---- FAQ accordion ---- */
+  $$('.faq-item').forEach(item => {
+    const q = $('.faq-q', item), a = $('.faq-a', item);
+    q.addEventListener('click', () => {
+      const open = item.classList.toggle('open');
+      a.style.maxHeight = open ? a.scrollHeight + 'px' : 0;
+    });
+  });
+
+  /* ---- Select field "filled" state for floating labels ---- */
+  $$('.fld select').forEach(sel => {
+    const set = () => sel.closest('.fld').classList.toggle('filled', !!sel.value);
+    sel.addEventListener('change', set); set();
+  });
+
+  /* ---- Forms → Formspree (progressive enhancement) ---- */
+  $$('form[data-formspree]').forEach(form => {
+    const msg = $('.form-msg', form);
+    const successText = () => {
+      const name = ((form.querySelector('[name="name"]') || {}).value || '').trim();
+      return (form.dataset.success || 'Thank you! We will be in touch shortly.').replace('{name}', name || 'there');
+    };
+    const done = (text, ok) => {
+      if (msg) { msg.textContent = text; msg.classList.add('show'); }
+      if (ok) { form.reset(); $$('.fld', form).forEach(f => f.classList.remove('filled')); }
+    };
+    form.addEventListener('submit', async (e) => {
+      const endpoint = form.getAttribute('action') || '';
+      // No real endpoint configured yet → show inline confirmation (demo).
+      if (!/formspree\.io\/f\/(?!YOUR_)/.test(endpoint)) {
+        e.preventDefault();
+        done(successText(), true);
+        return;
+      }
+      // Real Formspree endpoint → submit via fetch for inline success.
+      e.preventDefault();
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (res.ok) done(successText(), true);
+        else done('Something went wrong. Please call us on +91 95978 51600.', false);
+      } catch (_) {
+        done('Network error. Please call us on +91 95978 51600.', false);
+      }
+    });
+  });
+
+  /* ---- Audience routing: remember portal choice ---- */
+  window.rememberPortal = (type) => {
+    try { document.cookie = 'user_type=' + type + ';path=/;max-age=2592000;SameSite=Lax'; } catch (_) {}
+  };
+  $$('[data-portal-choice]').forEach(el =>
+    el.addEventListener('click', () => window.rememberPortal(el.dataset.portalChoice)));
+
+  /* ---- Footer year ---- */
+  const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
+})();
