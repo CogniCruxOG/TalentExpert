@@ -124,14 +124,19 @@
 <div class="fld"><input type="text" name="name" placeholder=" " required><label>Full name</label></div>
 <div class="fld"><input type="tel" name="mobile" placeholder=" " required><label>Mobile number</label></div>
 <div class="fld"><input type="email" name="email" placeholder=" " required><label>Email address</label></div>
+<div class="fld"><input type="date" name="dob" placeholder=" " required><label>Date of birth</label></div>
+<div class="fld"><select name="gender" required><option value="" disabled selected></option><option>Female</option><option>Male</option><option>Prefer not to say</option></select><label>Gender</label></div>
 <div class="fld"><select name="district" required><option value="" disabled selected></option><option>Chennai</option><option>Coimbatore</option><option>Madurai</option><option>Trichy</option><option>Salem</option><option>Anywhere in Tamil Nadu</option></select><label>District / city</label></div>
+<div class="fld"><input type="text" name="current_taluk" placeholder=" "><label>Current location / Taluk (optional)</label></div>
 <div class="fld"><select name="education" required><option value="" disabled selected></option><option>10th / 12th</option><option>ITI / Diploma</option><option>Polytechnic</option><option>UG — Arts &amp; Science</option><option>UG — Engineering</option><option>Postgraduate</option><option>Other</option></select><label>Educational qualification</label></div>
 <div class="fld"><input type="text" name="stream" placeholder=" "><label>Stream / subject (optional)</label></div>
 <div class="fld"><input type="number" name="year_passing" min="1990" max="2035" placeholder=" " required><label>Year of passing</label></div>
 <div class="fld"><select name="experience" required><option value="" disabled selected></option><option>Fresher</option><option>0–1 years</option><option>1–3 years</option><option>3+ years</option></select><label>Work experience</label></div>
 <div class="fld"><select name="role_pref" required><option value="" disabled selected></option><option>Sales</option><option>Operations</option><option>Manufacturing</option><option>Accounts &amp; Finance</option><option>IT Support</option><option>Admin</option><option>Customer Service</option><option>Other</option></select><label>Preferred job role / field</label></div>
 <div class="fld"><select name="location_pref" required><option value="" disabled selected></option><option>Chennai</option><option>Coimbatore</option><option>Madurai</option><option>Trichy</option><option>Salem</option><option>Anywhere in Tamil Nadu</option></select><label>Preferred work location</label></div>
-<div class="fld full"><input type="text" name="languages" placeholder=" " required><label>Languages known (e.g. Tamil, English)</label></div>
+<div class="fld"><input type="text" name="languages" placeholder=" " required><label>Languages known (e.g. Tamil, English)</label></div>
+<div class="fld"><select name="source"><option value="" disabled selected></option><option>Google / Search</option><option>Social Media</option><option>Friend / Referral</option><option>College / Campus</option><option>Other</option></select><label>How did you hear about us?</label></div>
+<div class="fld full"><label style="position:static;font-size:.76rem;color:var(--ink3);font-weight:600">Upload resume (optional)</label><input type="file" name="resume" accept=".pdf,.doc,.docx" style="padding-top:6px"></div>
 </div>
 <button class="btn btn-orange lg" type="submit" style="width:100%;justify-content:center">Start My Career Journey <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></button>
 <p class="form-note">Free for all job seekers. You'll never be charged any fee. See our <a href="privacy.html">Privacy Policy</a>.</p>
