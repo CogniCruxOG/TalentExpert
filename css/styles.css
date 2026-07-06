@@ -11,11 +11,14 @@
   --paper:#FCFBF9; --paper2:#F6F3EE; --mist:#EEF3F8;
   /* Ink */
   --ink:#243040; --ink2:#5A6472; --ink3:#96A0AD; --hair:rgba(36,48,64,.10);
-  /* Brand */
-  --orange:#E87722; --orange-t:rgba(232,119,34,.12); --orange-t2:rgba(232,119,34,.20);
-  --blue:#1A3C6B; --blue-soft:#1F4E86; --blue-t:rgba(26,60,107,.10);
-  --green:#12A074; --green-t:rgba(18,160,116,.12);
-  --amber:#E8A83A;
+  /* Brand — Talent Expert: warm Orange + elegant Navy only.
+     Secondary tones are on-brand tints (steel-navy, warm amber, soft peach) — no off-brand hues. */
+  --orange:#E4801F; --orange-soft:#F0A868; --orange-t:rgba(228,128,31,.12); --orange-t2:rgba(228,128,31,.18);
+  --blue:#1A3C6B; --blue-soft:#26507F; --blue-t:rgba(26,60,107,.10);
+  --steel:#3C6193; --steel-t:rgba(60,97,147,.12);
+  /* legacy aliases kept so existing markup stays on-palette (green->steel, amber->warm) */
+  --green:#3C6193; --green-t:rgba(60,97,147,.12);
+  --amber:#CF8331;
   /* Portal accents (set per <body data-portal>) */
   --accent:var(--orange); --accent-t:var(--orange-t); --accent-t2:var(--orange-t2);
   /* Glass */
@@ -66,8 +69,8 @@ h2.title em{font-style:italic;font-weight:400;color:var(--accent)}
 .chip{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:28px;flex:none}
 .chip.o{background:var(--orange-t);color:var(--orange)}
 .chip.b{background:var(--blue-t);color:var(--blue)}
-.chip.g{background:var(--green-t);color:var(--green)}
-.chip.a{background:rgba(232,168,58,.14);color:var(--amber)}
+.chip.g{background:var(--steel-t);color:var(--steel)}
+.chip.a{background:rgba(207,131,49,.14);color:var(--amber)}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:.96rem;padding:14px 26px;border-radius:100px;cursor:pointer;transition:transform .4s var(--ease),box-shadow .4s var(--ease),background .3s;border:1px solid transparent;font-family:inherit}

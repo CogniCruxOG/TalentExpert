@@ -253,26 +253,41 @@
     scale: 0, rotate: -60, duration: 0.7, ease: 'back.out(1.7)', delay: 0.2
   });
 
-  /* ============ VOICES — auto + manual rotator ============ */
+  /* ============ VOICES — auto + manual + swipe rotator ============ */
   const stage = $('#voiceStage');
   if (stage) {
     const voices = $$('.x-voice', stage);
     const dotWrap = $('#voiceDots');
+    const DUR = 5200;
     let cur = 0, timer = null;
+    dotWrap.style.setProperty('--vodur', DUR + 'ms');
     voices.forEach((_, i) => {
       const b = document.createElement('button');
-      b.className = i === 0 ? 'on' : ''; b.setAttribute('role', 'tab'); b.setAttribute('aria-label', 'Story ' + (i + 1));
-      b.addEventListener('click', () => { show(i); restart(); });
+      b.setAttribute('role', 'tab'); b.setAttribute('aria-label', 'Story ' + (i + 1));
+      b.addEventListener('click', () => go(i, true));
       dotWrap.appendChild(b);
     });
     const dots = $$('button', dotWrap);
-    const show = (i) => {
-      voices[cur].classList.remove('on'); dots[cur].classList.remove('on');
-      cur = i; voices[cur].classList.add('on'); dots[cur].classList.add('on');
+    const paint = () => {
+      voices.forEach((v, i) => v.classList.toggle('on', i === cur));
+      dots.forEach((d, i) => { d.classList.remove('on'); });   // clear first so ::after restarts
+      void dots[cur].offsetWidth;
+      dots[cur].classList.add('on');
     };
-    const next = () => show((cur + 1) % voices.length);
-    const restart = () => { clearInterval(timer); timer = setInterval(next, 5200); };
-    ScrollTrigger.create({ trigger: stage, start: 'top 80%', end: 'bottom 20%', onToggle: (s) => s.isActive ? restart() : clearInterval(timer) });
+    const go = (i, manual) => { cur = (i + voices.length) % voices.length; paint(); if (manual) arm(); };
+    const arm = () => { clearInterval(timer); timer = setInterval(() => go(cur + 1), DUR); };
+    paint();
+    ScrollTrigger.create({ trigger: stage, start: 'top 82%', end: 'bottom 18%', onToggle: (s) => { if (s.isActive) arm(); else clearInterval(timer); } });
+    // pause on hover
+    stage.addEventListener('mouseenter', () => { clearInterval(timer); dotWrap.classList.add('paused'); });
+    stage.addEventListener('mouseleave', () => { dotWrap.classList.remove('paused'); go(cur, true); });
+    // swipe on touch
+    let sx = 0, sy = 0;
+    stage.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1), true);
+    });
   }
 
   /* ---- keep ScrollTrigger in sync after fonts/images/load ---- */
