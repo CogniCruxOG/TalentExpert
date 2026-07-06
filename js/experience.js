@@ -34,7 +34,7 @@
 
   /* ---------- Reduced motion: show a clean static page, no animation ---------- */
   if (reduce) {
-    $$('.x-jstep').forEach(s => s.classList.add('on'));
+    $$('.x-who .wp, .x-who .ddd-stage').forEach(e => e.classList.add('on'));
     const railR = $('#rail'); if (railR) railR.classList.add('static');
     const growR = $('.x-title .grow'); if (growR) growR.classList.add('drawn');
     return;
@@ -79,38 +79,46 @@
   const mm = gsap.matchMedia();
 
   mm.add('(min-width:821px) and (prefers-reduced-motion: no-preference)', () => {
-    /* ---- Pinned Journey: Discover / Develop / Sustain ---- */
-    const jSteps = $$('.x-jstep');
-    const jFill = $('#jFill');
+    /* ---- Pinned Who We Are: progressive story + Discover/Develop/Sustain ---- */
+    const wps = $$('.x-who .wp');
+    const stages = $$('.x-who .ddd-stage');
+    const dddFill = $('#dddFill');
     ScrollTrigger.create({
-      trigger: '#journey', start: 'top top', end: '+=1700',
-      pin: '.x-journey-pin', scrub: true,
+      trigger: '#journey', start: 'top top', end: '+=1900',
+      pin: '.x-who-pin', scrub: true,
       onUpdate: (self) => {
-        gsap.set(jFill, { scaleX: self.progress });
-        const active = Math.min(jSteps.length - 1, Math.floor(self.progress * jSteps.length + 0.001));
-        jSteps.forEach((s, i) => s.classList.toggle('on', i <= active));
+        const p = self.progress;
+        wps.forEach((w, i) => w.classList.toggle('on', p >= i / wps.length - 0.03));
+        const active = Math.min(stages.length - 1, Math.floor(p * stages.length + 0.001));
+        stages.forEach((s, i) => s.classList.toggle('on', i <= active));
+        if (dddFill) dddFill.style.height = (p * 100) + '%';
       }
     });
 
     /* ---- Horizontal rail: What We Do ---- */
     const track = $('#railTrack');
     const dots = $$('#railDots i');
+    const cards = $$('.x-rail-card', track);
     const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
     ScrollTrigger.create({
       trigger: '#rail', start: 'top top', end: () => '+=' + (distance() + window.innerHeight * 0.4),
       pin: true, scrub: 1, invalidateOnRefresh: true,
       onUpdate: (self) => {
         gsap.set(track, { x: -distance() * self.progress });
-        const idx = Math.round(self.progress * (dots.length - 1));
-        dots.forEach((d, i) => d.classList.toggle('on', i === idx));
+        // emphasise the card nearest the viewport centre
+        const cx = window.innerWidth / 2;
+        let best = 0, bestD = Infinity;
+        cards.forEach((c, i) => { const r = c.getBoundingClientRect(); const d = Math.abs(r.left + r.width / 2 - cx); if (d < bestD) { bestD = d; best = i; } });
+        cards.forEach((c, i) => c.classList.toggle('focus', i === best));
+        dots.forEach((d, i) => d.classList.toggle('on', i === best));
       }
     });
 
-    return () => { gsap.set(track, { x: 0 }); jSteps.forEach(s => s.classList.add('on')); };
+    return () => { gsap.set(track, { x: 0 }); wps.forEach(w => w.classList.add('on')); stages.forEach(s => s.classList.add('on')); };
   });
 
-  // Mobile: make journey steps all visible (no pin)
-  mm.add('(max-width:820px)', () => { $$('.x-jstep').forEach(s => s.classList.add('on')); });
+  // Mobile: reveal all Who-We-Are content (no pin)
+  mm.add('(max-width:820px)', () => { $$('.x-who .wp, .x-who .ddd-stage').forEach(e => e.classList.add('on')); });
 
   /* ============ Universal reveals (all viewports) ============ */
   // Generic data-reveal
@@ -197,33 +205,38 @@
     }
   }
 
-  /* ============ VS comparison — pinned, progressive pair-by-pair reveal ============ */
-  gsap.from('.x-vs .mid span', {
-    scrollTrigger: { trigger: '#xVs', start: 'top 72%' },
-    scale: 0, rotate: -60, duration: 0.7, ease: 'back.out(1.7)', delay: 0.15
-  });
-  const oldLis = $$('.x-vs .old li'), newLis = $$('.x-vs .new li');
-  // desktop: pin and reveal each row (left + right) as the user scrolls
-  mm.add('(min-width:821px)', () => {
-    gsap.set(oldLis, { opacity: 0, x: -26 });
-    gsap.set(newLis, { opacity: 0, x: 26 });
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: '#why', start: 'top top', end: '+=' + (oldLis.length * 240 + 200), pin: true, scrub: 0.6, anticipatePin: 1 }
+  /* ============ WHY CHOOSE US — scroll-driven proof-point spotlight ============ */
+  const whyStage = $('#whyStage');
+  if (whyStage) {
+    const proofs = $$('.proof', whyStage);
+    const wDots = $('#whyDots');
+    let wcur = 0;
+    proofs.forEach((_, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', 'Reason ' + (i + 1)); wDots.appendChild(b); });
+    const wdotEls = $$('button', wDots);
+    const wshow = (i) => {
+      if (i === wcur) return;
+      wcur = i;
+      proofs.forEach((p, k) => p.classList.toggle('on', k === i));
+      wdotEls.forEach((d, k) => d.classList.toggle('on', k === i));
+    };
+    proofs.forEach((p, k) => p.classList.toggle('on', k === 0)); wdotEls[0].classList.add('on');
+    wdotEls.forEach((d, i) => d.addEventListener('click', () => wshow(i)));
+    // desktop: pin section and advance proofs with scroll
+    mm.add('(min-width:821px)', () => {
+      const st = ScrollTrigger.create({
+        trigger: '#why', start: 'top top', end: '+=' + (proofs.length * 300), pin: '.x-why-pin', scrub: 0.4,
+        onUpdate: (self) => wshow(Math.min(proofs.length - 1, Math.floor(self.progress * proofs.length * 0.999)))
+      });
+      return () => st.kill();
     });
-    oldLis.forEach((ol, i) => {
-      tl.to(ol, { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' }, i * 0.9)
-        .to(newLis[i], { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' }, i * 0.9 + 0.3);
+    // mobile: stack all (handled by CSS) — no pin
+    let wsx = 0, wsy = 0;
+    whyStage.addEventListener('touchstart', (e) => { wsx = e.touches[0].clientX; wsy = e.touches[0].clientY; }, { passive: true });
+    whyStage.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - wsx, dy = e.changedTouches[0].clientY - wsy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) wshow((wcur + (dx < 0 ? 1 : -1) + proofs.length) % proofs.length);
     });
-    tl.to({}, { duration: 0.6 });   // brief hold on the completed comparison
-    return () => gsap.set([...oldLis, ...newLis], { clearProps: 'all' });
-  });
-  // mobile: simple stagger, no pin
-  mm.add('(max-width:820px)', () => {
-    gsap.from([...oldLis, ...newLis], {
-      scrollTrigger: { trigger: '#xVs', start: 'top 82%' },
-      opacity: 0, y: 16, duration: 0.5, ease: 'power2.out', stagger: 0.06
-    });
-  });
+  }
 
   /* ============ VOICES — scroll-driven stories (desktop) / swipe (mobile) ============ */
   const stage = $('#voiceStage');
