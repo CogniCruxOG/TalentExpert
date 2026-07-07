@@ -19,6 +19,10 @@
 </head>
 <body data-page="about">
 
+<!-- One calm environmental illustration behind the entire About page (soft watermark).
+     position:fixed, ~7% — never animates. Content sits above it (wraps are z-index:2). -->
+<div class="about-bg" aria-hidden="true"></div>
+
 <header class="nav" id="nav">
   <div class="nav-inner">
     <a class="nav-logo" href="index.html" aria-label="Talent Expert home"><img src="assets/logos/talent-expert-logo.png" alt="Talent Expert — Right People For Right Job"></a>
@@ -83,24 +87,27 @@
     <div class="crumb reveal"><a href="index.html">Home</a><span class="sep">/</span><span>About Us</span></div>
     <div class="sec-head reveal" style="max-width:820px">
       <span class="eyebrow">About Talent Expert</span>
-      <h1 class="display">Right People. Right Roles.<br><em>Transforming potential into progress.</em></h1>
+      <h1 class="display">Right People. Right Roles.<br><em>Transforming potential into progress</em></h1>
       <p class="lead" style="margin-top:20px">We are India's most people-first recruitment company — turning overlooked rural potential into workplace excellence, one life at a time.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ OUR STORY ============ -->
+<!-- Calm + fast. The journey illustration lives behind the WHOLE page (.about-bg
+     watermark). Here we only reveal content: heading + paragraphs fade up gently
+     (main.js .reveal). No illustration animation, no pin. -->
 <section class="section" id="story">
   <div class="wrap">
     <div class="split">
       <div class="reveal">
         <span class="eyebrow">Our Story</span>
-        <h2 class="title">Born from a gap <b>too big to ignore.</b></h2>
+        <h2 class="title">Born from a gap <b>too big to ignore</b></h2>
       </div>
-      <div class="body reveal d1">
-        <p>Talent Expert was born from a simple but powerful observation: India's small and medium businesses are desperate for reliable talent, while millions of motivated rural youth in Tamil Nadu go unnoticed — untrained and underemployed.</p>
-        <p>We bridge this gap. Through grassroots community networks, structured training, and dedicated employer partnerships, we transform raw potential into workplace excellence — creating outcomes that matter for individuals, businesses, and communities.</p>
-        <p>Our founders bring <strong>25+ years</strong> of combined experience in HR, training, talent development, and business consulting — backed by deep rural community connections built through years of social work. We don't just understand recruitment; we understand people.</p>
+      <div class="body">
+        <p class="reveal d1">Talent Expert was born from a simple but powerful observation: India's small and medium businesses are desperate for reliable talent, while millions of motivated rural youth in Tamil Nadu go unnoticed — untrained and underemployed.</p>
+        <p class="reveal d2">We bridge this gap. Through grassroots community networks, structured training, and dedicated employer partnerships, we transform raw potential into workplace excellence — creating outcomes that matter for individuals, businesses, and communities.</p>
+        <p class="reveal d3">Our founders bring <strong>25+ years</strong> of combined experience in HR, training, talent development, and business consulting — backed by deep rural community connections built through years of social work. We don't just understand recruitment; we understand people.</p>
       </div>
     </div>
   </div>
@@ -111,16 +118,16 @@
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow">Vision &amp; Mission</span>
-      <h2 class="title">Where we're <b>going</b> — and <b>why.</b></h2>
+      <h2 class="title">Where we're <b>going</b><br>and <b>why</b></h2>
     </div>
     <div class="grid-2">
       <div class="card feat-card reveal d1" style="padding:40px">
-        <span class="chip b" style="width:60px;height:60px"><svg class="ic"><use href="assets/icons/sprite.svg#i-eye"/></svg></span>
+        <span class="chip b vis-eye" style="width:60px;height:60px"><svg class="eye-svg" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path class="eye-outline" d="M5 24 C 13 13, 35 13, 43 24 C 35 35, 13 35, 5 24 Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><circle class="eye-iris" cx="24" cy="24" r="6.6" stroke="currentColor" stroke-width="2.6"/><circle class="eye-pupil" cx="24" cy="24" r="2.4" fill="currentColor"/></svg></span>
         <h3 style="margin-top:20px">Our Vision</h3>
         <p style="font-family:'Fraunces',serif;font-size:1.3rem;font-style:italic;color:var(--ink);line-height:1.4">From every village. Into every industry. Building India's workforce, one overlooked person at a time.</p>
       </div>
       <div class="card feat-card reveal d2" style="padding:40px">
-        <span class="chip o" style="width:60px;height:60px"><svg class="ic"><use href="assets/icons/sprite.svg#i-rocket"/></svg></span>
+        <span class="chip o mis-rocket" style="width:60px;height:60px"><svg class="rkt-svg" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g class="rkt-body"><path d="M24 6 C 30 12, 31 21, 28 29 L 20 29 C 17 21, 18 12, 24 6 Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="24" cy="17" r="2.6" stroke="currentColor" stroke-width="2.2"/><path d="M20 27 C 16 30, 15 34, 16 37 M28 27 C 32 30, 33 34, 32 37" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></g></svg></span>
         <h3 style="margin-top:20px">Our Mission</h3>
         <p style="font-family:'Fraunces',serif;font-size:1.3rem;font-style:italic;color:var(--ink);line-height:1.4">Behind every hire is a family waiting for change. We go to the grassroots, invest in real people, and build careers that transform not just businesses — but lives, communities, and futures.</p>
       </div>
@@ -136,7 +143,7 @@
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow">Core Values</span>
-      <h2 class="title">What we <b>stand for.</b></h2>
+      <h2 class="title">What we <b>stand for</b></h2>
       <p class="lead">Seven principles that guide every placement — hover any value to learn more.</p>
     </div>
     <div class="road" id="road">
@@ -170,7 +177,7 @@
   <div class="wrap">
     <div class="cta-inner reveal">
       <span class="cta-glow" style="top:-80px;left:-40px"></span>
-      <h2>Let's build something that lasts.</h2>
+      <h2>Let's build something that lasts</h2>
       <p>Whether you're hiring or job-seeking, our story is really about yours.</p>
       <div class="cta-actions">
         <a class="btn btn-white" href="employers.html" data-portal-choice="business">Hire With Us</a>
@@ -271,5 +278,9 @@
 </footer>
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
 <script src="js/main.js"></script>
+<!-- Native browser scroll — zero added latency, most responsive on all hardware.
+     (Lenis smooth-scroll was removed: its interpolation felt sticky/laggy on lower-end
+     machines. Reveals + eye/rocket are pure CSS via main.js's .reveal.in observer;
+     nothing runs per scroll frame.) -->
 </body>
 </html>

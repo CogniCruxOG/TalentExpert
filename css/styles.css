@@ -586,3 +586,46 @@ footer.site:hover .foot-glow{opacity:1}
   .reveal{opacity:1;transform:none}
   .mark svg{stroke-dashoffset:0}
 }
+
+/* ============================================================
+   ABOUT — calm, fast, Apple/Stripe/Linear feel.
+   ONE illustration lives behind the WHOLE page as a soft watermark
+   (.about-bg, position:fixed) — it never animates. Content reveals
+   via main.js .reveal (opacity + gentle rise). Two tiny SVG
+   interactions: the Vision eye opens, the Mission rocket lifts —
+   one-shot on scroll-into-view, transform/opacity/SVG-stroke only.
+   No pin, no masks, no colouring, no blur, no per-frame repaint.
+   ============================================================ */
+.about-bg{ position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:url("../assets/illustrations/story-journey-soft.png") center/cover no-repeat;
+  opacity:.07;
+  transform:translateZ(0); backface-visibility:hidden; }  /* own GPU layer — never repaints on scroll */
+/* page content already sits above it (.section>.wrap / .hero>.wrap are z-index:2) */
+/* PERF: silence the site-wide cursor-glow on About — it repaints a full-viewport
+   radial-gradient on every pointer move, which stutters scrolling on lower-end GPUs. */
+body[data-page="about"] .cursor-glow{ display:none !important; }
+/* PERF: the two Vision/Mission cards use .card's backdrop-filter:blur(12px), which
+   recomputes per scroll frame over the fixed watermark. Invisible over a 7% wash — drop it. */
+body[data-page="about"] #vision .feat-card{
+  -webkit-backdrop-filter:none; backdrop-filter:none; background:#fdfcfa; }
+
+/* Vision — an eye that opens */
+.eye-svg,.rkt-svg{ width:32px; height:32px; display:block; }
+.eye-outline{ stroke-dasharray:132; stroke-dashoffset:132;
+  transition:stroke-dashoffset .9s var(--ease); }
+.eye-iris{ transform:scale(.001); transform-box:fill-box; transform-origin:center;
+  transition:transform .55s var(--ease) .4s; }
+.eye-pupil{ opacity:0; transition:opacity .4s ease .66s; }
+.reveal.in .eye-outline{ stroke-dashoffset:0; }
+.reveal.in .eye-iris{ transform:scale(1); }
+.reveal.in .eye-pupil{ opacity:1; }
+
+/* Mission — a rocket that lifts */
+.rkt-body{ transform:translateY(9px); opacity:0;
+  transition:transform .7s var(--ease), opacity .55s ease; }
+.reveal.in .rkt-body{ transform:translateY(-3px); opacity:1; }
+
+@media(prefers-reduced-motion:reduce){
+  .eye-outline{ stroke-dashoffset:0 } .eye-iris{ transform:scale(1) } .eye-pupil{ opacity:1 }
+  .rkt-body{ transform:none; opacity:1 }
+}
