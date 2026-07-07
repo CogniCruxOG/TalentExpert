@@ -1,9 +1,10 @@
 /* ==========================================================================
-   TALENT EXPERT — Home cinematic layer (NATIVE scroll)
-   Requires: gsap, ScrollTrigger, SplitType.  (Lenis intentionally removed —
-   the page uses the browser's native scroll for instant, fluid response.)
-   Every section animates on enter with GPU transforms only (opacity/translate/
-   scale). No pinning, no scroll hijacking, no layout-changing properties.
+   TALENT EXPERT — Home cinematic layer
+   Requires: gsap, ScrollTrigger, SplitType, Lenis.
+   Lenis provides light, responsive smooth-scroll (driven by GSAP's ticker and
+   synced to ScrollTrigger). Two sections (Who We Are, Why Choose Us) pin and
+   scrub their story on desktop; everything else animates on enter with GPU
+   transforms only (opacity/translate/scale). Reduced-motion → static fallback.
    ========================================================================== */
 (function () {
   'use strict';
@@ -47,6 +48,17 @@
   gsap.config({ nullTargetWarn: false });
   ScrollTrigger.config({ ignoreMobileResize: true });
 
+  /* ---- Smooth scroll (Lenis) — light + responsive: buttery momentum without lag ----
+     Driven by GSAP's ticker and synced to ScrollTrigger so pinned/scrub scenes stay
+     perfectly in step. Disabled under reduced-motion (handled by the early return). */
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.6 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    document.documentElement.classList.add('lenis-on');
+  }
+
   /* ---- Scroll progress bar ---- */
   const prog = $('#xProgress');
   if (prog) ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (self) => gsap.set(prog, { scaleX: self.progress }) });
@@ -56,7 +68,7 @@
   if (pageTemple) gsap.fromTo(pageTemple,
     { yPercent: -4, scale: 1.02 },
     { yPercent: 8, scale: 1.09, ease: 'none',
-      scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
+      scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 1 } });
 
   /* ================= HERO — load reveal + temple depth ================= */
   loadTempleImg();
@@ -132,8 +144,8 @@
   reveal($$('.x-do-left .eyebrow, .x-do-left .title, .x-do-left .lead'), { y: 24, delay: 0 });
   reveal($$('.x-finale-copy > *'), { y: 26 });
 
-  /* ================= WHO WE ARE — scroll-driven story (no pin, fully reversible) =================
-     Stage 1: everything ghosted. Then as scroll progresses, paragraph N resolves and
+  /* ================= WHO WE ARE — pinned scroll-driven story (desktop), reversible =================
+     Stage 1: everything ghosted. Then as scroll scrubs, paragraph N resolves and
      step N activates (icon glow + connector grows + title bold), while earlier steps
      become inactive-but-readable. Scrolling back up mirrors it exactly. */
   const wps = $$('.x-who .wp');
@@ -161,7 +173,7 @@
       applyWho(-1);
       const st = ScrollTrigger.create({
         trigger: '.x-who', start: 'top top', end: '+=' + Math.round((N + 1) * 500),
-        pin: '.x-who-pin', anticipatePin: 1, scrub: 0.6,
+        pin: '.x-who-pin', anticipatePin: 1, scrub: 0.9,
         onUpdate: (self) => drive(self.progress)
       });
       return () => { st.kill(); applyWho(-1); };
@@ -228,7 +240,7 @@
       arm();
       const st = ScrollTrigger.create({
         trigger: '.x-why', start: 'top top', end: '+=' + Math.round(n * 520),
-        pin: '.x-why-pin', anticipatePin: 1, scrub: 0.6,
+        pin: '.x-why-pin', anticipatePin: 1, scrub: 0.9,
         onUpdate: (self) => drive(self.progress)
       });
       return () => { st.kill(); disarm(); };
