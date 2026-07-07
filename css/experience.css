@@ -113,31 +113,25 @@ html.lenis,html.lenis body{height:auto}
 .x-who-head .title .l2{display:block;font-weight:600;margin-top:.32em}
 .x-who-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:clamp(48px,5vw,80px);align-items:start;max-width:1160px;margin:0 auto;width:100%}
 .x-who-story{display:flex;flex-direction:column;gap:24px;padding-top:6px}
-/* paragraphs: ghosted placeholders (~18%) that fully resolve as their step activates */
-.x-who-story .wp{font-size:1.12rem;line-height:1.72;color:var(--ink2);max-width:56ch;opacity:.18;transform:translate3d(0,16px,0);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+/* paragraphs: ghosted placeholders (~18%); GSAP scrubs opacity/y continuously.
+   .wp.on is only the reduced-motion / no-GSAP fallback (full state). */
+.x-who-story .wp{font-size:1.12rem;line-height:1.72;color:var(--ink2);max-width:56ch;opacity:.18;transform:translate3d(0,16px,0)}
 .x-who-story .wp.on{opacity:1;transform:none}
 .x-who-ddd{position:relative;display:flex;flex-direction:column;gap:32px}
-/* three states: .pre (ghosted, unreached) → .on (active) → .done (passed, readable) */
-.ddd-stage{position:relative;display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:start;opacity:1;transition:opacity .5s var(--ease)}
-.ddd-stage.pre{opacity:.18}
-.ddd-stage.done{opacity:.7}
-.ddd-stage.on{opacity:1}
-/* connector: faint static track + an orange line that grows downward when reached */
+/* Timeline is scrubbed continuously by GSAP: stage opacity, icon scale, the icon
+   glow (--ig) and the connector fill (--cl) all interpolate with scroll — no
+   discrete class jumps, so the line grows as one continuous stroke. */
+.ddd-stage{position:relative;display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:start}
 .ddd-stage::before{content:"";position:absolute;left:27px;top:58px;bottom:-32px;width:2px;background:var(--hair);z-index:0}
-.ddd-stage::after{content:"";position:absolute;left:27px;top:58px;bottom:-32px;width:2px;background:linear-gradient(180deg,var(--orange),var(--orange-soft));transform:scaleY(0);transform-origin:top;transition:transform .6s var(--ease);z-index:0}
+.ddd-stage::after{content:"";position:absolute;left:27px;top:58px;bottom:-32px;width:2px;background:linear-gradient(180deg,var(--orange),var(--orange-soft));transform:scaleY(var(--cl,1));transform-origin:top;z-index:0}
 .ddd-stage:last-child::before,.ddd-stage:last-child::after{display:none}
-.ddd-stage.on::after,.ddd-stage.done::after{transform:scaleY(1)}
-.ddd-icon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:var(--orange-wash);color:var(--orange);position:relative;z-index:1;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.ddd-icon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:var(--orange-wash);color:var(--orange);position:relative;z-index:1}
 .ddd-icon .ic{width:26px;height:26px}
-/* soft orange glow behind the active step's icon */
-.ddd-icon::after{content:"";position:absolute;inset:-32%;border-radius:50%;background:radial-gradient(circle,rgba(242,111,33,.4),transparent 70%);opacity:0;transition:opacity .5s var(--ease);z-index:-1}
-.ddd-stage.on .ddd-icon{transform:scale(1.08);box-shadow:0 12px 26px -10px rgba(242,111,33,.5)}
-.ddd-stage.on .ddd-icon::after{opacity:1}
-.ddd-txt{padding-top:4px;transition:transform .5s var(--ease)}
-.ddd-stage.pre .ddd-txt{transform:translateY(8px)}
+/* soft orange glow behind the icon — opacity scrubbed via --ig */
+.ddd-icon::after{content:"";position:absolute;inset:-32%;border-radius:50%;background:radial-gradient(circle,rgba(242,111,33,.42),transparent 70%);opacity:var(--ig,0);z-index:-1}
+.ddd-txt{padding-top:4px}
 .ddd-stage .k{font-family:'Fraunces';font-style:italic;color:var(--orange);font-size:.82rem;display:block;margin-bottom:2px}
-.ddd-stage h3{font-size:1.32rem;font-weight:500;margin-bottom:6px;transition:color .4s var(--ease)}
-.ddd-stage.on h3{font-weight:600}
+.ddd-stage h3{font-size:1.32rem;font-weight:500;margin-bottom:6px}
 .ddd-stage p{font-size:.96rem;color:var(--ink2);line-height:1.55}
 @media(max-width:900px){
   .x-who-grid{grid-template-columns:1fr;gap:40px}
@@ -273,14 +267,20 @@ html.lenis,html.lenis body{height:auto}
    FOUNDER + CONCLUSION
    ===================================================================== */
 .x-founder{position:relative;padding:140px 0;overflow:hidden;background:radial-gradient(900px 520px at 18% 24%,var(--orange-wash),transparent 60%)}
+/* pinned storytelling on desktop — content centred in the viewport */
+@media(min-width:821px){ .x-founder{min-height:100vh;display:flex;align-items:center;padding:80px 0} }
 .x-founder-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
 .x-founder-bg .qmark-bg{position:absolute;top:-70px;left:1%;font-family:'Fraunces';font-size:28rem;line-height:1;color:var(--orange);opacity:.06}
-.x-founder-bg svg{position:absolute;right:-30px;bottom:60px;width:520px;height:180px;opacity:.4}
-.x-founder-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.55fr .85fr;gap:60px;align-items:center}
+.x-founder-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.55fr .85fr;gap:60px;align-items:center;width:100%}
 .x-founder-quote .qmark{font-family:'Fraunces';font-size:5rem;color:var(--orange);line-height:.2;display:block;margin-bottom:18px}
 .x-founder-quote blockquote{font-family:'Fraunces';font-weight:300;font-size:clamp(1.5rem,2.9vw,2.35rem);line-height:1.42;color:var(--ink);letter-spacing:-.01em;text-wrap:balance}
-.x-founder-quote blockquote em{font-style:italic;color:var(--orange);font-weight:400}
-.x-founder-sign{border-left:2px solid var(--orange);padding-left:28px}
+/* italic phrase gets a gentle scroll-driven emphasis (--eg 0→1): brighter + soft glow, no scale */
+.x-founder-quote blockquote em{font-style:italic;color:var(--orange);font-weight:400;
+  text-shadow:0 0 calc(var(--eg,0) * 20px) rgba(242,111,33,calc(var(--eg,0) * .45));
+  filter:brightness(calc(1 + var(--eg,0) * .1))}
+/* signature divider grows vertically (--dl 0→1) */
+.x-founder-sign{position:relative;padding-left:28px}
+.x-founder-sign::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--orange);transform:scaleY(var(--dl,1));transform-origin:top}
 .x-founder-sign .sig-role{font-family:'Fraunces';font-size:1.5rem;color:var(--ink);display:block;line-height:1}
 .x-founder-sign .sig-org{font-family:'Manrope';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);font-size:.82rem;display:block;margin-top:8px}
 .x-founder-sign .sig-det{display:block;margin-top:16px;color:var(--ink2);font-size:.96rem;line-height:1.55}

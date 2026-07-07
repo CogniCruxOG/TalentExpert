@@ -2,8 +2,8 @@
    TALENT EXPERT — Home cinematic layer
    Requires: gsap, ScrollTrigger, SplitType, Lenis.
    Lenis provides light, responsive smooth-scroll (driven by GSAP's ticker and
-   synced to ScrollTrigger). Two sections (Who We Are, Why Choose Us) pin and
-   scrub their story on desktop; everything else animates on enter with GPU
+   synced to ScrollTrigger). Three sections (Who We Are, Why Choose Us, Founder)
+   pin and scrub their story on desktop; everything else animates on enter with GPU
    transforms only (opacity/translate/scale). Reduced-motion → static fallback.
    ========================================================================== */
 (function () {
@@ -68,7 +68,7 @@
   if (pageTemple) gsap.fromTo(pageTemple,
     { yPercent: -4, scale: 1.02 },
     { yPercent: 8, scale: 1.09, ease: 'none',
-      scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 1 } });
+      scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
 
   /* ================= HERO — load reveal + temple depth ================= */
   loadTempleImg();
@@ -151,41 +151,58 @@
   const wps = $$('.x-who .wp');
   const stages = $$('.x-who .ddd-stage');
   if (stages.length || wps.length) {
-    const N = 3;
-    const LEAD = 0.14;   // initial ghosted state (visible while pinned) before Step 01
-    const HOLD = 0.92;   // by 92% of progress all three steps have activated
-    let last = -999;
-    const applyWho = (active) => {
-      if (active === last) return; last = active;
-      wps.forEach((w, i) => w.classList.toggle('on', i <= active));          // paragraph resolves with its step
-      stages.forEach((s, i) => {
-        s.classList.toggle('pre', i > active);                              // not yet reached → ghosted
-        s.classList.toggle('on', i === active);                             // current → active + emphasis
-        s.classList.toggle('done', i < active);                             // passed → inactive but readable
-      });
+    const N = stages.length || wps.length;
+    // Dim/reveal the CONTENT (text + icon) per stage — never the stage itself — so
+    // the connector (.ddd-stage::after) brightness stays governed purely by --cl and
+    // the drawn line reads as one uniformly-bright continuous stroke.
+    const contentOf = (s) => [$('.ddd-txt', s), $('.ddd-icon', s)].filter(Boolean);
+    const armWho = () => {   // ghosted Stage-1 state
+      gsap.set(wps, { opacity: 0.18, y: 16 });
+      gsap.set(stages, { '--cl': 0 });
+      stages.forEach((s) => { gsap.set(contentOf(s), { opacity: 0.18 }); const ic = $('.ddd-icon', s); if (ic) gsap.set(ic, { scale: 1, '--ig': 0 }); });
     };
-    const drive = (p) => applyWho(p < LEAD ? -1 : Math.min(N - 1, Math.floor(((p - LEAD) / (HOLD - LEAD)) * N)));
+    const showWho = () => {  // static complete state (mobile / fallback)
+      gsap.set(wps, { opacity: 1, y: 0 });
+      gsap.set(stages, { '--cl': 1 });
+      stages.forEach((s) => { gsap.set(contentOf(s), { opacity: 1 }); const ic = $('.ddd-icon', s); if (ic) gsap.set(ic, { scale: 1, '--ig': 0 }); });
+    };
+    // Continuous scrubbed timeline: paragraph N and step N resolve together; the
+    // connector fill (--cl) and icon glow (--ig) INTERPOLATE with scroll (no class
+    // jumps), so the line grows as one continuous stroke. Fully reversible.
+    const buildWhoTL = (stObj) => {
+      const tl = gsap.timeline({ scrollTrigger: stObj });
+      const a = 0.08, b = 0.97, seg = (b - a) / N;
+      stages.forEach((s, i) => {
+        const icon = $('.ddd-icon', s), content = contentOf(s), wp = wps[i], t0 = a + i * seg;
+        if (wp) tl.to(wp, { opacity: 1, y: 0, ease: 'none', duration: seg * 0.72 }, t0);
+        tl.to(content, { opacity: 1, ease: 'none', duration: seg * 0.55 }, t0);
+        if (icon) tl.to(icon, { '--ig': 1, scale: 1.08, ease: 'sine.out', duration: seg * 0.55 }, t0);
+        if (i < N - 1) {
+          tl.to(s, { '--cl': 1, ease: 'none', duration: seg * 0.95 }, t0 + seg * 0.42);   // line grows to next
+          const tn = a + (i + 1) * seg;                                                    // next step begins
+          tl.to(content, { opacity: 0.7, ease: 'none', duration: seg * 0.5 }, tn);         // this one → done (content dims, line stays bright)
+          if (icon) tl.to(icon, { '--ig': 0.22, scale: 1, ease: 'sine.out', duration: seg * 0.5 }, tn);
+        }
+      });
+      return tl;
+    };
 
     const whoMM = gsap.matchMedia();
-    // Desktop: pin the section (like Why Choose Us). Scroll scrubs the story —
-    // paragraph N resolves as step N activates — then it releases. Fully reversible.
+    // Desktop: pin + scrub (tight scrub so it tracks the smooth Lenis scroll exactly).
     whoMM.add('(min-width:821px)', () => {
-      applyWho(-1);
-      const st = ScrollTrigger.create({
-        trigger: '.x-who', start: 'top top', end: '+=' + Math.round((N + 1) * 500),
-        pin: '.x-who-pin', invalidateOnRefresh: true, scrub: 0.9,
-        onUpdate: (self) => drive(self.progress)
+      armWho();
+      const tl = buildWhoTL({
+        trigger: '.x-who', start: 'top top', end: '+=' + Math.round((N + 1) * 460),
+        pin: '.x-who-pin', invalidateOnRefresh: true, scrub: 0.5
       });
-      return () => { st.kill(); applyWho(-1); };
+      return () => { if (tl.scrollTrigger) tl.scrollTrigger.kill(); tl.kill(); armWho(); };
     });
-    // Mobile: no pin — same reversible story as the section passes through.
+    // Mobile: no pin — a light paragraph reveal on enter; timeline shown complete.
     whoMM.add('(max-width:820px)', () => {
-      applyWho(-1);
-      const st = ScrollTrigger.create({
-        trigger: '#journey', start: 'top 80%', end: 'bottom 60%', scrub: true,
-        onUpdate: (self) => drive(self.progress)
-      });
-      return () => { st.kill(); applyWho(-1); };
+      showWho();
+      gsap.from(wps, { opacity: 0.18, y: 16, ease: 'none', stagger: 0.06, duration: 0.5,
+        scrollTrigger: { trigger: '#journey', start: 'top 82%' } });
+      return () => showWho();
     });
   }
 
@@ -240,7 +257,7 @@
       arm();
       const st = ScrollTrigger.create({
         trigger: '.x-why', start: 'top top', end: '+=' + Math.round(n * 520),
-        pin: '.x-why-pin', invalidateOnRefresh: true, scrub: 0.9,
+        pin: '.x-why-pin', invalidateOnRefresh: true, scrub: 0.5,
         onUpdate: (self) => drive(self.progress)
       });
       return () => { st.kill(); disarm(); };
@@ -270,17 +287,52 @@
     });
   });
 
-  /* ================= FOUNDER — word-by-word quote, then signature ================= */
+  /* ================= FOUNDER — pinned, scroll-driven quote reveal (reversible) =================
+     Quote "inks in" word-by-word with scroll; the italic phrase gains a gentle glow;
+     then the signature panel builds sequentially (divider grows, lines appear). */
   const fq = $('.x-founder blockquote');
+  const fsign = $('.x-founder-sign');
   if (fq && typeof SplitType !== 'undefined') {
-    const fs = new SplitType(fq, { types: 'words' });
-    gsap.from(fs.words, {
-      scrollTrigger: { trigger: fq, start: 'top 78%', once: true },
-      opacity: 0.12, duration: 0.6, ease: 'none', stagger: 0.03
+    const fwords = new SplitType(fq, { types: 'words' }).words;
+    const fqmark = $('.x-founder-quote .qmark');
+    const signKids = fsign ? [...fsign.children] : [];
+    const armFounder = () => {
+      gsap.set(fwords, { opacity: 0.16, y: 6 });
+      if (fqmark) gsap.set(fqmark, { opacity: 0.45 });
+      gsap.set(fq, { '--eg': 0 });
+      if (fsign) { gsap.set(fsign, { '--dl': 0 }); gsap.set(signKids, { opacity: 0.16, x: 14 }); }
+    };
+    const showFounder = () => {
+      gsap.set(fwords, { opacity: 1, y: 0 });
+      if (fqmark) gsap.set(fqmark, { opacity: 1 });
+      gsap.set(fq, { '--eg': 1 });
+      if (fsign) { gsap.set(fsign, { '--dl': 1 }); gsap.set(signKids, { opacity: 1, x: 0 }); }
+    };
+
+    const founderMM = gsap.matchMedia();
+    // Desktop: pin + scrub. Ink-in the quote, glow the phrase, build the signature.
+    founderMM.add('(min-width:821px)', () => {
+      armFounder();
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: '.x-founder', start: 'top top', end: '+=1400', pin: true, invalidateOnRefresh: true, scrub: 0.5 }
+      });
+      tl.to(fwords, { opacity: 1, y: 0, ease: 'none', stagger: { amount: 0.5 }, duration: 0.12 }, 0.02)
+        .to(fqmark, { opacity: 1, ease: 'none', duration: 0.12 }, 0.02)
+        .to(fq, { '--eg': 1, ease: 'sine.inOut', duration: 0.14 }, 0.46);
+      if (fsign) {
+        tl.to(fsign, { '--dl': 1, ease: 'none', duration: 0.1 }, 0.66)
+          .to(signKids, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06, duration: 0.12 }, 0.72);
+      }
+      return () => { if (tl.scrollTrigger) tl.scrollTrigger.kill(); tl.kill(); armFounder(); };
+    });
+    // Mobile: no pin — light word reveal on enter; panel visible.
+    founderMM.add('(max-width:820px)', () => {
+      showFounder();
+      gsap.from(fwords, { opacity: 0.16, y: 6, ease: 'none', stagger: 0.012, duration: 0.5,
+        scrollTrigger: { trigger: '.x-founder', start: 'top 82%' } });
+      return () => showFounder();
     });
   }
-  reveal($$('.x-founder-sign'), { x: 24, y: 0, delay: 0, duration: 0.9,
-    scrollTrigger: { trigger: '.x-founder', start: 'top 55%', toggleActions: 'play none none reverse' } });
 
   /* ================= FINAL CTA — cards animate into the climax ================= */
   $$('.x-finale-cards .fin-card').forEach((el, i) => gsap.from(el, {
