@@ -15,10 +15,12 @@ html.lenis,html.lenis body{height:auto}
 /* ---- Full-bleed environmental temple backdrop ----
    Fills the whole viewport edge-to-edge (no empty side margins); content scrolls
    OVER it; it drifts subtly on scroll (parallax set in experience.js). */
-.page-temple{position:fixed;top:-8%;left:0;right:0;bottom:-8%;z-index:-1;pointer-events:none;
-  background:url("../assets/illustrations/temple.png") no-repeat center 20%;
-  background-size:cover;opacity:.06;will-change:transform;backface-visibility:hidden}
-@media(max-width:820px){ .page-temple{opacity:.045;background-position:center 14%} }
+.page-temple{position:fixed;top:-10%;left:0;right:0;bottom:-10%;z-index:-1;pointer-events:none;
+  background:url("../assets/illustrations/temple.png") no-repeat center 24%;
+  /* height-based so the whole temple (spire to base) stays visible and the sides
+     bleed naturally beyond the viewport — no compressed / cropped feel */
+  background-size:auto 122%;opacity:.08;will-change:transform;backface-visibility:hidden}
+@media(max-width:820px){ .page-temple{opacity:.05;background-size:auto 100%;background-position:center 16%} }
 
 /* ---- Magnetic / premium buttons ---- */
 .btn.magnetic{will-change:transform}
@@ -175,7 +177,8 @@ html.lenis,html.lenis body{height:auto}
 .x-why-stage{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1160px;margin:0 auto;width:100%}
 .proof{position:relative;display:flex;flex-direction:column;gap:16px;padding:32px 30px;border-radius:var(--r-lg);
   background:#fff;border:1px solid var(--hair);box-shadow:var(--sh-s);
-  opacity:0;transform:translate3d(0,28px,0);transition:transform .55s var(--ease),box-shadow .45s var(--ease);will-change:opacity,transform}
+  opacity:0;transform:translate3d(0,32px,0) scale(.955);
+  transition:opacity .6s var(--ease),transform .6s var(--ease),box-shadow .45s var(--ease);will-change:opacity,transform}
 .proof.in{opacity:1;transform:none}
 .proof:hover{transform:translate3d(0,-5px,0);box-shadow:var(--sh-m)}
 .proof-ic{width:72px;height:72px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:var(--orange-wash);color:var(--orange);box-shadow:var(--sh-s)}

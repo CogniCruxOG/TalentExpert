@@ -53,12 +53,12 @@
   const prog = $('#xProgress');
   if (prog) ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (self) => gsap.set(prog, { scaleX: self.progress }) });
 
-  /* ---- Environmental temple backdrop drifts subtly through the whole page ---- */
+  /* ---- Environmental temple backdrop: very slow drift + subtle scale (alive) ---- */
   const pageTemple = $('#pageTemple');
-  if (pageTemple) gsap.to(pageTemple, {
-    yPercent: 9, ease: 'none',
-    scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.6 }
-  });
+  if (pageTemple) gsap.fromTo(pageTemple,
+    { yPercent: -4, scale: 1.02 },
+    { yPercent: 8, scale: 1.09, ease: 'none',
+      scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
 
   /* ================= HERO — load reveal + temple depth ================= */
   loadTempleImg();
@@ -85,8 +85,10 @@
     gsap.from('.x-temple-media', { opacity: 0, scale: 1.05, duration: 1.4, ease: 'power2.out', delay: 0.15 });
     gsap.to(temple, { '--amb': 0.4, duration: 1.4, ease: 'sine.out', delay: 0.3 });
     // depth: content drifts up a touch faster than the temple → the temple feels anchored
-    gsap.to('.x-temple-media', { yPercent: 7, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
+    gsap.to('.x-temple-media', { yPercent: 7, scale: 1.05, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
     gsap.to('.x-hero-content', { yPercent: -5, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
+    // CTA floats gently once revealed
+    gsap.to('.x-hero .hero-actions', { y: -6, duration: 2.6, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 1.5 });
   }
 
   /* ================= TRUST — counters (shake-proof, animate ONCE) ================= */
@@ -120,10 +122,10 @@
     });
   }
 
-  /* ================= Generic reveal helper (GPU transforms, replays on scroll) ================= */
+  /* ================= Generic reveal helper (GPU transforms, replays, blur-to-sharp) ================= */
   const reveal = (els, opts) => els.forEach((el, i) => gsap.from(el, Object.assign({
-    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' },
-    y: 34, opacity: 0, duration: 0.8, ease: 'power2.out', delay: (i % 4) * 0.05
+    scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' },
+    y: 38, opacity: 0, filter: 'blur(7px)', duration: 0.9, ease: 'power2.out', delay: (i % 4) * 0.05
   }, opts)));
 
   // section headings + supporting blocks

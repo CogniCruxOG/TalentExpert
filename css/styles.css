@@ -57,8 +57,8 @@ li{text-wrap:pretty}
 /* Global cursor spotlight (injected by main.js): bright warm centre + soft dark vignette */
 .cursor-glow{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .5s ease;will-change:opacity;
   background:
-    radial-gradient(480px circle at var(--cx,50%) var(--cy,50%),rgba(242,111,33,.20),rgba(249,165,106,.11) 20%,transparent 45%),
-    radial-gradient(1000px circle at var(--cx,50%) var(--cy,50%),transparent 34%,rgba(26,26,26,.10) 100%)}
+    radial-gradient(520px circle at var(--cx,50%) var(--cy,50%),rgba(242,111,33,.16),rgba(249,165,106,.09) 22%,transparent 46%),
+    radial-gradient(1100px circle at var(--cx,50%) var(--cy,50%),transparent 48%,rgba(26,26,26,.045) 100%)}
 .cursor-glow.on{opacity:1}
 @media(hover:none){.cursor-glow{display:none}}
 
