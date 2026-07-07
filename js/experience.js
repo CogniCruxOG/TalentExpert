@@ -181,31 +181,46 @@
   const proofs = whyStage ? $$('.proof', whyStage) : [];
   if (whyStage && proofs.length) {
     const n = proofs.length;
-    const HOLD = 0.85;            // reserve the final tail for the "complete grid" state
-    let cur = -2;
-    const setActive = (idx) => { if (idx === cur) return; cur = idx; proofs.forEach((p, i) => p.classList.toggle('active', i === idx)); };
-    const complete = () => { if (cur === -1) return; cur = -1; whyStage.classList.remove('guided'); proofs.forEach((p) => p.classList.remove('active')); };
-    const drive = (p) => { if (p >= HOLD) { complete(); return; } whyStage.classList.add('guided'); setActive(Math.min(n - 1, Math.floor((p / HOLD) * n))); };
+    const HOLD = 0.9;                    // by 90% of progress all six are revealed
+    let revealed = 0, lastActive = -2;   // monotonic — cards never un-reveal
+    const arm = () => { revealed = 0; lastActive = -2; proofs.forEach((p) => { p.classList.add('pre'); p.classList.remove('active'); }); };
+    const disarm = () => proofs.forEach((p) => p.classList.remove('pre', 'active'));
+    const render = () => {
+      const done = revealed >= n;
+      const active = done ? -1 : revealed - 1;         // newest revealed card is the hero
+      if (active === lastActive) { proofs.forEach((el, i) => el.classList.toggle('pre', i >= revealed)); return; }
+      lastActive = active;
+      proofs.forEach((el, i) => {
+        el.classList.toggle('pre', i >= revealed);     // still hidden if not reached yet
+        el.classList.toggle('active', i === active);   // hero flourish on the current front
+      });
+    };
+    const drive = (p) => {
+      const target = p >= HOLD ? n : Math.min(n, Math.floor((p / HOLD) * n) + 1);
+      if (target > revealed) { revealed = target; render(); }   // reveal only forward
+      else render();
+    };
 
     const whyMM = gsap.matchMedia();
-    // Desktop: gently pin the section; scroll progress drives all six cards with
-    // generous time each (~520px of scroll per card), then it releases smoothly.
+    // Desktop: gently pin; scroll progress reveals the six cards one by one
+    // (~520px of scroll each), then releases with the complete grid intact.
     whyMM.add('(min-width:821px)', () => {
+      arm();
       const st = ScrollTrigger.create({
         trigger: '.x-why', start: 'top top', end: '+=' + Math.round(n * 520),
         pin: '.x-why-pin', anticipatePin: 1, scrub: 0.6,
-        onUpdate: (self) => drive(self.progress),
-        onLeaveBack: complete
+        onUpdate: (self) => drive(self.progress)
       });
-      return () => { st.kill(); complete(); };
+      return () => { st.kill(); disarm(); };
     });
-    // Mobile: no pin — progress-driven as the section passes through the viewport.
+    // Mobile: no pin — same progressive reveal as the section passes through.
     whyMM.add('(max-width:820px)', () => {
+      arm();
       const st = ScrollTrigger.create({
-        trigger: '.x-why', start: 'top 76%', end: 'bottom 58%',
-        onUpdate: (self) => drive(self.progress), onLeave: complete, onLeaveBack: complete
+        trigger: '.x-why', start: 'top 82%', end: 'bottom 64%',
+        onUpdate: (self) => drive(self.progress)
       });
-      return () => { st.kill(); complete(); };
+      return () => { st.kill(); disarm(); };
     });
   }
 
