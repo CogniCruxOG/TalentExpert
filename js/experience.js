@@ -181,29 +181,27 @@
   const proofs = whyStage ? $$('.proof', whyStage) : [];
   if (whyStage && proofs.length) {
     const n = proofs.length;
-    const HOLD = 0.9;                    // by 90% of progress all six are revealed
-    let revealed = 0, lastActive = -2;   // monotonic — cards never un-reveal
-    const arm = () => { revealed = 0; lastActive = -2; proofs.forEach((p) => { p.classList.add('pre'); p.classList.remove('active'); }); };
+    const HOLD = 0.9;                    // by 90% of progress all six are revealed; tail = settled grid
+    let lastKey = -999;
+    const arm = () => { lastKey = -999; proofs.forEach((p) => { p.classList.add('pre'); p.classList.remove('active'); }); };
     const disarm = () => proofs.forEach((p) => p.classList.remove('pre', 'active'));
-    const render = () => {
-      const done = revealed >= n;
-      const active = done ? -1 : revealed - 1;         // newest revealed card is the hero
-      if (active === lastActive) { proofs.forEach((el, i) => el.classList.toggle('pre', i >= revealed)); return; }
-      lastActive = active;
-      proofs.forEach((el, i) => {
-        el.classList.toggle('pre', i >= revealed);     // still hidden if not reached yet
-        el.classList.toggle('active', i === active);   // hero flourish on the current front
-      });
-    };
+    // Fully bidirectional: the number of revealed cards follows scroll progress in
+    // BOTH directions (scrub). Scroll up → cards hide 6→1 in reverse.
     const drive = (p) => {
-      const target = p >= HOLD ? n : Math.min(n, Math.floor((p / HOLD) * n) + 1);
-      if (target > revealed) { revealed = target; render(); }   // reveal only forward
-      else render();
+      const settle = p >= HOLD;
+      const revealed = settle ? n : Math.max(0, Math.min(n, Math.round((p / HOLD) * n)));
+      const active = settle ? -1 : (revealed >= 1 ? revealed - 1 : -1);   // newest is the hero
+      const key = revealed + (settle ? 1000 : 0);
+      if (key === lastKey) return; lastKey = key;
+      proofs.forEach((el, i) => {
+        el.classList.toggle('pre', i >= revealed);       // hidden until reached (reappears on scroll-up)
+        el.classList.toggle('active', i === active);     // hero flourish on the current front
+      });
     };
 
     const whyMM = gsap.matchMedia();
-    // Desktop: gently pin; scroll progress reveals the six cards one by one
-    // (~520px of scroll each), then releases with the complete grid intact.
+    // Desktop: gently pin BELOW the navbar; scroll progress reveals/hides the six
+    // cards one by one (~520px each), perfectly reversible in both directions.
     whyMM.add('(min-width:821px)', () => {
       arm();
       const st = ScrollTrigger.create({
@@ -213,7 +211,7 @@
       });
       return () => { st.kill(); disarm(); };
     });
-    // Mobile: no pin — same progressive reveal as the section passes through.
+    // Mobile: no pin — same reversible progressive reveal as the section passes through.
     whyMM.add('(max-width:820px)', () => {
       arm();
       const st = ScrollTrigger.create({
