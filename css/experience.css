@@ -229,15 +229,20 @@ html.lenis,html.lenis body{height:auto}
    ===================================================================== */
 #paths.alt{background:transparent}   /* home only — blend into the continuous canvas */
 .x-paths{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.x-path{position:relative;overflow:hidden;border-radius:var(--r-xl);min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;padding:44px;color:var(--ink);isolation:isolate;border:1px solid var(--hair);box-shadow:var(--sh-s);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.x-path{position:relative;overflow:hidden;border-radius:var(--r-xl);min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;padding:44px;color:var(--ink);isolation:isolate;border:1px solid var(--hair);box-shadow:var(--sh-s);transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .45s var(--ease),opacity .4s var(--ease)}
 .x-path::before{content:"";position:absolute;inset:0;z-index:-1;transition:transform .6s var(--ease)}
 .x-path.biz::before{background:linear-gradient(160deg,#F4F2F0,#ffffff 72%)}
 .x-path.job::before{background:linear-gradient(160deg,#FDEDE1,#ffffff 72%)}
-.x-path::after{content:"";position:absolute;top:0;left:0;width:100%;height:5px;z-index:1}
-.x-path.biz::after{background:linear-gradient(90deg,var(--blue),var(--steel))}
+/* top accent line — animates from left to right on hover */
+.x-path::after{content:"";position:absolute;top:0;left:0;width:100%;height:4px;z-index:2;transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease)}
+.x-path.biz::after{background:linear-gradient(90deg,var(--charcoal),var(--charcoal-soft))}
 .x-path.job::after{background:linear-gradient(90deg,var(--orange),var(--orange-soft))}
-.x-path:hover{transform:translate3d(0,-6px,0);box-shadow:var(--sh-m);border-color:rgba(242,111,33,.35)}
-.x-path:hover::before{transform:scale(1.04)}
+.x-path:hover::after{transform:scaleX(1)}
+/* lift + deep soft shadow + soft orange border glow (no tilt, no rotation) */
+.x-path:hover{transform:translate3d(0,-9px,0);border-color:rgba(242,111,33,.42);
+  box-shadow:0 40px 80px -42px rgba(26,26,26,.5),0 0 0 1px rgba(242,111,33,.18),0 0 44px -8px rgba(242,111,33,.28)}
+/* when one card is hovered, the other quiets down to guide attention */
+.x-paths:hover .x-path:not(:hover){opacity:.88}
 .x-path .chip{width:64px;height:64px;font-size:30px;margin-bottom:auto}
 .x-path.biz .chip{background:var(--blue-t);color:var(--blue)}
 .x-path.job .chip{background:var(--orange-t);color:var(--orange)}
@@ -247,22 +252,22 @@ html.lenis,html.lenis body{height:auto}
 .x-path .checks span{display:flex;align-items:center;gap:8px;font-size:.86rem;color:var(--ink2)}
 .x-path .checks .ic{width:16px;height:16px}
 .x-path.biz .checks .ic{color:var(--blue)} .x-path.job .checks .ic{color:var(--orange)}
-.x-path .go{display:inline-flex;align-items:center;gap:10px;font-weight:600;align-self:flex-start;color:#fff;padding:13px 26px;border-radius:100px;transition:transform .4s var(--ease),box-shadow .4s var(--ease);position:relative;z-index:1}
+.x-path .go{display:inline-flex;align-items:center;gap:10px;font-weight:600;align-self:flex-start;color:#fff;padding:13px 26px;border-radius:100px;transition:box-shadow .4s var(--ease),filter .4s var(--ease);position:relative;z-index:1}
 .x-path.biz .go{background:var(--charcoal);box-shadow:0 12px 26px -14px rgba(26,26,26,.5)}
 .x-path.job .go{background:var(--orange);box-shadow:0 12px 26px -14px rgba(242,111,33,.5)}
-.x-path:hover .go{transform:translateX(6px)}
-.x-path:hover .go .ic{transform:translateX(3px)}
-/* cursor-aware glow + interactive chip/icon */
+/* CTA softly brightens + a single gentle pulse on hover-in (returns to rest — no shift) */
+.x-path:hover .go{filter:brightness(1.08);animation:pathPulse .5s var(--ease)}
+.x-path.biz:hover .go{box-shadow:0 16px 34px -12px rgba(26,26,26,.6)}
+.x-path.job:hover .go{box-shadow:0 18px 36px -12px rgba(242,111,33,.62)}
+@keyframes pathPulse{0%{transform:scale(1)}45%{transform:scale(1.035)}100%{transform:scale(1)}}
+/* cursor-following radial spotlight */
 .x-path .glow{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .45s var(--ease);pointer-events:none;
   background:radial-gradient(440px 440px at var(--mx,50%) var(--my,50%),rgba(242,111,33,.18),transparent 60%)}
 .x-path:hover .glow{opacity:1}
 .x-path>*{position:relative;z-index:1}
-.x-path .chip{transition:transform .55s var(--ease),background .4s}
-.x-path:hover .chip{transform:translateY(-5px) scale(1.08) rotate(-4deg)}
-.x-path .chip .ic{transition:transform .55s var(--ease)}
-.x-path:hover.biz .chip .ic{transform:scale(1.05)}
-.x-path .checks span{transition:transform .4s var(--ease)}
-.x-path:hover .checks span{transform:translateX(3px)}
+/* icon: gentle scale only — no rotation, no translation; content stays perfectly stable */
+.x-path .chip{transition:transform .4s var(--ease),background .4s}
+.x-path:hover .chip{transform:scale(1.05)}
 
 /* =====================================================================
    FOUNDER + CONCLUSION

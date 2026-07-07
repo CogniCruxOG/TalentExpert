@@ -173,7 +173,7 @@
       applyWho(-1);
       const st = ScrollTrigger.create({
         trigger: '.x-who', start: 'top top', end: '+=' + Math.round((N + 1) * 500),
-        pin: '.x-who-pin', anticipatePin: 1, scrub: 0.9,
+        pin: '.x-who-pin', invalidateOnRefresh: true, scrub: 0.9,
         onUpdate: (self) => drive(self.progress)
       });
       return () => { st.kill(); applyWho(-1); };
@@ -240,7 +240,7 @@
       arm();
       const st = ScrollTrigger.create({
         trigger: '.x-why', start: 'top top', end: '+=' + Math.round(n * 520),
-        pin: '.x-why-pin', anticipatePin: 1, scrub: 0.9,
+        pin: '.x-why-pin', invalidateOnRefresh: true, scrub: 0.9,
         onUpdate: (self) => drive(self.progress)
       });
       return () => { st.kill(); disarm(); };
