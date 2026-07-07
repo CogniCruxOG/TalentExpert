@@ -63,14 +63,15 @@
 
     const mm = gsap.matchMedia();
 
-    // Desktop: pin + scrub. Vision (eye opens, text focuses) → Mission (smoke
-    // disperses, rocket ignites & lifts, text resolves). Reverses perfectly.
+    // Desktop: NO pin — the story scrubs as the section scrolls through the
+    // viewport (page keeps moving, scroll stays smooth). Vision (eye opens, text
+    // focuses) → Mission (smoke disperses, rocket ignites & lifts). Reverses.
     mm.add('(min-width:821px)', () => {
       arm();
       if (aura) gsap.set(aura, { xPercent: -50, yPercent: -50 });
       const tl = gsap.timeline({ scrollTrigger: {
-        trigger: '#vision', start: 'top top', end: '+=1900',
-        pin: true, invalidateOnRefresh: true, scrub: 0.5
+        trigger: '#vision', start: 'top 82%', end: 'bottom 32%',
+        scrub: 0.6, invalidateOnRefresh: true
       } });
 
       // ---- VISION (~0.05 .. 0.46): eye opens, golden glow awakens, text comes into focus

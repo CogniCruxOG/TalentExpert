@@ -10,8 +10,9 @@
    radial-gradients (already soft). Keep it this way.
    ===================================================================== */
 
-/* pinned stage on desktop — content centred in the viewport */
-@media(min-width:821px){ #vision{min-height:100vh;display:flex;align-items:center;overflow:hidden} }
+/* NOT pinned — the section scrolls normally (Lenis stays smooth) and the story
+   scrubs as it passes through the viewport. overflow:hidden contains the decor. */
+#vision{position:relative;overflow:hidden}
 #vision .wrap{position:relative;z-index:2;width:100%}
 #vision .feat-card{position:relative}
 
