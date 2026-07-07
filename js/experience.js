@@ -35,8 +35,7 @@
 
   /* ---- Fallback (no GSAP, or reduced motion): show everything, no animation ---- */
   function revealAllStatic() {
-    $$('.x-who .wp, .x-who .ddd-stage').forEach(e => e.classList.add('on'));
-    $$('.x-who .ddd-stage').forEach(e => e.classList.add('reached'));
+    $$('.x-who .wp').forEach(e => e.classList.add('on'));   // stages are full at base opacity (no ghost)
     $$('.do-panel').forEach(e => e.classList.add('focus'));
     const grow = $('.x-title .grow'); if (grow) grow.classList.add('drawn');
     loadTempleImg();
@@ -133,26 +132,35 @@
   reveal($$('.x-do-left .eyebrow, .x-do-left .title, .x-do-left .lead'), { y: 24, delay: 0 });
   reveal($$('.x-finale-copy > *'), { y: 26 });
 
-  /* ================= WHO WE ARE — progressive paragraphs + timeline (no pin) ================= */
-  $$('.x-who .wp').forEach((w) => {
-    ScrollTrigger.create({
-      trigger: w, start: 'top 84%',
-      onEnter: () => w.classList.add('on'),
-      onLeaveBack: () => w.classList.remove('on')   // replays as you scroll back up
-    });
-  });
+  /* ================= WHO WE ARE — scroll-driven story (no pin, fully reversible) =================
+     Stage 1: everything ghosted. Then as scroll progresses, paragraph N resolves and
+     step N activates (icon glow + connector grows + title bold), while earlier steps
+     become inactive-but-readable. Scrolling back up mirrors it exactly. */
+  const wps = $$('.x-who .wp');
   const stages = $$('.x-who .ddd-stage');
-  if (stages.length) {
-    // non-pinned scrub over the timeline column: each step lights up, connectors fill
+  if (stages.length || wps.length) {
+    const N = 3;
+    const LEAD = 0.12;   // initial ghosted band (Stage 1) before Step 01 activates
+    const HOLD = 0.9;    // by 90% of progress all three steps have activated
+    let last = -999;
+    const applyWho = (active) => {
+      if (active === last) return; last = active;
+      wps.forEach((w, i) => w.classList.toggle('on', i <= active));          // paragraph resolves with its step
+      stages.forEach((s, i) => {
+        s.classList.toggle('pre', i > active);                              // not yet reached → ghosted
+        s.classList.toggle('on', i === active);                             // current → active + emphasis
+        s.classList.toggle('done', i < active);                             // passed → inactive but readable
+      });
+    };
+    applyWho(-1);   // arm the ghosted Stage-1 state at load (no flash before the trigger fires)
     ScrollTrigger.create({
-      trigger: '.x-who-ddd', start: 'top 74%', end: 'bottom 62%', scrub: true,
+      trigger: '#journey', start: 'top 80%', end: 'bottom 60%', scrub: true,
       onUpdate: (self) => {
-        const active = Math.min(stages.length - 1, Math.floor(self.progress * stages.length + 0.0001));
-        stages.forEach((s, i) => { s.classList.toggle('on', i <= active); s.classList.toggle('reached', i < active); });
+        const p = self.progress;
+        const active = p < LEAD ? -1 : Math.min(N - 1, Math.floor(((p - LEAD) / (HOLD - LEAD)) * N));
+        applyWho(active);
       }
     });
-    // ensure the first is lit as soon as the section arrives
-    ScrollTrigger.create({ trigger: '.x-who-ddd', start: 'top 80%', once: true, onEnter: () => stages[0].classList.add('on') });
   }
 
   /* ================= WHAT WE DO — scroll-through cards, focus the centered one (no pin) ================= */
