@@ -102,61 +102,44 @@
       });
     };
 
-    // 3) Choreographed entry: temple fades in first → stats appear one-by-one →
-    //    numbers count up → temple ambient light sweeps upward + apex glow blooms → settle.
-    gsap.set(temple, { autoAlpha: 0, y: 16 });
-    gsap.set('.x-stat', { autoAlpha: 0, y: 26 });
-    gsap.set(temple, { '--amb': 0.14, '--apex': 0, '--ly': '78%', '--tglow': 0.06 });
+    // 3) Choreographed entry: temple illustration fades in first → tagline →
+    //    counters animate left-to-right (once) → apex glow blooms → settle.
+    const lead = $('.x-trust-quote');
+    gsap.set(temple, { autoAlpha: 0 });
+    if (lead) gsap.set(lead, { autoAlpha: 0, y: 20 });
+    gsap.set('.x-stat', { autoAlpha: 0, y: 24 });
+    gsap.set(temple, { '--amb': 0.12, '--apex': 0, '--ly': '58%', '--tglow': 0.05 });
 
     const stats = $$('.x-stat');
-    const tl = gsap.timeline({ delay: 0.55 });
-    // temple reveals first
-    tl.to(temple, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power2.out' })
-      .to(temple, { '--amb': 0.42, duration: 0.9, ease: 'sine.out' }, '<');
-    // each stat rises + counts, and pulses the temple as its milestone lands
+    const tl = gsap.timeline({ delay: 0.5 });
+    tl.to(temple, { autoAlpha: 1, duration: 1.0, ease: 'power2.out' })
+      .to(temple, { '--amb': 0.4, duration: 1.0, ease: 'sine.out' }, '<');
+    if (lead) tl.to(lead, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.6');
     stats.forEach((st, idx) => {
       const num = $('.num', st);
-      const at = idx === 0 ? '-=0.35' : '-=0.18';
-      tl.to(st, { autoAlpha: 1, y: 0, duration: 0.55, ease: 'power2.out' }, at)
-        .add(() => { if (num) runCount(num); }, '<+0.05')
-        // ambient light climbs the temple with each milestone; apex + drop-glow warm up
-        .to(temple, {
-          '--ly': (78 - idx * 17) + '%',
-          '--apex': 0.18 + idx * 0.16,
-          '--tglow': 0.10 + idx * 0.05,
-          duration: 0.9, ease: 'sine.out'
-        }, '<');
+      tl.to(st, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, idx === 0 ? '-=0.2' : '-=0.3')
+        .add(() => { if (num) runCount(num); }, '<+0.04')          // count 0 -> value, once
+        .to(temple, { '--apex': 0.16 + idx * 0.13, '--tglow': 0.08 + idx * 0.04, '--ly': (58 - idx * 5) + '%', duration: 0.8, ease: 'sine.out' }, '<');
     });
-    // settle: gentle bloom at the apex, ambient eases to a calm resting glow
-    tl.to(temple, { '--apex': 0.5, duration: 0.5, ease: 'sine.out' })
-      .to(temple, { '--apex': 0.34, '--amb': 0.38, duration: 0.9, ease: 'sine.inOut' });
+    tl.to(temple, { '--apex': 0.46, duration: 0.5, ease: 'sine.out' })
+      .to(temple, { '--apex': 0.3, '--amb': 0.36, duration: 0.9, ease: 'sine.inOut' });
 
-    // 4) Refined micro-interactions: subtle parallax (3–5px) + cursor-follow glow.
-    if (matchMedia('(hover:hover)').matches) {
-      const rectOf = () => temple.getBoundingClientRect();
-      let raf = 0, tx = 50, ty = 50, mx = 0, my = 0;
-      temple.addEventListener('pointermove', (e) => {
-        const r = rectOf();
-        tx = ((e.clientX - r.left) / r.width) * 100;
-        ty = ((e.clientY - r.top) / r.height) * 100;
-        mx = ((e.clientX - r.left) / r.width - 0.5) * 2;   // -1..1
+    // 4) Subtle parallax on the illustration (driven from the whole card).
+    const host = $('#trust') || temple.parentElement;
+    if (host && matchMedia('(hover:hover)').matches) {
+      let raf = 0, mx = 0, my = 0;
+      host.addEventListener('pointermove', (e) => {
+        const r = host.getBoundingClientRect();
+        mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
         my = ((e.clientY - r.top) / r.height - 0.5) * 2;
-        if (!raf) raf = requestAnimationFrame(apply);
+        if (!raf) raf = requestAnimationFrame(() => { raf = 0; gsap.to(media, { x: mx * 6, y: my * 5, duration: 0.6, ease: 'power2.out', overwrite: 'auto' }); });
       });
-      temple.addEventListener('pointerleave', () => {
-        mx = my = 0; if (!raf) raf = requestAnimationFrame(apply);
-      });
-      function apply() {
-        raf = 0;
-        temple.style.setProperty('--tx', tx + '%');
-        temple.style.setProperty('--ty', ty + '%');
-        gsap.to(media, { x: mx * 5, y: my * 4, duration: 0.6, ease: 'power2.out', overwrite: 'auto' });
-      }
+      host.addEventListener('pointerleave', () => gsap.to(media, { x: 0, y: 0, duration: 0.7, ease: 'power2.out', overwrite: 'auto' }));
     }
 
-    // 5) Layered parallax as the hero scrolls away.
-    gsap.to(temple, { yPercent: -6, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.x-stats', { yPercent: 4, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+    // 5) Gentle layered parallax as the hero scrolls away.
+    gsap.to(temple, { yPercent: -5, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.x-stats', { yPercent: 3, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   /* ============ matchMedia: heavy pinned scenes (desktop only) ============ */
