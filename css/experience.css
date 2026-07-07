@@ -24,15 +24,16 @@ html.lenis,html.lenis body{height:auto}
    HERO — Temple (Kovil) line illustration + fade/rise statistics
    ===================================================================== */
 .x-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:132px 24px 72px;
-  background:radial-gradient(1200px 760px at 50% 116%,var(--orange-wash),transparent 60%),linear-gradient(180deg,#fff,#FFF9F4)}
+  background:radial-gradient(1200px 820px at 50% 112%,var(--orange-wash),transparent 58%)}
 /* full-bleed temple backdrop scene */
 .x-hero-scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.x-hero-glow{position:absolute;left:50%;top:32%;transform:translate3d(-50%,-50%,0);width:min(1300px,124vw);height:74%;z-index:2;
-  background:radial-gradient(50% 58% at 50% 44%,rgba(255,253,250,.92),rgba(255,251,246,.5) 42%,transparent 74%)}
+/* legibility halo — keeps the headline crisp over the artwork (behind content) */
+.x-hero-glow{position:absolute;left:50%;top:34%;transform:translate3d(-50%,-50%,0);width:min(1360px,128vw);height:80%;z-index:2;
+  background:radial-gradient(54% 60% at 50% 42%,rgba(255,254,252,.96),rgba(255,252,248,.66) 40%,rgba(255,252,248,.2) 62%,transparent 78%)}
 .x-temple{position:absolute;inset:0;z-index:1}
 .x-temple-media{position:absolute;left:50%;bottom:-1%;transform:translate3d(-50%,0,0);width:min(1060px,84vw);will-change:transform;backface-visibility:hidden}
 .x-temple-media .x-temple-photo,.x-temple-media svg{width:100%;height:auto;display:block;
-  opacity:.5;filter:drop-shadow(0 22px 54px rgba(242,111,33,var(--tglow,.06)));transition:filter .8s ease}
+  opacity:.42;filter:drop-shadow(0 22px 54px rgba(242,111,33,var(--tglow,.06)));transition:filter .8s ease}
 .x-temple.has-photo .x-temple-svg{display:none}
 .x-temple-svg{max-width:560px;margin:0 auto}
 .x-temple-amb{position:absolute;left:50%;top:var(--ly,52%);transform:translate3d(-50%,-50%,0);width:min(980px,92vw);aspect-ratio:1;border-radius:50%;z-index:0;
@@ -90,12 +91,12 @@ html.lenis,html.lenis body{height:auto}
 /* =====================================================================
    PINNED JOURNEY — Who We Are (Discover / Develop / Sustain)
    ===================================================================== */
-.x-who{position:relative;background:#fff}
+.x-who{position:relative;background:transparent}
 .x-who-pin{padding:clamp(80px,10vh,120px) 0}
-.x-who-head{max-width:900px;margin:0 auto 50px;text-align:center}
-.x-who-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;max-width:1200px;margin:0 auto;width:100%}
-.x-who-story{display:flex;flex-direction:column;gap:26px}
-.x-who-story .wp{font-size:1.12rem;line-height:1.72;color:var(--ink2);max-width:54ch;opacity:.22;transform:translateY(12px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.x-who-head{max-width:840px;margin:0 auto 46px;text-align:center}
+.x-who-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:clamp(48px,5vw,80px);align-items:start;max-width:1160px;margin:0 auto;width:100%}
+.x-who-story{display:flex;flex-direction:column;gap:24px;padding-top:6px}
+.x-who-story .wp{font-size:1.12rem;line-height:1.72;color:var(--ink2);max-width:56ch;opacity:.24;transform:translate3d(0,12px,0);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .x-who-story .wp.on{opacity:1;transform:none}
 .x-who-ddd{position:relative;display:flex;flex-direction:column;gap:32px}
 .ddd-stage{position:relative;display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:start;opacity:.4;transition:opacity .5s var(--ease)}
@@ -118,7 +119,7 @@ html.lenis,html.lenis body{height:auto}
 /* =====================================================================
    WHAT WE DO — pinned sticky-left / changing-right showcase
    ===================================================================== */
-.x-do{position:relative;background:var(--paper2)}
+.x-do{position:relative;background:transparent}
 .x-do-pin{padding:clamp(80px,10vh,120px) 0}
 .x-do-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:64px;align-items:start;width:100%}
 .x-do-left{position:sticky;top:118px;align-self:start}
@@ -157,7 +158,7 @@ html.lenis,html.lenis body{height:auto}
 /* =====================================================================
    WHY CHOOSE US — scroll-driven proof-point spotlight
    ===================================================================== */
-.x-why{position:relative;background:var(--paper2)}
+.x-why{position:relative;background:transparent}
 .x-why-pin{padding:clamp(80px,10vh,120px) 0}
 .x-why-head{max-width:900px;margin:0 auto 52px;text-align:center}
 .x-why-head .title{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.12}
@@ -181,6 +182,7 @@ html.lenis,html.lenis body{height:auto}
 /* =====================================================================
    PATHS split panels
    ===================================================================== */
+#paths.alt{background:transparent}   /* home only — blend into the continuous canvas */
 .x-paths{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .x-path{position:relative;overflow:hidden;border-radius:var(--r-xl);min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;padding:44px;color:var(--ink);isolation:isolate;border:1px solid var(--hair);box-shadow:var(--sh-s);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
 .x-path::before{content:"";position:absolute;inset:0;z-index:-1;transition:transform .6s var(--ease)}
@@ -189,7 +191,7 @@ html.lenis,html.lenis body{height:auto}
 .x-path::after{content:"";position:absolute;top:0;left:0;width:100%;height:5px;z-index:1}
 .x-path.biz::after{background:linear-gradient(90deg,var(--blue),var(--steel))}
 .x-path.job::after{background:linear-gradient(90deg,var(--orange),var(--orange-soft))}
-.x-path:hover{transform:translateY(-6px);box-shadow:var(--sh-m)}
+.x-path:hover{transform:translate3d(0,-6px,0);box-shadow:var(--sh-m);border-color:rgba(242,111,33,.35)}
 .x-path:hover::before{transform:scale(1.04)}
 .x-path .chip{width:64px;height:64px;font-size:30px;margin-bottom:auto}
 .x-path.biz .chip{background:var(--blue-t);color:var(--blue)}
@@ -207,7 +209,7 @@ html.lenis,html.lenis body{height:auto}
 .x-path:hover .go .ic{transform:translateX(3px)}
 /* cursor-aware glow + interactive chip/icon */
 .x-path .glow{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .45s var(--ease);pointer-events:none;
-  background:radial-gradient(340px 340px at var(--mx,50%) var(--my,50%),rgba(242,111,33,.16),transparent 62%)}
+  background:radial-gradient(440px 440px at var(--mx,50%) var(--my,50%),rgba(242,111,33,.18),transparent 60%)}
 .x-path:hover .glow{opacity:1}
 .x-path>*{position:relative;z-index:1}
 .x-path .chip{transition:transform .55s var(--ease),background .4s}
@@ -220,7 +222,7 @@ html.lenis,html.lenis body{height:auto}
 /* =====================================================================
    FOUNDER + CONCLUSION
    ===================================================================== */
-.x-founder{position:relative;padding:140px 0;overflow:hidden;background:radial-gradient(900px 520px at 18% 24%,var(--orange-wash),transparent 60%),#fff}
+.x-founder{position:relative;padding:140px 0;overflow:hidden;background:radial-gradient(900px 520px at 18% 24%,var(--orange-wash),transparent 60%)}
 .x-founder-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
 .x-founder-bg .qmark-bg{position:absolute;top:-70px;left:1%;font-family:'Fraunces';font-size:28rem;line-height:1;color:var(--orange);opacity:.06}
 .x-founder-bg svg{position:absolute;right:-30px;bottom:60px;width:520px;height:180px;opacity:.4}

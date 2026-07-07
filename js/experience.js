@@ -162,16 +162,28 @@
     updateFocus();
   }
 
-  /* ================= WHY CHOOSE US — cards reveal in sequence, stay visible (no pin) ================= */
-  $$('.x-why .proof').forEach((el) => {
-    ScrollTrigger.create({ trigger: el, start: 'top 88%', once: true, onEnter: () => el.classList.add('in') });
-  });
+  /* ================= WHY CHOOSE US — cards enter 1..6 in sequence, stay visible (no pin) ================= */
+  const proofs = $$('.x-why .proof');
+  if (proofs.length) {
+    ScrollTrigger.create({
+      trigger: '.x-why-stage', start: 'top 82%', once: true,
+      onEnter: () => proofs.forEach((el, i) => setTimeout(() => el.classList.add('in'), i * 115))
+    });
+  }
 
   /* ================= AUDIENCE PATHS — reveal + slide into place ================= */
   $$('.x-path').forEach((el, i) => gsap.from(el, {
     scrollTrigger: { trigger: el, start: 'top 90%', once: true },
     y: 44, opacity: 0, scale: 0.985, duration: 0.75, ease: 'power3.out', delay: i * 0.08
   }));
+  // elegant mouse-follow spotlight on the path cards (no tilt — clean, premium)
+  if (hover) $$('[data-spotlight]').forEach((card) => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
 
   /* ================= FOUNDER — word-by-word quote, then signature ================= */
   const fq = $('.x-founder blockquote');
