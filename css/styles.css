@@ -425,7 +425,7 @@ table.data td strong{color:var(--ink)}
 .wa-float .ic{width:30px;height:30px;color:#fff;stroke-width:1.4}
 
 /* ============ FOOTER — premium closing scene ============ */
-footer.site{position:relative;overflow:hidden;padding:96px 0 30px;color:var(--ink2);
+footer.site{position:relative;overflow:hidden;padding:72px 0 26px;color:var(--ink2);
   background:
     radial-gradient(1100px 420px at 82% 0%,rgba(249,165,106,.16),transparent 60%),
     radial-gradient(900px 500px at 6% 26%,rgba(242,111,33,.07),transparent 55%),
@@ -434,10 +434,11 @@ footer.site{position:relative;overflow:hidden;padding:96px 0 30px;color:var(--in
 footer.site .foot-orn{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 footer.site .foot-orn>svg{position:absolute;bottom:-16px;left:0;width:100%;height:auto;opacity:.55}
 /* soft temple echo in the bottom-right — the homepage's identity concludes here */
-.foot-temple{position:absolute;right:0;bottom:0;width:min(560px,46%);height:100%;pointer-events:none;
-  background:url("../assets/illustrations/temple.png") no-repeat right bottom;background-size:auto 150%;opacity:.09;
-  -webkit-mask-image:radial-gradient(135% 130% at 100% 100%,#000 34%,transparent 72%);
-          mask-image:radial-gradient(135% 130% at 100% 100%,#000 34%,transparent 72%)}
+.foot-temple{position:absolute;right:-4%;bottom:-8%;width:min(760px,58%);height:126%;pointer-events:none;
+  background:url("../assets/illustrations/temple.png") no-repeat right 12%;background-size:auto 205%;
+  opacity:.11;mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(155% 150% at 100% 92%,#000 26%,rgba(0,0,0,.32) 54%,transparent 78%);
+          mask-image:radial-gradient(155% 150% at 100% 92%,#000 26%,rgba(0,0,0,.32) 54%,transparent 78%)}
 @media(max-width:900px){ .foot-temple{display:none} }
 footer.site .foot-orn::before,footer.site .foot-orn::after{content:"";position:absolute;border-radius:50%;filter:blur(64px)}
 footer.site .foot-orn::before{width:440px;height:440px;top:-140px;right:5%;background:radial-gradient(circle,rgba(242,111,33,.14),transparent 70%)}
@@ -447,17 +448,18 @@ footer.site .foot-orn::after{width:380px;height:380px;bottom:-150px;left:-50px;b
   background:radial-gradient(340px circle at var(--fx,50%) var(--fy,50%),rgba(242,111,33,.10),transparent 60%)}
 footer.site:hover .foot-glow{opacity:1}
 .foot-wrap{position:relative;z-index:2;max-width:1400px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
-.foot-top{display:grid;grid-template-columns:4.4fr 4fr 3.5fr;gap:clamp(30px,4vw,60px);align-items:start}
+/* four balanced columns: brand | quick links | business/job | newsletter */
+.foot-top{display:grid;grid-template-columns:1.5fr 2fr 1.55fr;gap:clamp(26px,3vw,48px);align-items:start}
 
 /* --- brand column --- */
-.foot-logo{height:52px;width:auto;margin-bottom:20px}
-.foot-msg{font-size:1.02rem;line-height:1.6;color:var(--ink2);max-width:38ch;margin-bottom:26px;font-weight:500}
+.foot-logo{height:48px;width:auto;margin-bottom:14px}
+.foot-msg{font-size:1rem;line-height:1.58;color:var(--ink2);max-width:38ch;margin-bottom:20px;font-weight:500}
 /* two-statement editorial hierarchy — no dash; the second line is the emphasis */
 .foot-msg .fm-1{display:block}
 .foot-msg .fm-2{display:block;margin-top:9px;font-family:'Fraunces';font-style:italic;font-weight:500;font-size:1.14rem;line-height:1.36;letter-spacing:-.005em;
   background:linear-gradient(92deg,var(--orange),var(--orange-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
-.foot-cards{display:grid;gap:12px;margin-bottom:24px}
-.foot-card{display:flex;gap:14px;align-items:center;padding:13px 16px;border-radius:16px;
+.foot-cards{display:grid;gap:10px;margin-bottom:18px}
+.foot-card{display:flex;gap:13px;align-items:center;padding:11px 15px;border-radius:16px;
   background:var(--glass);border:1px solid rgba(255,255,255,.7);box-shadow:0 8px 24px -18px rgba(26,26,26,.4);
   backdrop-filter:blur(8px);transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
 .foot-card:hover{transform:translateY(-3px);border-color:rgba(242,111,33,.4);box-shadow:0 16px 34px -18px rgba(242,111,33,.55)}
@@ -477,27 +479,30 @@ footer.site:hover .foot-glow{opacity:1}
 .foot-social a:hover{transform:translateY(-4px) rotate(5deg);color:#fff;box-shadow:0 16px 30px -14px rgba(242,111,33,.7)}
 .foot-social a:hover::before{transform:scale(1);opacity:1}
 
-/* --- grouped menus --- */
-.foot-menus{display:grid;grid-template-columns:1fr 1fr;gap:34px 28px}
-.foot-group h4{position:relative;font-family:'Manrope';font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:18px;padding-bottom:10px}
+/* --- grouped menus: Quick Links in col 1, Business Owners + Job Seekers stacked in col 2 --- */
+.foot-menus{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,2.4vw,42px);align-items:start}
+.foot-menus>.foot-group:nth-child(1){grid-column:1;grid-row:1}
+.foot-menus>.foot-group:nth-child(2){grid-column:2;grid-row:1}
+.foot-menus>.foot-group:nth-child(3){grid-column:2;grid-row:2;margin-top:22px}
+.foot-group h4{position:relative;font-family:'Manrope';font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:13px;padding-bottom:8px}
 .foot-group h4::after{content:"";position:absolute;left:0;bottom:0;width:26px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--orange),transparent);transition:width .4s var(--ease)}
 .foot-group:hover h4::after{width:48px}
-.foot-group ul{display:grid;gap:11px}
+.foot-group ul{display:grid;gap:9px}
 .foot-group a{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:.95rem;color:var(--ink2);font-weight:500;transition:color .3s,transform .3s var(--ease)}
 .foot-group a::before{content:"";width:0;height:2px;border-radius:2px;background:var(--orange);opacity:0;transition:.3s var(--ease)}
 .foot-group a:hover{color:var(--ink);transform:translateX(6px)}
 .foot-group a:hover::before{width:12px;opacity:1}
 
-/* --- newsletter card --- */
-.foot-news{align-self:stretch}
-.news-card{position:relative;padding:28px;border-radius:24px;overflow:hidden;
-  background:linear-gradient(150deg,rgba(255,255,255,.82),rgba(253,237,225,.6));
-  border:1px solid rgba(255,255,255,.75);backdrop-filter:blur(10px);
-  box-shadow:0 24px 60px -34px rgba(242,111,33,.5),inset 0 1px 0 rgba(255,255,255,.7);
+/* --- newsletter card (the footer's visual anchor) --- */
+.foot-news{align-self:start}
+.news-card{position:relative;padding:32px 30px;border-radius:26px;overflow:hidden;
+  background:linear-gradient(150deg,rgba(255,255,255,.9),rgba(253,237,225,.66));
+  border:1px solid rgba(255,255,255,.85);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+  box-shadow:0 34px 74px -38px rgba(242,111,33,.5),0 12px 34px -22px rgba(26,26,26,.3),inset 0 1px 0 rgba(255,255,255,.85);
   animation:footFloat 7s ease-in-out infinite}
-.news-card::before{content:"";position:absolute;width:200px;height:200px;top:-80px;right:-60px;border-radius:50%;background:radial-gradient(circle,rgba(242,111,33,.16),transparent 70%);filter:blur(20px)}
-.news-card h4{font-family:'Fraunces';font-size:1.35rem;font-weight:400;color:var(--ink);margin-bottom:8px;position:relative}
-.news-card p{font-size:.9rem;color:var(--ink2);margin-bottom:18px;position:relative;line-height:1.5}
+.news-card::before{content:"";position:absolute;width:220px;height:220px;top:-90px;right:-64px;border-radius:50%;background:radial-gradient(circle,rgba(242,111,33,.18),transparent 70%);filter:blur(22px)}
+.news-card h4{font-family:'Fraunces';font-size:1.44rem;font-weight:400;color:var(--ink);margin-bottom:10px;position:relative}
+.news-card p{font-size:.92rem;color:var(--ink2);margin-bottom:22px;position:relative;line-height:1.5}
 .news-form{position:relative;display:grid;gap:12px}
 .news-input{width:100%;background:#fff;border:1.5px solid var(--hair);border-radius:100px;padding:14px 20px;font-family:inherit;font-size:.94rem;color:var(--ink);transition:.35s}
 .news-input::placeholder{color:var(--ink3)}
@@ -512,7 +517,7 @@ footer.site:hover .foot-glow{opacity:1}
 .news-card .form-msg{margin:2px 0 0;font-size:.85rem;min-height:1em;position:relative}
 
 /* --- bottom bar --- */
-.foot-bottom{position:relative;z-index:2;max-width:1400px;margin:56px auto 0;padding:22px clamp(20px,4vw,48px) 0;
+.foot-bottom{position:relative;z-index:2;max-width:1400px;margin:38px auto 0;padding:20px clamp(20px,4vw,48px) 0;
   border-top:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
   font-size:.85rem;color:var(--ink3)}
 .foot-bottom .fb-mid{display:inline-flex;align-items:center;gap:7px}
