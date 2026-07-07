@@ -32,11 +32,33 @@
     });
   }
 
+  /* ---------- Load the exact uploaded temple illustration (used in both paths) ---------- */
+  function loadTempleImg() {
+    const t = $('#xTemple'); if (!t) return;
+    const media = $('.x-temple-media', t);
+    const srcs = [t.dataset.src, t.dataset.src2].filter(Boolean);
+    let i = 0;
+    (function tryNext() {
+      if (i >= srcs.length) return;
+      const img = new Image();
+      img.onload = () => {
+        const el = document.createElement('img');
+        el.className = 'x-temple-photo'; el.src = srcs[i]; el.alt = '';
+        media.insertBefore(el, media.firstChild);
+        t.classList.add('has-photo');
+      };
+      img.onerror = () => { i++; tryNext(); };
+      img.src = srcs[i];
+    })();
+  }
+
   /* ---------- Reduced motion: show a clean static page, no animation ---------- */
   if (reduce) {
     $$('.x-who .wp, .x-who .ddd-stage').forEach(e => e.classList.add('on'));
     const railR = $('#rail'); if (railR) railR.classList.add('static');
     const growR = $('.x-title .grow'); if (growR) growR.classList.add('drawn');
+    const t = $('#xTemple'); if (t) t.style.setProperty('--apex', 0.34);
+    loadTempleImg();
     return;
   }
 
@@ -58,20 +80,82 @@
     y: 26, opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.09, delay: 0.45
   });
 
-  // Temple: build up from the ground (clip reveal) + outline draw + gentle parallax
+  /* ===== TRUST STATISTICS — temple (exact uploaded asset) + synchronized counters ===== */
   const temple = $('#xTemple');
   if (temple) {
-    gsap.fromTo(temple, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'power2.out', delay: 0.6 });
-    const tower = $('.x-tower', temple);
-    if (tower && tower.getTotalLength) {
-      const L = tower.getTotalLength();
-      tower.style.strokeDasharray = L; tower.style.strokeDashoffset = L;
-      gsap.to(tower, { strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut', delay: 0.7 });
+    const media = $('.x-temple-media', temple);
+
+    // 1) Load the EXACT uploaded illustration; it takes over the fallback SVG on success.
+    loadTempleImg();
+
+    // 2) Counter helper — counts a number up and formats with commas when asked.
+    const runCount = (el) => {
+      const target = +el.dataset.count || 0;
+      const comma = el.hasAttribute('data-comma');
+      const o = { v: 0 };
+      gsap.to(o, {
+        v: target, duration: 1.35, ease: 'power2.out',
+        onUpdate() {
+          const n = Math.round(o.v);
+          el.textContent = comma ? n.toLocaleString('en-IN') : n;
+        }
+      });
+    };
+
+    // 3) Choreographed entry: temple fades in first → stats appear one-by-one →
+    //    numbers count up → temple ambient light sweeps upward + apex glow blooms → settle.
+    gsap.set(temple, { autoAlpha: 0, y: 16 });
+    gsap.set('.x-stat', { autoAlpha: 0, y: 26 });
+    gsap.set(temple, { '--amb': 0.14, '--apex': 0, '--ly': '78%', '--tglow': 0.06 });
+
+    const stats = $$('.x-stat');
+    const tl = gsap.timeline({ delay: 0.55 });
+    // temple reveals first
+    tl.to(temple, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power2.out' })
+      .to(temple, { '--amb': 0.42, duration: 0.9, ease: 'sine.out' }, '<');
+    // each stat rises + counts, and pulses the temple as its milestone lands
+    stats.forEach((st, idx) => {
+      const num = $('.num', st);
+      const at = idx === 0 ? '-=0.35' : '-=0.18';
+      tl.to(st, { autoAlpha: 1, y: 0, duration: 0.55, ease: 'power2.out' }, at)
+        .add(() => { if (num) runCount(num); }, '<+0.05')
+        // ambient light climbs the temple with each milestone; apex + drop-glow warm up
+        .to(temple, {
+          '--ly': (78 - idx * 17) + '%',
+          '--apex': 0.18 + idx * 0.16,
+          '--tglow': 0.10 + idx * 0.05,
+          duration: 0.9, ease: 'sine.out'
+        }, '<');
+    });
+    // settle: gentle bloom at the apex, ambient eases to a calm resting glow
+    tl.to(temple, { '--apex': 0.5, duration: 0.5, ease: 'sine.out' })
+      .to(temple, { '--apex': 0.34, '--amb': 0.38, duration: 0.9, ease: 'sine.inOut' });
+
+    // 4) Refined micro-interactions: subtle parallax (3–5px) + cursor-follow glow.
+    if (matchMedia('(hover:hover)').matches) {
+      const rectOf = () => temple.getBoundingClientRect();
+      let raf = 0, tx = 50, ty = 50, mx = 0, my = 0;
+      temple.addEventListener('pointermove', (e) => {
+        const r = rectOf();
+        tx = ((e.clientX - r.left) / r.width) * 100;
+        ty = ((e.clientY - r.top) / r.height) * 100;
+        mx = ((e.clientX - r.left) / r.width - 0.5) * 2;   // -1..1
+        my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        if (!raf) raf = requestAnimationFrame(apply);
+      });
+      temple.addEventListener('pointerleave', () => {
+        mx = my = 0; if (!raf) raf = requestAnimationFrame(apply);
+      });
+      function apply() {
+        raf = 0;
+        temple.style.setProperty('--tx', tx + '%');
+        temple.style.setProperty('--ty', ty + '%');
+        gsap.to(media, { x: mx * 5, y: my * 4, duration: 0.6, ease: 'power2.out', overwrite: 'auto' });
+      }
     }
-    // stats fade + rise into place (no counting)
-    gsap.from('.x-stat', { y: 34, opacity: 0, duration: 0.85, ease: 'power2.out', stagger: 0.13, delay: 0.85 });
-    // subtle layered parallax as the hero scrolls away
-    gsap.to(temple, { yPercent: -7, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+    // 5) Layered parallax as the hero scrolls away.
+    gsap.to(temple, { yPercent: -6, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
     gsap.to('.x-stats', { yPercent: 4, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 

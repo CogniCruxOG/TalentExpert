@@ -162,4 +162,35 @@
 
   /* ---- Footer year ---- */
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
+
+  /* ---- Footer: cursor-follow glow + magnetic buttons ---- */
+  if (matchMedia('(hover:hover)').matches && !reduce) {
+    const foot = $('footer.site');
+    if (foot) {
+      let fraf = 0, fx = 50, fy = 50;
+      foot.addEventListener('pointermove', (e) => {
+        const r = foot.getBoundingClientRect();
+        fx = ((e.clientX - r.left) / r.width) * 100;
+        fy = ((e.clientY - r.top) / r.height) * 100;
+        if (!fraf) fraf = requestAnimationFrame(() => {
+          fraf = 0;
+          foot.style.setProperty('--fx', fx + '%');
+          foot.style.setProperty('--fy', fy + '%');
+        });
+      }, { passive: true });
+    }
+    // Magnetic hover — button drifts subtly toward the cursor, springs back on leave.
+    $$('.magnetic').forEach((btn) => {
+      let mraf = 0, dx = 0, dy = 0;
+      btn.addEventListener('pointermove', (e) => {
+        const r = btn.getBoundingClientRect();
+        dx = ((e.clientX - r.left) / r.width - 0.5) * 14;
+        dy = ((e.clientY - r.top) / r.height - 0.5) * 10;
+        if (!mraf) mraf = requestAnimationFrame(() => {
+          mraf = 0; btn.style.transform = `translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px)`;
+        });
+      });
+      btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+    });
+  }
 })();
