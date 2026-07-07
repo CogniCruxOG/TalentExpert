@@ -57,13 +57,13 @@ html.lenis,html.lenis body{height:auto}
 .x-temple-photo{filter:drop-shadow(0 12px 34px rgba(242,111,33,var(--tglow,.10)));transition:filter .7s ease}
 .x-temple.has-photo .x-temple-svg{display:none}
 /* ambient warm light behind the artwork — its vertical position (--ly) sweeps up during the count */
-.x-temple-amb{position:absolute;left:50%;top:var(--ly,64%);transform:translate(-50%,-50%);
-  width:82%;aspect-ratio:1;border-radius:50%;z-index:1;pointer-events:none;
+.x-temple-amb{position:absolute;left:62%;top:var(--ly,64%);transform:translate(-50%,-50%);
+  width:78%;aspect-ratio:1;border-radius:50%;z-index:1;pointer-events:none;
   background:radial-gradient(circle,rgba(242,111,33,.30),rgba(249,165,106,.13) 42%,transparent 70%);
   filter:blur(16px);opacity:var(--amb,.42)}
-/* apex glow — brightens as milestones complete */
-.x-temple-apex{position:absolute;left:50%;top:6%;transform:translate(-50%,-50%);
-  width:48%;aspect-ratio:1;border-radius:50%;z-index:1;pointer-events:none;
+/* apex glow — sits behind the gopuram spire, brightens as milestones complete */
+.x-temple-apex{position:absolute;left:66%;top:4%;transform:translate(-50%,-50%);
+  width:44%;aspect-ratio:1;border-radius:50%;z-index:1;pointer-events:none;
   background:radial-gradient(circle,rgba(255,193,128,.55),rgba(242,111,33,.20) 46%,transparent 72%);
   filter:blur(12px);opacity:var(--apex,0)}
 /* cursor-follow orange glow, confined to the illustration */
