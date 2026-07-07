@@ -181,23 +181,31 @@
   const proofs = whyStage ? $$('.proof', whyStage) : [];
   if (whyStage && proofs.length) {
     const n = proofs.length;
-    const HOLD = 0.86;            // reserve the final tail for the "complete grid" state
+    const HOLD = 0.85;            // reserve the final tail for the "complete grid" state
     let cur = -2;
-    const setActive = (idx) => {
-      if (idx === cur) return; cur = idx;
-      proofs.forEach((p, i) => p.classList.toggle('active', i === idx));
-    };
+    const setActive = (idx) => { if (idx === cur) return; cur = idx; proofs.forEach((p, i) => p.classList.toggle('active', i === idx)); };
     const complete = () => { if (cur === -1) return; cur = -1; whyStage.classList.remove('guided'); proofs.forEach((p) => p.classList.remove('active')); };
-    ScrollTrigger.create({
-      trigger: '.x-why', start: 'top 76%', end: 'bottom 58%',
-      onUpdate: (self) => {
-        const p = self.progress;
-        if (p >= HOLD) { complete(); return; }        // finished → full grid revealed
-        whyStage.classList.add('guided');
-        setActive(Math.min(n - 1, Math.floor((p / HOLD) * n)));
-      },
-      onLeave: complete,        // scrolled past → complete grid stays
-      onLeaveBack: complete     // scrolled back above → reset to full grid
+    const drive = (p) => { if (p >= HOLD) { complete(); return; } whyStage.classList.add('guided'); setActive(Math.min(n - 1, Math.floor((p / HOLD) * n))); };
+
+    const whyMM = gsap.matchMedia();
+    // Desktop: gently pin the section; scroll progress drives all six cards with
+    // generous time each (~520px of scroll per card), then it releases smoothly.
+    whyMM.add('(min-width:821px)', () => {
+      const st = ScrollTrigger.create({
+        trigger: '.x-why', start: 'top top', end: '+=' + Math.round(n * 520),
+        pin: '.x-why-pin', anticipatePin: 1, scrub: 0.6,
+        onUpdate: (self) => drive(self.progress),
+        onLeaveBack: complete
+      });
+      return () => { st.kill(); complete(); };
+    });
+    // Mobile: no pin — progress-driven as the section passes through the viewport.
+    whyMM.add('(max-width:820px)', () => {
+      const st = ScrollTrigger.create({
+        trigger: '.x-why', start: 'top 76%', end: 'bottom 58%',
+        onUpdate: (self) => drive(self.progress), onLeave: complete, onLeaveBack: complete
+      });
+      return () => { st.kill(); complete(); };
     });
   }
 

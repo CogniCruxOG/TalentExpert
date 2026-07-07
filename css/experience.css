@@ -170,8 +170,9 @@ html.lenis,html.lenis body{height:auto}
    ===================================================================== */
 .x-why{position:relative;background:transparent}
 .x-why-pin{padding:clamp(80px,10vh,120px) 0}
-.x-why-head{max-width:900px;margin:0 auto 52px;text-align:center}
-.x-why-head .title{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.12}
+@media(min-width:821px){ .x-why-pin{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:64px 0} }
+.x-why-head{max-width:min(1040px,92vw);margin:0 auto 52px;text-align:center}
+.x-why-head .title{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.12;text-wrap:balance}
 .x-why-head .title b{color:var(--ink)}
 /* revealing 3-column card grid (previously revealed cards stay visible) */
 .x-why-stage{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1160px;margin:0 auto;width:100%}
