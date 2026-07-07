@@ -279,33 +279,6 @@
     });
   }
 
-  /* ============ THE GAP — kinetic mission reveal ============ */
-  const gap = $('#gap');
-  if (gap) {
-    const gtl = gsap.timeline({ scrollTrigger: { trigger: gap, start: 'top 62%' } });
-    gtl.from('[data-gap="k"]', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out' })
-       .from('[data-gap="head"]', { y: 34, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
-       .from('[data-gap="pillar"]', { y: 30, opacity: 0, duration: 0.7, ease: 'power2.out', stagger: 0.15 }, '-=0.2')
-       .from('[data-gap="close"]', { y: 20, opacity: 0, duration: 0.7, ease: 'power2.out' }, '-=0.1');
-    // draw connecting line + spark travels across
-    const gp = $('#gapPath'), spark = $('#gapSpark');
-    if (gp && gp.getTotalLength) {
-      const L = gp.getTotalLength();
-      gp.style.strokeDasharray = L; gp.style.strokeDashoffset = L;
-      ScrollTrigger.create({
-        trigger: gap, start: 'top 55%',
-        onEnter: () => {
-          gsap.to(gp, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut', delay: 0.5 });
-          const o = { t: 0 };
-          gsap.to(o, {
-            t: 1, duration: 1.2, ease: 'power2.inOut', delay: 0.5,
-            onUpdate: () => { const p = gp.getPointAtLength(o.t * L); spark.setAttribute('cx', p.x); spark.setAttribute('cy', p.y); }
-          });
-        }, once: true
-      });
-    }
-  }
-
   /* ============ WHY CHOOSE US — pinned spotlight, one proof at a time (no overlap) ============ */
   const whyStage = $('#whyStage');
   if (whyStage) {
@@ -326,29 +299,6 @@
     whyStage.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - wsx, dy = e.changedTouches[0].clientY - wsy;
       if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) wStage.go((wStage.index + (dx < 0 ? 1 : -1) + proofs.length) % proofs.length);
-    });
-  }
-
-  /* ============ REAL STORIES — pinned, one complete story at a time (no overlap) ============ */
-  const stage = $('#voiceStage');
-  if (stage) {
-    const voices = $$('.x-voice', stage);
-    const segs = $$('#voiceDots .seg');
-    const vStage = makeStage(voices, (i) => segs.forEach((s, k) => s.classList.toggle('on', k === i)));
-    segs.forEach((s, i) => s.addEventListener('click', () => vStage.go(i)));
-    mm.add('(min-width:821px)', () => {
-      const st = ScrollTrigger.create({
-        trigger: '#voices', start: 'top top', end: '+=' + (voices.length * 360), pin: '.x-voices-pin', scrub: 0.4,
-        onUpdate: (self) => vStage.go(Math.min(voices.length - 1, Math.floor(self.progress * voices.length * 0.999)))
-      });
-      return () => { st.kill(); vStage.reset(); };
-    });
-    // mobile: swipe
-    let sx = 0, sy = 0;
-    stage.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
-    stage.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) vStage.go((vStage.index + (dx < 0 ? 1 : -1) + voices.length) % voices.length);
     });
   }
 
