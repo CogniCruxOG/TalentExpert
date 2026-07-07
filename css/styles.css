@@ -429,9 +429,16 @@ footer.site{position:relative;overflow:hidden;padding:96px 0 30px;color:var(--in
   background:
     radial-gradient(1100px 420px at 82% 0%,rgba(249,165,106,.16),transparent 60%),
     radial-gradient(900px 500px at 6% 26%,rgba(242,111,33,.07),transparent 55%),
+    radial-gradient(860px 560px at 97% 94%,rgba(242,111,33,.12),transparent 58%),
     linear-gradient(180deg,#fff,var(--orange-wash) 58%,#FBEEE4)}
 footer.site .foot-orn{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 footer.site .foot-orn>svg{position:absolute;bottom:-16px;left:0;width:100%;height:auto;opacity:.55}
+/* soft temple echo in the bottom-right — the homepage's identity concludes here */
+.foot-temple{position:absolute;right:0;bottom:0;width:min(560px,46%);height:100%;pointer-events:none;
+  background:url("../assets/illustrations/temple.png") no-repeat right bottom;background-size:auto 150%;opacity:.09;
+  -webkit-mask-image:radial-gradient(135% 130% at 100% 100%,#000 34%,transparent 72%);
+          mask-image:radial-gradient(135% 130% at 100% 100%,#000 34%,transparent 72%)}
+@media(max-width:900px){ .foot-temple{display:none} }
 footer.site .foot-orn::before,footer.site .foot-orn::after{content:"";position:absolute;border-radius:50%;filter:blur(64px)}
 footer.site .foot-orn::before{width:440px;height:440px;top:-140px;right:5%;background:radial-gradient(circle,rgba(242,111,33,.14),transparent 70%)}
 footer.site .foot-orn::after{width:380px;height:380px;bottom:-150px;left:-50px;background:radial-gradient(circle,rgba(249,165,106,.12),transparent 70%)}
@@ -444,7 +451,11 @@ footer.site:hover .foot-glow{opacity:1}
 
 /* --- brand column --- */
 .foot-logo{height:52px;width:auto;margin-bottom:20px}
-.foot-msg{font-size:1.02rem;line-height:1.6;color:var(--ink2);max-width:36ch;margin-bottom:26px;font-weight:500}
+.foot-msg{font-size:1.02rem;line-height:1.6;color:var(--ink2);max-width:38ch;margin-bottom:26px;font-weight:500}
+/* two-statement editorial hierarchy — no dash; the second line is the emphasis */
+.foot-msg .fm-1{display:block}
+.foot-msg .fm-2{display:block;margin-top:9px;font-family:'Fraunces';font-style:italic;font-weight:500;font-size:1.14rem;line-height:1.36;letter-spacing:-.005em;
+  background:linear-gradient(92deg,var(--orange),var(--orange-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
 .foot-cards{display:grid;gap:12px;margin-bottom:24px}
 .foot-card{display:flex;gap:14px;align-items:center;padding:13px 16px;border-radius:16px;
   background:var(--glass);border:1px solid rgba(255,255,255,.7);box-shadow:0 8px 24px -18px rgba(26,26,26,.4);
