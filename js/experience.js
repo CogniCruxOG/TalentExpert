@@ -38,7 +38,6 @@
     $$('.x-who .wp, .x-who .ddd-stage').forEach(e => e.classList.add('on'));
     $$('.x-who .ddd-stage').forEach(e => e.classList.add('reached'));
     $$('.do-panel').forEach(e => e.classList.add('focus'));
-    $$('.proof').forEach(e => e.classList.add('in'));
     const grow = $('.x-title .grow'); if (grow) grow.classList.add('drawn');
     loadTempleImg();
   }
@@ -175,14 +174,30 @@
     updateFocus();
   }
 
-  /* ================= WHY CHOOSE US — cards enter 1..6 in sequence (replays on scroll) ================= */
-  const proofs = $$('.x-why .proof');
-  if (proofs.length) {
-    let timers = [];
+  /* ================= WHY CHOOSE US — guided presentation (progress-driven, NO pin) =================
+     As the section scrolls through, ONE card is the hero at a time while the rest
+     stay visible but muted. Past the last card, the whole grid completes. */
+  const whyStage = $('.x-why-stage');
+  const proofs = whyStage ? $$('.proof', whyStage) : [];
+  if (whyStage && proofs.length) {
+    const n = proofs.length;
+    const HOLD = 0.86;            // reserve the final tail for the "complete grid" state
+    let cur = -2;
+    const setActive = (idx) => {
+      if (idx === cur) return; cur = idx;
+      proofs.forEach((p, i) => p.classList.toggle('active', i === idx));
+    };
+    const complete = () => { if (cur === -1) return; cur = -1; whyStage.classList.remove('guided'); proofs.forEach((p) => p.classList.remove('active')); };
     ScrollTrigger.create({
-      trigger: '.x-why-stage', start: 'top 84%',
-      onEnter: () => { timers.forEach(clearTimeout); timers = proofs.map((el, i) => setTimeout(() => el.classList.add('in'), i * 115)); },
-      onLeaveBack: () => { timers.forEach(clearTimeout); proofs.forEach((el) => el.classList.remove('in')); }
+      trigger: '.x-why', start: 'top 76%', end: 'bottom 58%',
+      onUpdate: (self) => {
+        const p = self.progress;
+        if (p >= HOLD) { complete(); return; }        // finished → full grid revealed
+        whyStage.classList.add('guided');
+        setActive(Math.min(n - 1, Math.floor((p / HOLD) * n)));
+      },
+      onLeave: complete,        // scrolled past → complete grid stays
+      onLeaveBack: complete     // scrolled back above → reset to full grid
     });
   }
 

@@ -177,10 +177,27 @@ html.lenis,html.lenis body{height:auto}
 .x-why-stage{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1160px;margin:0 auto;width:100%}
 .proof{position:relative;display:flex;flex-direction:column;gap:16px;padding:32px 30px;border-radius:var(--r-lg);
   background:#fff;border:1px solid var(--hair);box-shadow:var(--sh-s);
-  opacity:0;transform:translate3d(0,32px,0) scale(.955);
-  transition:opacity .6s var(--ease),transform .6s var(--ease),box-shadow .45s var(--ease);will-change:opacity,transform}
-.proof.in{opacity:1;transform:none}
+  transition:opacity .7s var(--ease),filter .7s var(--ease),transform .7s var(--ease),box-shadow .7s var(--ease);
+  will-change:opacity,transform,filter}
+/* orange accent line (left edge) — fills upward only when the card is active */
+.proof::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:3px;
+  background:linear-gradient(180deg,var(--orange),var(--orange-soft));
+  transform:scaleY(0);transform-origin:bottom;opacity:0;transition:transform .7s var(--ease),opacity .5s var(--ease)}
 .proof:hover{transform:translate3d(0,-5px,0);box-shadow:var(--sh-m)}
+
+/* ===== GUIDED PRESENTATION — one strength is the hero, the rest stay visible but muted ===== */
+.x-why-stage.guided .proof{opacity:.3;filter:blur(3px) saturate(.85);transform:scale(.97);
+  box-shadow:0 12px 30px -26px rgba(26,26,26,.32)}
+.x-why-stage.guided .proof.active{opacity:1;filter:none;transform:translate3d(0,-15px,0) scale(1);
+  box-shadow:0 40px 74px -34px rgba(242,111,33,.42)}
+.x-why-stage.guided .proof.active::before{transform:scaleY(1);opacity:1}
+.x-why-stage.guided .proof.active .proof-ic{box-shadow:0 14px 30px -8px rgba(242,111,33,.55);transform:translateY(-2px)}
+.x-why-stage.guided .proof.active .proof-n{filter:brightness(1.12)}
+/* the active card's title/paragraph ease up as it becomes the hero */
+.x-why-stage.guided .proof .proof-body h3,.x-why-stage.guided .proof .proof-body p{transition:transform .7s var(--ease),opacity .7s var(--ease)}
+.x-why-stage.guided .proof:not(.active) .proof-body h3{transform:translateY(4px)}
+.x-why-stage.guided .proof.active .proof-body h3{transform:translateY(-3px)}
+@media(prefers-reduced-motion:reduce){ .x-why-stage.guided .proof{opacity:1;filter:none;transform:none} }
 .proof-ic{width:72px;height:72px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:var(--orange-wash);color:var(--orange);box-shadow:var(--sh-s)}
 .proof-ic .ic{width:32px;height:32px}
 .proof-n{font-family:'Fraunces';font-style:italic;color:var(--orange);font-size:.92rem;display:block;margin-bottom:4px}
