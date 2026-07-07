@@ -140,8 +140,8 @@
   const stages = $$('.x-who .ddd-stage');
   if (stages.length || wps.length) {
     const N = 3;
-    const LEAD = 0.12;   // initial ghosted band (Stage 1) before Step 01 activates
-    const HOLD = 0.9;    // by 90% of progress all three steps have activated
+    const LEAD = 0.14;   // initial ghosted state (visible while pinned) before Step 01
+    const HOLD = 0.92;   // by 92% of progress all three steps have activated
     let last = -999;
     const applyWho = (active) => {
       if (active === last) return; last = active;
@@ -152,14 +152,28 @@
         s.classList.toggle('done', i < active);                             // passed → inactive but readable
       });
     };
-    applyWho(-1);   // arm the ghosted Stage-1 state at load (no flash before the trigger fires)
-    ScrollTrigger.create({
-      trigger: '#journey', start: 'top 80%', end: 'bottom 60%', scrub: true,
-      onUpdate: (self) => {
-        const p = self.progress;
-        const active = p < LEAD ? -1 : Math.min(N - 1, Math.floor(((p - LEAD) / (HOLD - LEAD)) * N));
-        applyWho(active);
-      }
+    const drive = (p) => applyWho(p < LEAD ? -1 : Math.min(N - 1, Math.floor(((p - LEAD) / (HOLD - LEAD)) * N)));
+
+    const whoMM = gsap.matchMedia();
+    // Desktop: pin the section (like Why Choose Us). Scroll scrubs the story —
+    // paragraph N resolves as step N activates — then it releases. Fully reversible.
+    whoMM.add('(min-width:821px)', () => {
+      applyWho(-1);
+      const st = ScrollTrigger.create({
+        trigger: '.x-who', start: 'top top', end: '+=' + Math.round((N + 1) * 500),
+        pin: '.x-who-pin', anticipatePin: 1, scrub: 0.6,
+        onUpdate: (self) => drive(self.progress)
+      });
+      return () => { st.kill(); applyWho(-1); };
+    });
+    // Mobile: no pin — same reversible story as the section passes through.
+    whoMM.add('(max-width:820px)', () => {
+      applyWho(-1);
+      const st = ScrollTrigger.create({
+        trigger: '#journey', start: 'top 80%', end: 'bottom 60%', scrub: true,
+        onUpdate: (self) => drive(self.progress)
+      });
+      return () => { st.kill(); applyWho(-1); };
     });
   }
 

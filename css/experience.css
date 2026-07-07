@@ -103,6 +103,9 @@ html.lenis,html.lenis body{height:auto}
    ===================================================================== */
 .x-who{position:relative;background:transparent}
 .x-who-pin{padding:clamp(80px,10vh,120px) 0}
+/* pinned storytelling (desktop): content sits below the fixed navbar while the
+   scroll scrubs the Discover/Develop/Sustain story, then releases */
+@media(min-width:821px){ .x-who-pin{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:clamp(110px,13vh,130px) 0 44px} }
 .x-who-head{max-width:840px;margin:0 auto 46px;text-align:center}
 /* editorial hierarchy — no dash: statement one (regular) then a stronger closer */
 .x-who-head .title{line-height:1.1}
