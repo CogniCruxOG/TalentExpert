@@ -53,6 +53,13 @@
   const prog = $('#xProgress');
   if (prog) ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (self) => gsap.set(prog, { scaleX: self.progress }) });
 
+  /* ---- Environmental temple backdrop drifts subtly through the whole page ---- */
+  const pageTemple = $('#pageTemple');
+  if (pageTemple) gsap.to(pageTemple, {
+    yPercent: 9, ease: 'none',
+    scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.6 }
+  });
+
   /* ================= HERO — load reveal + temple depth ================= */
   loadTempleImg();
   const temple = $('#xTemple');
@@ -113,9 +120,9 @@
     });
   }
 
-  /* ================= Generic reveal helper (GPU transforms, once) ================= */
+  /* ================= Generic reveal helper (GPU transforms, replays on scroll) ================= */
   const reveal = (els, opts) => els.forEach((el, i) => gsap.from(el, Object.assign({
-    scrollTrigger: { trigger: el, start: 'top 86%', once: true },
+    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' },
     y: 34, opacity: 0, duration: 0.8, ease: 'power2.out', delay: (i % 4) * 0.05
   }, opts)));
 
@@ -127,7 +134,11 @@
 
   /* ================= WHO WE ARE — progressive paragraphs + timeline (no pin) ================= */
   $$('.x-who .wp').forEach((w) => {
-    ScrollTrigger.create({ trigger: w, start: 'top 82%', once: true, onEnter: () => w.classList.add('on') });
+    ScrollTrigger.create({
+      trigger: w, start: 'top 84%',
+      onEnter: () => w.classList.add('on'),
+      onLeaveBack: () => w.classList.remove('on')   // replays as you scroll back up
+    });
   });
   const stages = $$('.x-who .ddd-stage');
   if (stages.length) {
@@ -162,18 +173,20 @@
     updateFocus();
   }
 
-  /* ================= WHY CHOOSE US — cards enter 1..6 in sequence, stay visible (no pin) ================= */
+  /* ================= WHY CHOOSE US — cards enter 1..6 in sequence (replays on scroll) ================= */
   const proofs = $$('.x-why .proof');
   if (proofs.length) {
+    let timers = [];
     ScrollTrigger.create({
-      trigger: '.x-why-stage', start: 'top 82%', once: true,
-      onEnter: () => proofs.forEach((el, i) => setTimeout(() => el.classList.add('in'), i * 115))
+      trigger: '.x-why-stage', start: 'top 84%',
+      onEnter: () => { timers.forEach(clearTimeout); timers = proofs.map((el, i) => setTimeout(() => el.classList.add('in'), i * 115)); },
+      onLeaveBack: () => { timers.forEach(clearTimeout); proofs.forEach((el) => el.classList.remove('in')); }
     });
   }
 
   /* ================= AUDIENCE PATHS — reveal + slide into place ================= */
   $$('.x-path').forEach((el, i) => gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+    scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' },
     y: 44, opacity: 0, scale: 0.985, duration: 0.75, ease: 'power3.out', delay: i * 0.08
   }));
   // elegant mouse-follow spotlight on the path cards (no tilt — clean, premium)
@@ -195,15 +208,15 @@
     });
   }
   reveal($$('.x-founder-sign'), { x: 24, y: 0, delay: 0, duration: 0.9,
-    scrollTrigger: { trigger: '.x-founder', start: 'top 55%', once: true } });
+    scrollTrigger: { trigger: '.x-founder', start: 'top 55%', toggleActions: 'play none none reverse' } });
 
   /* ================= FINAL CTA — cards animate into the climax ================= */
   $$('.x-finale-cards .fin-card').forEach((el, i) => gsap.from(el, {
-    scrollTrigger: { trigger: '.x-finale', start: 'top 72%', once: true },
+    scrollTrigger: { trigger: '.x-finale', start: 'top 72%', toggleActions: 'play none none reverse' },
     y: 30, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.1 + i * 0.1
   }));
   gsap.from('.x-finale .fin-blob', {
-    scrollTrigger: { trigger: '.x-finale', start: 'top 80%', once: true },
+    scrollTrigger: { trigger: '.x-finale', start: 'top 80%', toggleActions: 'play none none reverse' },
     opacity: 0, scale: 0.6, duration: 1.4, ease: 'power2.out', stagger: 0.15
   });
 
