@@ -1,0 +1,54 @@
+/* =====================================================================
+   VISION & MISSION — scroll storytelling (About page)
+   Loaded after styles.css. Motion is driven by GSAP scrub in js/about.js.
+   Every CSS default here = the FINAL (revealed) state, so no-JS and
+   reduced-motion render the section fully and legibly.
+   Animate transform / opacity / filter / clip-path + CSS vars only.
+   ===================================================================== */
+
+/* pinned stage on desktop — content centred in the viewport */
+@media(min-width:821px){ #vision{min-height:100vh;display:flex;align-items:center;overflow:hidden} }
+#vision .wrap{position:relative;z-index:2;width:100%}
+#vision .feat-card{position:relative;will-change:transform}
+
+/* --- ambient layers behind the two cards --- */
+.vm-aura{position:absolute;left:50%;top:44%;z-index:0;width:min(680px,60%);aspect-ratio:1;border-radius:50%;
+  pointer-events:none;filter:blur(52px);opacity:.75;
+  background:radial-gradient(circle,rgba(242,111,33,.16),rgba(249,165,106,.08) 45%,transparent 70%)}
+.vm-temple{position:absolute;right:-4%;bottom:-12%;z-index:0;width:min(720px,54%);height:120%;pointer-events:none;
+  background:url("../assets/illustrations/temple.png") no-repeat right 12%;background-size:auto 190%;
+  opacity:.06;mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(150% 150% at 100% 92%,#000 26%,transparent 76%);
+          mask-image:radial-gradient(150% 150% at 100% 92%,#000 26%,transparent 76%)}
+@media(max-width:900px){ .vm-temple{display:none} }
+
+/* icon shell — let glow/smoke spill past the chip */
+.vm-icon{position:relative;display:grid;place-items:center;overflow:visible}
+
+/* --- Vision: eye opening (clip-path) + golden glow (--glow) --- */
+.vm-glow{position:absolute;inset:-55%;z-index:0;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,196,120,.95),rgba(242,111,33,.4) 44%,transparent 72%);
+  opacity:var(--glow,0);transform:scale(calc(.45 + var(--glow,0) * .75));filter:blur(3px);
+  will-change:opacity,transform}
+.vm-eye{position:relative;z-index:2;display:grid;place-items:center;color:var(--charcoal);
+  clip-path:inset(calc((1 - var(--open,1)) * 46%) 0% round 4px);will-change:clip-path}
+.vm-eye svg{width:34px;height:34px;display:block}
+
+/* --- Mission: smoke (--smoke) → rocket (--rocket) ignite (--flame) + lift (--lift) --- */
+.vm-rocket-ic{position:relative;z-index:2;color:var(--orange);opacity:var(--rocket,1);
+  transform:translate3d(0,var(--lift,0px),0);will-change:transform,opacity}
+.vm-rocket-ic .ic{width:32px;height:32px}
+.vm-smoke{position:absolute;inset:-32%;z-index:3;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(176,170,164,.92),rgba(176,170,164,.42) 46%,transparent 70%);
+  opacity:var(--smoke,0);transform:scale(calc(1 + var(--smoke,0) * .45));filter:blur(6px);
+  will-change:opacity,transform}
+.vm-flame{position:absolute;left:50%;top:60%;width:14px;height:24px;z-index:1;pointer-events:none;
+  transform:translateX(-50%) scaleY(var(--flame,0));transform-origin:top center;
+  background:radial-gradient(circle at 50% 15%,rgba(255,224,150,.95),rgba(242,111,33,.75) 48%,transparent 78%);
+  border-radius:50% 50% 46% 46% / 26% 26% 74% 74%;opacity:var(--flame,0);filter:blur(1px);
+  will-change:transform,opacity}
+.vm-spark{position:absolute;left:50%;top:62%;width:3px;height:3px;border-radius:50%;background:var(--orange);
+  z-index:1;opacity:0;pointer-events:none;will-change:transform,opacity}
+
+/* text "coming into focus" (opacity/blur/letter-spacing/translate set by JS) */
+.vm-p{will-change:opacity,filter,transform}

@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/about.css">
 </head>
 <body data-page="about">
 
@@ -108,21 +109,31 @@
 
 <!-- ============ VISION & MISSION ============ -->
 <section class="section alt" id="vision">
+  <div class="vm-temple" aria-hidden="true"></div>
+  <div class="vm-aura" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow">Vision &amp; Mission</span>
       <h2 class="title">Where we're <b>going</b> — and <b>why.</b></h2>
     </div>
     <div class="grid-2">
-      <div class="card feat-card reveal d1" style="padding:40px">
-        <span class="chip b" style="width:60px;height:60px"><svg class="ic"><use href="assets/icons/sprite.svg#i-eye"/></svg></span>
+      <div class="card feat-card" style="padding:40px">
+        <span class="chip b vm-icon" style="width:60px;height:60px">
+          <span class="vm-glow" aria-hidden="true"></span>
+          <span class="vm-eye" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24 Q24 9 42 24 Q24 39 6 24 Z"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="2.4" fill="currentColor" stroke="none"/></svg></span>
+        </span>
         <h3 style="margin-top:20px">Our Vision</h3>
-        <p style="font-family:'Fraunces',serif;font-size:1.3rem;font-style:italic;color:var(--ink);line-height:1.4">From every village. Into every industry. Building India's workforce, one overlooked person at a time.</p>
+        <p class="vm-p" style="font-family:'Fraunces',serif;font-size:1.3rem;font-style:italic;color:var(--ink);line-height:1.4">From every village. Into every industry. Building India's workforce, one overlooked person at a time.</p>
       </div>
-      <div class="card feat-card reveal d2" style="padding:40px">
-        <span class="chip o" style="width:60px;height:60px"><svg class="ic"><use href="assets/icons/sprite.svg#i-rocket"/></svg></span>
+      <div class="card feat-card" style="padding:40px">
+        <span class="chip o vm-icon vm-rocket" style="width:60px;height:60px">
+          <span class="vm-flame" aria-hidden="true"></span>
+          <span class="vm-spark" aria-hidden="true"></span><span class="vm-spark" aria-hidden="true"></span><span class="vm-spark" aria-hidden="true"></span>
+          <span class="vm-rocket-ic" aria-hidden="true"><svg class="ic"><use href="assets/icons/sprite.svg#i-rocket"/></svg></span>
+          <span class="vm-smoke" aria-hidden="true"></span>
+        </span>
         <h3 style="margin-top:20px">Our Mission</h3>
-        <p style="font-family:'Fraunces',serif;font-size:1.3rem;font-style:italic;color:var(--ink);line-height:1.4">Behind every hire is a family waiting for change. We go to the grassroots, invest in real people, and build careers that transform not just businesses — but lives, communities, and futures.</p>
+        <p class="vm-p" style="font-family:'Fraunces',serif;font-size:1.3rem;font-style:italic;color:var(--ink);line-height:1.4">Behind every hire is a family waiting for change. We go to the grassroots, invest in real people, and build careers that transform not just businesses — but lives, communities, and futures.</p>
       </div>
     </div>
   </div>
@@ -270,6 +281,10 @@
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/about.js"></script>
 </body>
 </html>

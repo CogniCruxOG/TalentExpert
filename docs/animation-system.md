@@ -98,8 +98,15 @@ Order = mandated Home order. Everything below lives in `experience.js` unless no
 - **Final CTA** (`.x-finale`): fin‑card reveals + blob reveals (`toggleActions` reverse).
 - **Footer** (global — see §7).
 
-> Note: **Vision & Mission** is a section on **`about.html`**, not the Home page. If it ever
-> becomes a pinned storytelling section, use the §3 template.
+### About page (`about.html` → `js/about.js` + `css/about.css`)
+- **Vision & Mission** (`#vision`): its own scroll engine (Lenis + ScrollTrigger loaded on
+  about.html) + a **pinned scrub timeline** using the §3 template. Story: **Vision** — the eye
+  opens (`--open` clip‑path slit→almond) + golden glow awakens (`--glow`) + the statement comes
+  into focus (opacity/blur/letter‑spacing/y); then **Mission** — smoke disperses (`--smoke`),
+  rocket appears (`--rocket`) + ignites (`--flame`) + lifts (`--lift`) with spark particles, and
+  the statement resolves. Warm aura drifts vision→mission (`x`), temple drifts (`yPercent`), cards
+  idle‑float. Fully reversible; mobile = non‑pinned light reveal; reduced‑motion = CSS defaults
+  (final state). New CSS vars: `--open, --glow, --smoke, --rocket, --flame, --lift`.
 
 ## 5. Reusable patterns
 - **`reveal(els, opts)`** helper: `gsap.from` with `y:38, opacity:0, filter:'blur(7px)'`,
