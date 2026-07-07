@@ -179,8 +179,9 @@
         });
       }, { passive: true });
     }
-    // Magnetic hover — button drifts subtly toward the cursor, springs back on leave.
-    $$('.magnetic').forEach((btn) => {
+    // Magnetic hover — footer subscribe button only (home hero CTAs are handled
+    // by experience.js). Button drifts toward the cursor, springs back on leave.
+    $$('.news-btn.magnetic').forEach((btn) => {
       let mraf = 0, dx = 0, dy = 0;
       btn.addEventListener('pointermove', (e) => {
         const r = btn.getBoundingClientRect();
