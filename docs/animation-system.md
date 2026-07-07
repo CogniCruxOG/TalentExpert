@@ -100,10 +100,12 @@ Order = mandated Home order. Everything below lives in `experience.js` unless no
 
 ### About page (`about.html` → `js/about.js` + `css/about.css`)
 - **Vision & Mission** (`#vision`): its own scroll engine (Lenis + ScrollTrigger loaded on
-  about.html) + a **non‑pinned scrub timeline** (start `top 82%` → end `bottom 32%`). It is
-  deliberately NOT pinned: on low/mid machines the pin made the page feel stuck ("can't
-  scroll") and pinning + effects overloaded the GPU. Keep it non‑pinned + effects light
-  (transform/opacity/gradients only — no blur/mix‑blend/letter‑spacing). Story: **Vision** — the eye
+  about.html) + a single **TIMED timeline that plays on enter** (`start: top 72%`,
+  `toggleActions: play none none reverse`) — NOT pinned, NOT scrubbed. Pinning/scrubbing made
+  the page feel stuck ("can't scroll") and overloaded low/mid GPUs, and a subtle scrub read as
+  "no animation"; a self‑playing on‑enter timeline is clearly visible and lets the page scroll
+  freely. Keep effects light (transform/opacity/gradients/clip‑path only — no blur/mix‑blend/
+  letter‑spacing). Story: **Vision** — the eye
   opens (`--open` clip‑path slit→almond) + golden glow awakens (`--glow`) + the statement comes
   into focus (opacity/blur/letter‑spacing/y); then **Mission** — smoke disperses (`--smoke`),
   rocket appears (`--rocket`) + ignites (`--flame`) + lifts (`--lift`) with spark particles, and
