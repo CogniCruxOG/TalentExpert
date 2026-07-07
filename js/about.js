@@ -42,23 +42,23 @@
     const arm = () => {
       if (eye) gsap.set(eye, { '--open': 0 });
       if (glow) gsap.set(glow, { '--glow': 0 });
-      if (vP) gsap.set(vP, { opacity: 0.12, filter: 'blur(6px)', y: 14, letterSpacing: '0.05em' });
+      if (vP) gsap.set(vP, { opacity: 0.12, y: 14, scale: 0.985 });
       if (smoke) gsap.set(smoke, { '--smoke': 1 });
       if (rocket) gsap.set(rocket, { '--rocket': 0.16, '--lift': '0px' });
       if (flame) gsap.set(flame, { '--flame': 0 });
       if (sparks.length) gsap.set(sparks, { opacity: 0, x: 0, y: 0 });
-      if (mP) gsap.set(mP, { opacity: 0.12, filter: 'blur(6px)', y: 14, letterSpacing: '0.05em' });
+      if (mP) gsap.set(mP, { opacity: 0.12, y: 14, scale: 0.985 });
     };
     // final (fully revealed) state — mobile + cleanup
     const show = () => {
       if (eye) gsap.set(eye, { '--open': 1 });
       if (glow) gsap.set(glow, { '--glow': 0 });
-      if (vP) gsap.set(vP, { opacity: 1, filter: 'blur(0px)', y: 0, letterSpacing: '0em' });
+      if (vP) gsap.set(vP, { opacity: 1, y: 0, scale: 1 });
       if (smoke) gsap.set(smoke, { '--smoke': 0 });
       if (rocket) gsap.set(rocket, { '--rocket': 1, '--lift': '0px' });
       if (flame) gsap.set(flame, { '--flame': 0 });
       if (sparks.length) gsap.set(sparks, { opacity: 0 });
-      if (mP) gsap.set(mP, { opacity: 1, filter: 'blur(0px)', y: 0, letterSpacing: '0em' });
+      if (mP) gsap.set(mP, { opacity: 1, y: 0, scale: 1 });
     };
 
     const mm = gsap.matchMedia();
@@ -77,7 +77,7 @@
       tl.to(eye, { '--open': 1, ease: 'power2.out', duration: 0.15 }, 0.05)
         .to(glow, { '--glow': 1, ease: 'sine.out', duration: 0.11 }, 0.12)
         .to(glow, { '--glow': 0.1, ease: 'sine.inOut', duration: 0.16 }, 0.26)
-        .to(vP, { opacity: 1, filter: 'blur(0px)', y: 0, letterSpacing: '0em', ease: 'power2.out', duration: 0.22 }, 0.2);
+        .to(vP, { opacity: 1, y: 0, scale: 1, ease: 'power2.out', duration: 0.22 }, 0.2);
 
       // ---- MISSION (~0.52 .. 0.94): smoke disperses, rocket ignites + lifts, text resolves
       tl.to(smoke, { '--smoke': 0, ease: 'power2.out', duration: 0.18 }, 0.52)
@@ -86,24 +86,20 @@
         .to(rocket, { '--lift': '-5px', ease: 'sine.inOut', duration: 0.2 }, 0.68)
         .to(sparks, { opacity: 0.9, x: (i) => (i - 1) * 5, y: (i) => 8 + i * 3, ease: 'power1.out', duration: 0.1, stagger: 0.02 }, 0.68)
         .to(sparks, { opacity: 0, ease: 'power1.in', duration: 0.14 }, 0.8)
-        .to(mP, { opacity: 1, filter: 'blur(0px)', y: 0, letterSpacing: '0em', ease: 'power2.out', duration: 0.22 }, 0.66);
+        .to(mP, { opacity: 1, y: 0, scale: 1, ease: 'power2.out', duration: 0.22 }, 0.66);
 
       // ---- ambient: warm aura drifts vision→mission (transform only — cheap).
       // (Temple stays static: animating a large masked image is not worth the paint cost.)
       if (aura) tl.fromTo(aura, { x: -140 }, { x: 140, ease: 'none', duration: 1 }, 0);
 
-      // subtle idle float + shadow breathe (independent of the scrub)
-      const floats = [vCard, mCard].filter(Boolean).map((c, i) =>
-        gsap.to(c, { y: '-=3', duration: 2.6 + i * 0.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * 0.35 }));
-
-      return () => { if (tl.scrollTrigger) tl.scrollTrigger.kill(); tl.kill(); floats.forEach((f) => f.kill()); show(); };
+      return () => { if (tl.scrollTrigger) tl.scrollTrigger.kill(); tl.kill(); show(); };
     });
 
     // Mobile: no pin — show the revealed state (a light reveal handles entrance)
     mm.add('(max-width:820px)', () => {
       show();
       const t = gsap.from([vP, mP].filter(Boolean), {
-        opacity: 0.15, filter: 'blur(5px)', y: 14, ease: 'power2.out', duration: 0.6, stagger: 0.12,
+        opacity: 0.15, y: 14, scale: 0.985, ease: 'power2.out', duration: 0.6, stagger: 0.12,
         scrollTrigger: { trigger: '#vision', start: 'top 78%' }
       });
       return () => { if (t.scrollTrigger) t.scrollTrigger.kill(); t.kill(); show(); };
