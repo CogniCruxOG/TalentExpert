@@ -11,13 +11,16 @@
 #vision .wrap{position:relative;z-index:2;width:100%}
 #vision .feat-card{position:relative;will-change:transform}
 
-/* --- ambient layers behind the two cards --- */
-.vm-aura{position:absolute;left:50%;top:44%;z-index:0;width:min(680px,60%);aspect-ratio:1;border-radius:50%;
-  pointer-events:none;filter:blur(52px);opacity:.75;
-  background:radial-gradient(circle,rgba(242,111,33,.16),rgba(249,165,106,.08) 45%,transparent 70%)}
+/* --- ambient layers behind the two cards ---
+   NOTE: no filter:blur() and no mix-blend-mode here — both are very expensive to
+   repaint/re-composite every frame inside the pinned+scrubbed section (they froze
+   low/mid GPUs). The radial gradient is already soft; the temple is a static
+   low-opacity image. Keep it this way. */
+.vm-aura{position:absolute;left:50%;top:44%;z-index:0;width:min(720px,64%);aspect-ratio:1;border-radius:50%;
+  pointer-events:none;opacity:.85;will-change:transform;
+  background:radial-gradient(circle,rgba(242,111,33,.12),rgba(249,165,106,.06) 46%,transparent 72%)}
 .vm-temple{position:absolute;right:-4%;bottom:-12%;z-index:0;width:min(720px,54%);height:120%;pointer-events:none;
-  background:url("../assets/illustrations/temple.png") no-repeat right 12%;background-size:auto 190%;
-  opacity:.06;mix-blend-mode:multiply;
+  background:url("../assets/illustrations/temple.png") no-repeat right 12%;background-size:auto 190%;opacity:.05;
   -webkit-mask-image:radial-gradient(150% 150% at 100% 92%,#000 26%,transparent 76%);
           mask-image:radial-gradient(150% 150% at 100% 92%,#000 26%,transparent 76%)}
 @media(max-width:900px){ .vm-temple{display:none} }

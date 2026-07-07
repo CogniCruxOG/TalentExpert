@@ -41,6 +41,12 @@ reload them before touching UI/animation.
   `clip-path` (when needed), and CSS custom properties that feed those. **Never** animate
   `width/height/margin/padding/top/left/right/bottom`. Maintain **60fps**; use `will-change`
   on animated elements.
+- **Never** put `mix-blend-mode`, or a **large `filter:blur()`** (roughly >16px on a big
+  element), on an element that lives inside a **pinned/scrubbed** section or is itself
+  animated — both force a full‑region repaint/re‑composite every frame and **froze low/mid
+  GPUs** (regression on About → Vision&Mission, 2026‑07). Get softness from a
+  `radial-gradient` (already soft) or a small blur on a **small** element; keep large decor
+  static and low‑opacity. Static `mix-blend` far from motion (e.g. footer temple) is fine.
 
 ## Never remove existing animations
 - When redesigning a section, **preserve every existing interaction and enhance it**.

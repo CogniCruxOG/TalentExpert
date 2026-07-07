@@ -88,9 +88,9 @@
         .to(sparks, { opacity: 0, ease: 'power1.in', duration: 0.14 }, 0.8)
         .to(mP, { opacity: 1, filter: 'blur(0px)', y: 0, letterSpacing: '0em', ease: 'power2.out', duration: 0.22 }, 0.66);
 
-      // ---- ambient: warm aura drifts vision→mission, temple drifts slowly
-      if (aura) tl.fromTo(aura, { x: -150 }, { x: 150, ease: 'none', duration: 1 }, 0);
-      if (temple) tl.fromTo(temple, { yPercent: 4 }, { yPercent: -6, ease: 'none', duration: 1 }, 0);
+      // ---- ambient: warm aura drifts vision→mission (transform only — cheap).
+      // (Temple stays static: animating a large masked image is not worth the paint cost.)
+      if (aura) tl.fromTo(aura, { x: -140 }, { x: 140, ease: 'none', duration: 1 }, 0);
 
       // subtle idle float + shadow breathe (independent of the scrub)
       const floats = [vCard, mCard].filter(Boolean).map((c, i) =>
