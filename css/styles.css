@@ -601,9 +601,7 @@ footer.site:hover .foot-glow{opacity:1}
   opacity:.07;
   transform:translateZ(0); backface-visibility:hidden; }  /* own GPU layer — never repaints on scroll */
 /* page content already sits above it (.section>.wrap / .hero>.wrap are z-index:2) */
-/* PERF: silence the site-wide cursor-glow on About — it repaints a full-viewport
-   radial-gradient on every pointer move, which stutters scrolling on lower-end GPUs. */
-body[data-page="about"] .cursor-glow{ display:none !important; }
+/* Cursor glow: use the global site-wide effect on About too (same as Home). */
 /* PERF: the two Vision/Mission cards use .card's backdrop-filter:blur(12px), which
    recomputes per scroll frame over the fixed watermark. Invisible over a 7% wash — drop it. */
 body[data-page="about"] #vision .feat-card{
@@ -629,3 +627,117 @@ body[data-page="about"] #vision .feat-card{
   .eye-outline{ stroke-dashoffset:0 } .eye-iris{ transform:scale(1) } .eye-pupil{ opacity:1 }
   .rkt-body{ transform:none; opacity:1 }
 }
+
+/* ============ ABOUT · Vision & Mission — editorial glass quotes, split on scroll ============
+   Same engine as Home (GSAP ScrollTrigger + Lenis). One card splits into two (scrubbed via
+   --p from ScrollTrigger); the editorial quote reveals line by line. */
+.vm-scene{ position:relative; --p:0; }
+.vm-pin{ position:relative; }
+.vm-glow{ position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(46% 40% at 50% 46%, rgba(242,111,33,.10), rgba(242,111,33,0) 70%); }
+.vm-scene .wrap{ position:relative; z-index:1; }
+.vm-stage{ position:relative; display:flex; gap:44px; width:min(1200px,94vw); margin:38px auto 0; align-items:stretch; perspective:1400px; }
+.vm-card{ position:relative; flex:0 0 calc(50% - 22px); }
+.vm-face{ position:relative; height:100%; min-height:340px; border-radius:26px; overflow:hidden; padding:48px 50px 40px;
+  background:linear-gradient(135deg, rgba(255,255,255,.5), rgba(255,248,242,.42)),
+             radial-gradient(120% 90% at 18% 0%, rgba(242,111,33,.08), rgba(242,111,33,0) 60%);
+  -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 34px 74px -44px rgba(242,111,33,.26), 0 12px 40px -26px rgba(36,48,64,.3);
+  transform-style:preserve-3d; transition:transform .5s var(--ease), box-shadow .5s var(--ease); }
+.vm-label{ display:block; font-family:'Manrope',sans-serif; font-weight:600; color:var(--ink3);
+  font-size:.78rem; letter-spacing:.22em; text-transform:uppercase; padding-bottom:15px;
+  border-bottom:1px solid var(--hair); margin-bottom:28px; }
+.vm-quote-body{ position:relative; font-family:'Fraunces',serif; font-style:italic; color:var(--ink);
+  font-size:1.68rem; line-height:1.34; }
+.vm-quote-body::before{ content:'\201C'; position:absolute; top:-.5em; left:-.05em; z-index:0;
+  font-size:4rem; line-height:1; color:var(--orange); opacity:.15; pointer-events:none; }
+.vm-quote-body .l{ display:block; position:relative; }
+.vm-quote-body .l + .l{ margin-top:.68em; }
+.vm-cite{ display:block; margin-top:28px; text-align:right; font-family:'Manrope',sans-serif; font-style:normal;
+  font-size:.85rem; letter-spacing:.05em; color:var(--ink3); }
+.hl{ font-style:normal; background:linear-gradient(92deg, var(--orange), var(--orange-soft));
+  -webkit-background-clip:text; background-clip:text; color:transparent; }
+@media(hover:hover) and (min-width:901px){ .vm-card:hover .vm-face{ transform:translateY(-6px); box-shadow:var(--sh-m); } }
+@media(max-width:900px){
+  .vm-stage{ flex-direction:column; gap:20px; width:min(560px,92vw); perspective:none; }
+  .vm-card{ flex:none; }
+  .vm-face{ min-height:0; padding:38px 30px 30px; background:rgba(255,253,251,.95); }
+  .vm-quote-body{ font-size:1.42rem; }
+}
+/* LIVE: one card splits into two, scrubbed by --p (ScrollTrigger) */
+@media (min-width:901px) and (prefers-reduced-motion:no-preference){
+  .vm-live{
+    --sp: clamp(0,calc((var(--p) - .02)/.18),1);
+    --vT: clamp(0,calc((var(--p) - .22)/.06),1);
+    --vL1:clamp(0,calc((var(--p) - .28)/.06),1); --vL2:clamp(0,calc((var(--p) - .33)/.06),1);
+    --vL3:clamp(0,calc((var(--p) - .38)/.06),1); --vL4:clamp(0,calc((var(--p) - .43)/.06),1);
+    --mT: clamp(0,calc((var(--p) - .54)/.06),1);
+    --mL1:clamp(0,calc((var(--p) - .60)/.06),1); --mL2:clamp(0,calc((var(--p) - .65)/.06),1);
+    --mL3:clamp(0,calc((var(--p) - .70)/.06),1); --mL4:clamp(0,calc((var(--p) - .75)/.06),1);
+  }
+  .vm-live .vm-pin{ height:100vh; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
+  .vm-live .vm-card{ will-change:transform; }
+  .vm-live .vm-vision{ transform:translateX(calc((50% + 22px) * (1 - var(--sp)))); }
+  .vm-live .vm-mission{ transform:translateX(calc((-50% - 22px) * (1 - var(--sp)))); }
+  .vm-live .vm-label{ opacity:0 } .vm-live .vm-quote-body .l{ opacity:0 } .vm-live .vm-cite{ opacity:0 }
+  .vm-live .vm-vision .vm-label{ opacity:var(--vT) }
+  .vm-live .vm-vision .l1{ opacity:var(--vL1); transform:translateY(calc((1 - var(--vL1))*9px)) }
+  .vm-live .vm-vision .l2{ opacity:var(--vL2); transform:translateY(calc((1 - var(--vL2))*9px)) }
+  .vm-live .vm-vision .l3{ opacity:var(--vL3); transform:translateY(calc((1 - var(--vL3))*9px)) }
+  .vm-live .vm-vision .l4{ opacity:var(--vL4); transform:translateY(calc((1 - var(--vL4))*9px)) }
+  .vm-live .vm-vision .vm-cite{ opacity:var(--vL4) }
+  .vm-live .vm-mission .vm-label{ opacity:var(--mT) }
+  .vm-live .vm-mission .l1{ opacity:var(--mL1); transform:translateY(calc((1 - var(--mL1))*9px)) }
+  .vm-live .vm-mission .l2{ opacity:var(--mL2); transform:translateY(calc((1 - var(--mL2))*9px)) }
+  .vm-live .vm-mission .l3{ opacity:var(--mL3); transform:translateY(calc((1 - var(--mL3))*9px)) }
+  .vm-live .vm-mission .l4{ opacity:var(--mL4); transform:translateY(calc((1 - var(--mL4))*9px)) }
+  .vm-live .vm-mission .vm-cite{ opacity:var(--mL4) }
+}
+
+/* ============ ABOUT · Core Values — one value at a time (coverflow, scrubbed) ============ */
+.cv-scene{ position:relative; --p:0; }
+.cv-pin{ position:relative; }
+.cv-glow{ position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(38% 42% at 50% 54%, rgba(242,111,33,.11), rgba(242,111,33,0) 70%); }
+.cv-scene .wrap{ position:relative; z-index:1; }
+.cv-face{ position:relative; border-radius:24px; overflow:hidden; padding:44px 44px;
+  background:linear-gradient(135deg, rgba(255,255,255,.62), rgba(255,248,242,.5)),
+             radial-gradient(120% 100% at 12% 0%, rgba(242,111,33,.07), rgba(242,111,33,0) 55%);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.6); box-shadow:0 30px 66px -40px rgba(242,111,33,.24), 0 10px 34px -24px rgba(36,48,64,.28);
+  transition:box-shadow .4s var(--ease); }
+.cv-num{ font-family:'Fraunces',serif; font-size:1rem; color:var(--orange); letter-spacing:.16em; font-weight:500; }
+.cv-title{ font-family:'Fraunces',serif; font-weight:300; color:var(--ink); font-size:2rem; letter-spacing:-.01em; margin-top:6px; }
+.cv-accent{ display:block; width:56px; height:3px; margin:16px 0 20px; border-radius:2px; transform-origin:left center;
+  background:linear-gradient(90deg, var(--orange), var(--orange-soft)); }
+.cv-desc{ font-family:'Fraunces',serif; font-size:1.32rem; font-style:italic; color:var(--ink2); line-height:1.5; }
+.cv-desc .l{ display:block; } .cv-desc .l + .l{ margin-top:.14em; }
+.cv-stage{ display:flex; flex-direction:column; gap:22px; max-width:660px; margin:44px auto 0; }
+@media(hover:hover) and (min-width:901px){ .cv-card:hover .cv-face{ box-shadow:var(--sh-m); } }
+@media(max-width:900px){ .cv-title{ font-size:1.6rem; } .cv-desc{ font-size:1.24rem; } .cv-face{ padding:32px 28px; } }
+/* LIVE coverflow — one value centred + sharp, neighbours recede blurred; scrubbed by --f */
+@media (min-width:901px) and (prefers-reduced-motion:no-preference){
+  .cv-live{ --f:0; }
+  .cv-live .cv-pin{ height:100vh; display:flex; flex-direction:column; justify-content:flex-start; padding-top:9vh; overflow:hidden; }
+  .cv-live .cv-stage{ display:block; height:56vh; max-width:none; margin:4vh 0 0; }
+  .cv-live .cv-card{
+    --o: calc(var(--i) - var(--f));
+    --ad: max(var(--o), calc(-1 * var(--o)));
+    --adc: min(var(--ad), 3);
+    --act: clamp(0, calc(1 - var(--ad) * 1.7), 1);
+    position:absolute; left:50%; top:50%; width:min(520px,86vw);
+    transform:translate(-50%,-50%) translateX(calc(var(--o) * 340px)) scale(calc(1 - var(--adc) * .14));
+    opacity:calc(1 - var(--adc) * .26);
+    filter:blur(calc(var(--adc) * 1.1px));
+    z-index:calc(50 - var(--adc) * 12); will-change:transform, opacity; }
+  .cv-live .cv-accent{ transform:scaleX(clamp(0, calc((var(--act) - .28)/.2), 1)); }
+  .cv-live .cv-desc .l{ opacity:0; }
+  .cv-live .cv-desc .l1{ --r:clamp(0,calc((var(--act) - .40)/.22),1); opacity:var(--r); transform:translateY(calc((1 - var(--r))*10px)); }
+  .cv-live .cv-desc .l2{ --r:clamp(0,calc((var(--act) - .55)/.22),1); opacity:var(--r); transform:translateY(calc((1 - var(--r))*10px)); }
+}
+
+/* ---- About: connected vertical rhythm; pinned sections manage their own space ---- */
+body[data-page="about"] .section{ padding:84px 0; }
+body[data-page="about"] .vm-live, body[data-page="about"] .cv-live{ padding:0; }
+body[data-page="about"] .sec-head .lead{ margin-top:10px; }
