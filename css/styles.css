@@ -721,3 +721,29 @@ body[data-page="about"] #vision .feat-card{
 /* ---- About: connected vertical rhythm ---- */
 body[data-page="about"] .section{ padding:84px 0; }
 body[data-page="about"] .sec-head .lead{ margin-top:10px; }
+
+/* ============ ABOUT · Our Story — pinned scrubbed reveal (TEST section) ============
+   GSAP ScrollTrigger + Lenis. The per-frame scrub writes ONLY --p; CSS turns --p into
+   opacity + translateY on the right-side lines. No filter/blur/backdrop-filter anywhere. */
+.story-scene{ position:relative; }
+.story-pin{ position:relative; }
+.story-head .eyebrow, .story-head .title{ opacity:1; }   /* left is static / visible immediately */
+/* right-side body: bigger + heavier than before (same Manrope family) */
+.story-body{ font-size:1.3rem; font-weight:500; line-height:1.7; color:var(--ink2); }
+.story-body .story-p{ margin-bottom:1.15em; }
+.story-body .story-p:last-child{ margin-bottom:0; }
+.sline{ display:block; }
+.sline strong{ color:var(--ink); font-weight:700; }
+@media(max-width:900px){ .story-body{ font-size:1.14rem; } }
+/* LIVE (desktop + motion-ok; JS adds .story-live): lines ghosted -> revealed, scrubbed by --p.
+   Reduced-motion / mobile / no-JS never get .story-live, so the lines stay fully visible. */
+@media (min-width:901px) and (prefers-reduced-motion:no-preference){
+  body[data-page="about"] .story-live{ padding:0; }
+  .story-live .story-pin{ min-height:100vh; display:flex; align-items:center; }
+  .story-live .sline{
+    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .15)) / .18), 1);
+    opacity: calc(.12 + var(--sr) * .88);
+    transform: translateY(calc((1 - var(--sr)) * 14px));
+    will-change: opacity, transform;
+  }
+}

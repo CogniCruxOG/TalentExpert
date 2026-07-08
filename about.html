@@ -94,20 +94,32 @@
 </section>
 
 <!-- ============ OUR STORY ============ -->
-<!-- Calm + fast. The journey illustration lives behind the WHOLE page (.about-bg
-     watermark). Here we only reveal content: heading + paragraphs fade up gently
-     (main.js .reveal). No illustration animation, no pin. -->
-<section class="section" id="story">
-  <div class="wrap">
-    <div class="split">
-      <div class="reveal">
-        <span class="eyebrow">Our Story</span>
-        <h2 class="title">Born from a gap <b>too big to ignore</b></h2>
-      </div>
-      <div class="body">
-        <p class="reveal d1">Talent Expert was born from a simple but powerful observation: India's small and medium businesses are desperate for reliable talent, while millions of motivated rural youth in Tamil Nadu go unnoticed — untrained and underemployed.</p>
-        <p class="reveal d2">We bridge this gap. Through grassroots community networks, structured training, and dedicated employer partnerships, we transform raw potential into workplace excellence — creating outcomes that matter for individuals, businesses, and communities.</p>
-        <p class="reveal d3">Our founders bring <strong>25+ years</strong> of combined experience in HR, training, talent development, and business consulting — backed by deep rural community connections built through years of social work. We don't just understand recruitment; we understand people.</p>
+<!-- TEST: pinned + scrubbed reveal (GSAP ScrollTrigger + Lenis). Left (eyebrow + heading)
+     is static/visible; the right-side lines un-ghost line-by-line, scrubbed to scroll
+     progress (--p), reversible on scroll-up. Per-frame writes ONLY --p (which drives
+     opacity + translateY) — zero filter/blur anywhere. -->
+<section class="section story-scene" id="story">
+  <div class="story-pin">
+    <div class="wrap">
+      <div class="split">
+        <div class="story-head">
+          <span class="eyebrow">Our Story</span>
+          <h2 class="title">Born from a gap <b>too big to ignore</b></h2>
+        </div>
+        <div class="story-body">
+          <p class="story-p">
+            <span class="sline" style="--i:0">Talent Expert was born from a simple but powerful observation: India's small and medium businesses are desperate for reliable talent,</span>
+            <span class="sline" style="--i:1">while millions of motivated rural youth in Tamil Nadu go unnoticed — untrained and underemployed.</span>
+          </p>
+          <p class="story-p">
+            <span class="sline" style="--i:2">We bridge this gap. Through grassroots community networks, structured training, and dedicated employer partnerships,</span>
+            <span class="sline" style="--i:3">we transform raw potential into workplace excellence — creating outcomes that matter for individuals, businesses, and communities.</span>
+          </p>
+          <p class="story-p">
+            <span class="sline" style="--i:4">Our founders bring <strong>25+ years</strong> of combined experience in HR, training, talent development, and business consulting —</span>
+            <span class="sline" style="--i:5">backed by deep rural community connections built through years of social work. We don't just understand recruitment; we understand people.</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -318,11 +330,15 @@
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
 <script src="js/main.js"></script>
 <script>
-/* About = plain NATIVE browser scroll. No Lenis, no ScrollTrigger, no scrub, no pin.
-   The Vision & Mission cards and each Core Value reveal ONCE on scroll-into-view via
-   IntersectionObserver + CSS transitions (opacity/transform only). Nothing per frame. */
+/* Vision & Mission + Core Values reveal on enter via IntersectionObserver (UNCHANGED).
+   Our Story (TEST) is a pinned + scrubbed reveal on Home's engine: Lenis (lerp:0.12) →
+   gsap.ticker → ScrollTrigger. Its per-frame scrub writes ONLY --p (drives opacity +
+   translateY of the lines) — never filter / blur / backdrop-filter. */
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
   var targets = document.querySelectorAll('.vm-scene, .cv-card');
@@ -360,6 +376,32 @@
   }, { threshold:0.2, rootMargin:'0px 0px -8% 0px' });
 
   targets.forEach(function(el){ io.observe(el); });
+
+  /* ---- OUR STORY ONLY (test): Home's engine (Lenis + gsap.ticker + ScrollTrigger) + a
+     pinned, scrubbed line-by-line reveal. Nothing here changes V&M / Core Values. ---- */
+  var hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  var story = document.querySelector('.story-scene');
+  if(hasGSAP && story){
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ nullTargetWarn:false });
+    ScrollTrigger.config({ ignoreMobileResize:true });
+    if(typeof Lenis !== 'undefined'){
+      var lenis = new Lenis({ lerp:0.12, smoothWheel:true, wheelMultiplier:1, touchMultiplier:1.6 });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+      document.documentElement.classList.add('lenis-on');
+    }
+    var mm = gsap.matchMedia();
+    mm.add('(min-width:901px)', function(){
+      story.classList.add('story-live');
+      ScrollTrigger.create({ trigger:'#story', start:'top top', end:'+=1400', pin:'.story-pin',
+        invalidateOnRefresh:true, scrub:0.5,
+        /* PER-FRAME: writes ONLY --p (drives opacity + translateY via CSS). Never filter/blur. */
+        onUpdate:function(self){ story.style.setProperty('--p', self.progress.toFixed(4)); } });
+    });
+    ScrollTrigger.refresh();
+  }
 })();
 </script>
 </body>
