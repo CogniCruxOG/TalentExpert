@@ -813,16 +813,15 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
      this is correct at ANY font width — no orphans, no justification, no wrap-guessing.
      Only mask-image animates: zero layout reflow, GPU-composited. --rp = 0..1 per element. */
   .story-live .develop,
-  .qb-live .develop,
-  .cv-live .cv-desc{
+  .qb-live .develop{
     -webkit-mask-image: linear-gradient(180deg, #000 calc(var(--rp,0) * 122% - 22%), rgba(0,0,0,.12) calc(var(--rp,0) * 122%));
             mask-image: linear-gradient(180deg, #000 calc(var(--rp,0) * 122% - 22%), rgba(0,0,0,.12) calc(var(--rp,0) * 122%));
     will-change: mask-image;
   }
   /* ---- Reveal mechanism B — LEFT-TO-RIGHT sweep for SHORT single-line elements only
-     (never wraps, so safe): Vision/Mission phrases and each card's number + title. ---- */
-  .vm-live .sline,
-  .cv-live .cv-num, .cv-live .cv-title{
+     (never wraps, so safe): Vision/Mission phrases. (Core Values uses opacity staging — see
+     below — so its text is never masked and stays crisp/subpixel-sharp at rest.) ---- */
+  .vm-live .sline{
     -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sr,0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr,0) * 112%));
             mask-image: linear-gradient(90deg, #000 calc(var(--sr,0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr,0) * 112%));
   }
@@ -864,74 +863,74 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
      Only transform / opacity / mask animate. --i drives the sequence; --gx/--gy the grid. */
   body[data-page="about"] .cv-live{
     padding:0 !important; height:100vh; overflow:hidden; position:relative; z-index:1;
-    --t: clamp(0, calc((var(--p,0) - .72) / .18), 1);   /* phase-B "assemble" progress */
-    --pull: .30;        /* overview scale = 1 - --pull (0.70 on tall screens; less when short) */
-    /* 44px is the height-independent offset that centres the grid in the region BELOW the navbar
-       (nav bottom ≈96px): centre of [100, H-12] = 0.5H+44, so gridTop clears the nav and gridBottom
-       clears the viewport by equal margins on every height — only the scale needs to be responsive. */
-    --cv-shift: 44px;
+    --tfade: clamp(0, calc((var(--p,0) - .72) / .03), 1);   /* heading fade — quick, BEFORE assemble */
+    --t:     clamp(0, calc((var(--p,0) - .75) / .15), 1);   /* phase-B assemble (starts after fade) */
+    --pbscale: 1;   /* overview scale — kept at exactly 1 on the common case so text is crisp (a
+                       fractional scale rasterises text and softens it); dialled down only when a
+                       viewport is genuinely too small to fit the grid at 1:1. */
+    /* phase-A single card centre: clamped to sit BELOW the heading (>=390) yet never hang off the
+       bottom (<= 50vh + (50vh-134)), so the card is fully on-screen on short viewports too. */
+    --pa-shift: clamp(0px, calc(390px - 50vh), calc(50vh - 131px));
   }
   .cv-live .cv-pin, .cv-live .wrap{ position:static; }
-  /* heading sits comfortably below the fixed nav; fades out as the overview assembles */
-  .cv-live .sec-head{ position:absolute; top:clamp(106px, 13vh, 158px); left:50%; transform:translateX(-50%);
-    width:min(1100px,92vw); z-index:3; margin:0;
-    opacity: calc(1 - clamp(0, calc((var(--p,0) - .72) / .10), 1)); }
-  /* stage = zero-size anchor at viewport centre. During assembly it shifts DOWN (--cv-shift)
-     so the grid clears the navbar, and scales back (--pull) so the 3-col grid fits height. */
+  /* heading below the fixed nav; fades out FULLY (by --p .75) before the grid assembles */
+  .cv-live .sec-head{ position:absolute; top:clamp(94px, 11vh, 140px); left:50%; transform:translateX(-50%);
+    width:min(1100px,92vw); z-index:3; margin:0; opacity: calc(1 - var(--tfade)); }
+  /* stage = zero-size anchor. translateY: phase A sits below the heading (--pa-shift); phase B
+     centres the grid in the region below the navbar (44px). scale stays --pbscale (=1 normally)
+     for BOTH phases — no zoom — so text is never rasterised by a fractional transform. */
   .cv-live .cv-stage{ position:absolute; top:50%; left:50%; width:0; height:0; z-index:2;
-    display:block; margin:0; will-change:transform; transform-origin:center;
-    transform: translate(-50%, calc(-50% + var(--t) * var(--cv-shift)))
-               scale(calc(1 - var(--pull) * var(--t))); }
-  /* big, comfortable card cell (520×330) — generous room for the text */
-  .cv-live .cv-card{ position:absolute; top:0; left:0; width:520px; height:330px;
-    margin:-165px 0 0 -260px; justify-self:auto; transition:none !important; pointer-events:none;
-    /* per-card local time: <0 before its turn, 0..1 during, >1 after (7 windows over 0..0.72) */
+    display:block; margin:0; transform-origin:center;
+    transform: translate(-50%, calc(-50% + var(--pa-shift) * (1 - var(--t)) + 44px * var(--t)))
+               scale(var(--pbscale)); }
+  /* card cell 284×252, shown at 1:1 (crisp). Cross-fades one-at-a-time in phase A, slides to its
+     grid slot in phase B. Integer px offsets + opaque face + no filters ⇒ subpixel-sharp at rest. */
+  .cv-live .cv-card{ position:absolute; top:0; left:0; width:284px; height:246px;
+    margin:-123px 0 0 -142px; justify-self:auto; transition:none !important; pointer-events:none;
     --lt: calc((var(--p,0) - (var(--i) * 0.102857)) / 0.102857);
-    /* fade in over lt 0→.18; FULLY visible .18→1.0 (this span holds the finished card in view);
-       fade out over 1.0→1.20, overlapping the next card's fade-in → smooth cross-fade, no blank */
     --in:  clamp(0, calc(var(--lt) / 0.18), 1);
     --out: clamp(0, calc((1.20 - var(--lt)) / 0.20), 1);
     opacity: max(calc(var(--in) * var(--out)), var(--t)) !important;
-    /* phase A drift: enter from below (+34), hold at 0, leave upward (-34); blended out for the
-       grid assemble. phase B: slide to the 3-col grid slot (--gx/--gy * --t). */
     transform: translate(calc(var(--gx,0) * var(--t)),
-                 calc(var(--gy,0) * var(--t) + 34px * (var(--out) - var(--in)) * (1 - var(--t)))) !important;
-    will-change: opacity, transform;
-    --cr: clamp(0, var(--lt), 1);   /* staged progress within the card's own window */
+                 calc(var(--gy,0) * var(--t) + 30px * (var(--out) - var(--in)) * (1 - var(--t)))) !important;
+    --cr: clamp(0, var(--lt), 1);
   }
-  .cv-live .cv-card:last-child{ --out: 1; }  /* last card doesn't drift/fade out before phase B */
-  /* full-width 3-column overview offsets (cell 520, gutter 48 → col step 568, row step 378):
-     cols ∓568/0/±568, rows ∓378/0, card 7 centred on the third row. px units on every value. */
-  .cv-live .cv-card:nth-child(1){ --gx:-568px; --gy:-378px; }
-  .cv-live .cv-card:nth-child(2){ --gx: 0px;   --gy:-378px; }
-  .cv-live .cv-card:nth-child(3){ --gx: 568px; --gy:-378px; }
-  .cv-live .cv-card:nth-child(4){ --gx:-568px; --gy: 0px;   }
-  .cv-live .cv-card:nth-child(5){ --gx: 0px;   --gy: 0px;   }
-  .cv-live .cv-card:nth-child(6){ --gx: 568px; --gy: 0px;   }
-  .cv-live .cv-card:nth-child(7){ --gx: 0px;   --gy: 378px; }
-  /* responsive pull-back: shorter viewports scale the grid down further so all 7 cards + the
-     navbar clearance always fit on screen. Each band's scale satisfies 1086*(1-pull) <= H-112 at
-     the band's smallest height, so gridBottom never clips and gridTop always clears the navbar.
-     --cv-shift stays 44 in every band (see above). Verified for H down to ~600px. */
-  @media (max-height: 900px){ body[data-page="about"] .cv-live{ --pull:.36; } }  /* scale .64, fits H>=821 */
-  @media (max-height: 820px){ body[data-page="about"] .cv-live{ --pull:.44; } }  /* scale .56, fits H>=741 */
-  @media (max-height: 740px){ body[data-page="about"] .cv-live{ --pull:.50; } }  /* scale .50, fits H>=671 */
-  @media (max-height: 670px){ body[data-page="about"] .cv-live{ --pull:.56; } }  /* scale .44, fits H>=600 */
-  /* nearly-opaque face so cards occlude cleanly while sliding past each other */
-  .cv-live .cv-face{ opacity:1; height:100%; padding:48px 50px;
-    background:linear-gradient(135deg, rgba(255,253,250,.95), rgba(255,247,241,.92)),
-               radial-gradient(120% 100% at 12% 0%, rgba(242,111,33,.07), rgba(242,111,33,0) 55%); }
-  /* roomier internal type so nothing feels cramped */
-  .cv-live .cv-title{ font-size:1.86rem; margin-top:8px; }
-  .cv-live .cv-accent{ margin:18px 0 22px; }
-  .cv-live .cv-desc{ font-size:1.3rem; line-height:1.62; }
-  /* within-card staging — slow, sequential: number+title sweep (cr .20→.38) → divider grows
-     (.38→.48) → body develops (.46→.64) → then a HOLD (.64→1.0, nothing changes) so the card
-     stays fully readable before the next begins. Each OR's in --t so it's fully inked in the grid. */
-  .cv-live .cv-num, .cv-live .cv-title{ --sr: max(clamp(0, calc((var(--cr,0) - .20) / .18), 1), var(--t)); }
-  .cv-live .cv-accent{ transform-origin:left center; will-change: transform;
+  .cv-live .cv-card:last-child{ --out: 1; }
+  /* OVERVIEW: 4 cards on top (01 02 03 04), 3 centred below (05 06 07). cell 284, gutter 30 →
+     col step 314; row step 270 (gutter 18). */
+  .cv-live .cv-card:nth-child(1){ --gx:-471px; --gy:-132px; }
+  .cv-live .cv-card:nth-child(2){ --gx:-157px; --gy:-132px; }
+  .cv-live .cv-card:nth-child(3){ --gx: 157px; --gy:-132px; }
+  .cv-live .cv-card:nth-child(4){ --gx: 471px; --gy:-132px; }
+  .cv-live .cv-card:nth-child(5){ --gx:-314px; --gy: 132px; }
+  .cv-live .cv-card:nth-child(6){ --gx: 0px;   --gy: 132px; }
+  .cv-live .cv-card:nth-child(7){ --gx: 314px; --gy: 132px; }
+  /* Responsive scale — kept at 1 (crisp) for the common desktop (≥1277 wide, ≥634 tall); dialled
+     down ONLY when the 1226×522 grid genuinely can't fit. Height first, width last, combined for
+     narrow+short (later rule wins the cascade with a value small enough for both). */
+  @media (max-height: 632px){ body[data-page="about"] .cv-live{ --pbscale:.92; } }
+  @media (max-height: 560px){ body[data-page="about"] .cv-live{ --pbscale:.80; } }
+  @media (max-width: 1276px){ body[data-page="about"] .cv-live{ --pbscale:.90; } }
+  @media (max-width: 1276px) and (max-height: 632px){ body[data-page="about"] .cv-live{ --pbscale:.82; } }
+  @media (max-width: 1122px){ body[data-page="about"] .cv-live{ --pbscale:.76; } }
+  /* FULLY-OPAQUE face — an opaque background lets the browser keep crisp subpixel (ClearType) text
+     even while the card sits on a composited/translated layer. */
+  .cv-live .cv-face{ opacity:1; height:100%; padding:22px 26px;
+    background:linear-gradient(135deg, #fffdfa, #fff6f0); }
+  /* readable, overflow-safe type; balanced wrapping; no hyphenation */
+  .cv-live .cv-num{ font-size:.85rem; }
+  .cv-live .cv-title{ font-size:1.3rem; margin-top:3px; line-height:1.16; text-wrap:balance; }
+  .cv-live .cv-accent{ margin:10px 0 12px; }
+  .cv-live .cv-desc{ font-size:.9rem; line-height:1.4; text-wrap:pretty; hyphens:none; }
+  /* within-card staging via OPACITY + slide (NOT mask) so text is crisp at rest — number+title
+     (cr .20→.38) → divider grows (.38→.48) → body (.48→.66) → HOLD (.66→1). Each OR's in --t so
+     every card is fully shown in the assembled overview. */
+  .cv-live .cv-num, .cv-live .cv-title{ --rev: max(clamp(0, calc((var(--cr,0) - .20) / .18), 1), var(--t));
+    opacity: var(--rev); transform: translateY(calc((1 - var(--rev)) * 7px)); }
+  .cv-live .cv-accent{ transform-origin:left center;
     transform: scaleX(max(clamp(0, calc((var(--cr,0) - .38) / .10), 1), var(--t))); }
-  .cv-live .cv-desc{ --rp: max(clamp(0, calc((var(--cr,0) - .48) / .18), 1), var(--t)); }
+  .cv-live .cv-desc{ --rev: max(clamp(0, calc((var(--cr,0) - .48) / .18), 1), var(--t));
+    opacity: var(--rev); transform: translateY(calc((1 - var(--rev)) * 9px)); }
 
   /* ============ FOUNDER'S MESSAGE — natural editorial paragraph, vertical develop ============
      Pinned 100vh like the other story sections (uniform sequential rhythm, no inter-section
