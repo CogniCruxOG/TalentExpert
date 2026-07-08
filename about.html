@@ -94,76 +94,67 @@
 </section>
 
 <!-- ============ OUR STORY ============ -->
-<!-- TEST: pinned + scrubbed reveal (GSAP ScrollTrigger + Lenis). Left (eyebrow + heading)
-     is static/visible; the right-side lines un-ghost line-by-line, scrubbed to scroll
-     progress (--p), reversible on scroll-up. Per-frame writes ONLY --p (which drives
-     opacity + translateY) — zero filter/blur anywhere. -->
+<!-- TEST: native-scroll PINNED scrubbed reveal (pin:true, no Lenis). Section pins, left
+     column stays static, right-side lines un-ghost line-by-line via scroll progress (--p),
+     reversible on scroll-up. Per-frame writes ONLY --p (opacity + translateY) — no filter/blur. -->
 <section class="section story-scene" id="story">
-  <div class="story-pin">
-    <div class="wrap">
-      <div class="split">
-        <div class="story-head">
-          <span class="eyebrow">Our Story</span>
-          <h2 class="title">Born from a gap <b>too big to ignore</b></h2>
-        </div>
-        <div class="story-body">
-          <p class="story-p">
-            <span class="sline" style="--i:0">Talent Expert was born from a simple but powerful observation: India's small and medium businesses are desperate for reliable talent,</span>
-            <span class="sline" style="--i:1">while millions of motivated rural youth in Tamil Nadu go unnoticed — untrained and underemployed.</span>
-          </p>
-          <p class="story-p">
-            <span class="sline" style="--i:2">We bridge this gap. Through grassroots community networks, structured training, and dedicated employer partnerships,</span>
-            <span class="sline" style="--i:3">we transform raw potential into workplace excellence — creating outcomes that matter for individuals, businesses, and communities.</span>
-          </p>
-          <p class="story-p">
-            <span class="sline" style="--i:4">Our founders bring <strong>25+ years</strong> of combined experience in HR, training, talent development, and business consulting —</span>
-            <span class="sline" style="--i:5">backed by deep rural community connections built through years of social work. We don't just understand recruitment; we understand people.</span>
-          </p>
-        </div>
+  <div class="wrap">
+    <div class="split">
+      <div class="story-head">
+        <span class="eyebrow">Our Story</span>
+        <h2 class="title">Born from a gap <b>too big to ignore</b></h2>
+      </div>
+      <div class="story-body">
+        <p class="story-p">
+          <span class="sline" style="--i:0">Talent Expert was born from a simple but powerful observation: India's small and medium businesses are desperate for reliable talent,</span>
+          <span class="sline" style="--i:1">while millions of motivated rural youth in Tamil Nadu go unnoticed — untrained and underemployed.</span>
+        </p>
+        <p class="story-p">
+          <span class="sline" style="--i:2">We bridge this gap. Through grassroots community networks, structured training, and dedicated employer partnerships,</span>
+          <span class="sline" style="--i:3">we transform raw potential into workplace excellence — creating outcomes that matter for individuals, businesses, and communities.</span>
+        </p>
+        <p class="story-p">
+          <span class="sline" style="--i:4">Our founders bring <strong>25+ years</strong> of combined experience in HR, training, talent development, and business consulting —</span>
+          <span class="sline" style="--i:5">backed by deep rural community connections built through years of social work. We don't just understand recruitment; we understand people.</span>
+        </p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ VISION & MISSION ============ -->
-<!-- Two editorial glass quote cards. Native browser scroll; they reveal once on
-     scroll-into-view (IntersectionObserver -> .in-view, CSS opacity/translateY). -->
+<!-- Pinned scrubbed reveal (same engine as Our Story). Both cards reveal line-by-line
+     as user scrolls. Vision reveals first, then Mission. Perfect symmetry maintained. -->
 <section class="section vm-scene" id="vision">
-  <div class="vm-pin">
-    <div class="vm-glow" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="sec-head center">
-        <span class="eyebrow">Vision &amp; Mission</span>
-        <h2 class="title">Where we're <b>going</b><br>and <b>why</b></h2>
-      </div>
-      <div class="vm-stage">
-        <article class="vm-card vm-vision">
-          <div class="vm-face">
-            <span class="vm-label">Our Vision</span>
-            <blockquote class="vm-quote-body">
-              <span class="l l1">From every <span class="hl">village</span>.</span>
-              <span class="l l2">Into every <span class="hl">industry</span>.</span>
-              <span class="l l3">Building <span class="hl">India</span>'s workforce&mdash;</span>
-              <span class="l l4">one overlooked person at a time.</span>
-            </blockquote>
-            <cite class="vm-cite">&mdash; Talent Expert</cite>
-          </div>
-        </article>
-        <article class="vm-card vm-mission">
-          <div class="vm-face">
-            <span class="vm-label">Our Mission</span>
-            <blockquote class="vm-quote-body">
-              <span class="l l1">Behind every hire is a <span class="hl">family</span>.</span>
-              <span class="l l2">We invest in <span class="hl">real people</span>.</span>
-              <span class="l l3">We build <span class="hl">careers</span>.</span>
-              <span class="l l4">We transform <span class="hl">futures</span>.</span>
-            </blockquote>
-            <cite class="vm-cite">&mdash; Our Promise</cite>
-          </div>
-        </article>
-      </div>
+  <div class="vm-glow" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Vision &amp; Mission</span>
+      <h2 class="title">Where we're <b>going</b><br>and <b>why</b></h2>
     </div>
-  </div>
+    <div class="vm-stage">
+      <article class="vm-card vm-vision">
+        <div class="vm-face">
+          <span class="vm-label">VISION STATEMENT</span>
+          <blockquote class="vm-quote-body">
+            <span class="sline" style="--i:0">Right People.</span>
+            <span class="sline" style="--i:1">Right Roles.</span>
+            <span class="sline" style="--i:2">Transforming Rural Potential</span>
+            <span class="sline" style="--i:3">into National Progress.</span>
+          </blockquote>
+        </div>
+      </article>
+      <article class="vm-card vm-mission">
+        <div class="vm-face">
+          <span class="vm-label">MISSION STATEMENT</span>
+          <blockquote class="vm-quote-body">
+            <span class="sline" style="--i:4">We find the raw.</span>
+            <span class="sline" style="--i:5">We shape the ready.</span>
+            <span class="sline" style="--i:6">We deliver the exceptional.</span>
+          </blockquote>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -332,13 +323,11 @@
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
 <script src="js/vendor/gsap.min.js"></script>
 <script src="js/vendor/ScrollTrigger.min.js"></script>
-<script src="js/vendor/lenis.min.js"></script>
 <script src="js/main.js"></script>
 <script>
 /* Vision & Mission + Core Values reveal on enter via IntersectionObserver (UNCHANGED).
-   Our Story (TEST) is a pinned + scrubbed reveal on Home's engine: Lenis (lerp:0.12) →
-   gsap.ticker → ScrollTrigger. Its per-frame scrub writes ONLY --p (drives opacity +
-   translateY of the lines) — never filter / blur / backdrop-filter. */
+   Our Story (TEST) is a NATIVE-scroll pinned (pin:true) scrubbed reveal (NO Lenis).
+   Its per-frame scrub writes ONLY --p (drives opacity + translateY) — never filter/blur. */
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
   var targets = document.querySelectorAll('.vm-scene, .cv-card');
@@ -377,28 +366,72 @@
 
   targets.forEach(function(el){ io.observe(el); });
 
-  /* ---- OUR STORY ONLY (test): Home's engine (Lenis + gsap.ticker + ScrollTrigger) + a
-     pinned, scrubbed line-by-line reveal. Nothing here changes V&M / Core Values. ---- */
+  /* ---- PINNED SCRUBBED REVEALS: Our Story → Vision & Mission
+     Sequential pinning with natural document spacing (default pinSpacing:true).
+     Only ONE section pins at a time. Native scroll, pin:true, scrub:true, --p only. ---- */
   var hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
-  var story = document.querySelector('.story-scene');
-  if(hasGSAP && story){
+  if(hasGSAP){
     gsap.registerPlugin(ScrollTrigger);
     gsap.config({ nullTargetWarn:false });
     ScrollTrigger.config({ ignoreMobileResize:true });
-    if(typeof Lenis !== 'undefined'){
-      var lenis = new Lenis({ lerp:0.12, smoothWheel:true, wheelMultiplier:1, touchMultiplier:1.6 });
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
-      gsap.ticker.lagSmoothing(0);
-      document.documentElement.classList.add('lenis-on');
-    }
     var mm = gsap.matchMedia();
-    mm.add('(min-width:901px)', function(){
-      story.classList.add('story-live');
-      ScrollTrigger.create({ trigger:'#story', start:'top top', end:'+=1400', pin:'.story-pin',
-        invalidateOnRefresh:true, scrub:0.5,
-        /* PER-FRAME: writes ONLY --p (drives opacity + translateY via CSS). Never filter/blur. */
-        onUpdate:function(self){ story.style.setProperty('--p', self.progress.toFixed(4)); } });
+    mm.add('(min-width:901px) and (prefers-reduced-motion:no-preference)', function(){
+      /* Our Story — pins when it reaches top, unpins after full reveal */
+      var story = document.querySelector('.story-scene');
+      if(story){
+        story.classList.add('story-live');
+        ScrollTrigger.create({
+          trigger:'#story',
+          start:'top top',
+          end:'+=1400',
+          pin:true,
+          scrub:true,
+          invalidateOnRefresh:true,
+          onUpdate:function(self){ story.style.setProperty('--p', self.progress.toFixed(4)); }
+        });
+      }
+      /* Vision & Mission — pins after Our Story fully unpins (natural spacing) */
+      var vm = document.querySelector('.vm-scene');
+      if(vm){
+        vm.classList.add('vm-live');
+        ScrollTrigger.create({
+          trigger:'#vision',
+          start:'top top',
+          end:'+=1400',
+          pin:true,
+          scrub:true,
+          invalidateOnRefresh:true,
+          onUpdate:function(self){ vm.style.setProperty('--p', self.progress.toFixed(4)); }
+        });
+      }
+      /* Core Values — sequential reveals, one card at a time (7 cards = 7/1400 ≈ 200px each) */
+      var cv = document.querySelector('.cv-scene');
+      if(cv){
+        cv.classList.add('cv-live');
+        ScrollTrigger.create({
+          trigger:'#values',
+          start:'top top',
+          end:'+=1400',
+          pin:true,
+          scrub:true,
+          invalidateOnRefresh:true,
+          onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
+        });
+      }
+      /* Founder's Message — pinned progressive reveal (heading → quote → citation) */
+      var qb = document.querySelector('#founder');
+      if(qb){
+        qb.classList.add('qb-live');
+        ScrollTrigger.create({
+          trigger:'#founder',
+          start:'top top',
+          end:'+=1400',
+          pin:true,
+          scrub:true,
+          invalidateOnRefresh:true,
+          onUpdate:function(self){ qb.style.setProperty('--p', self.progress.toFixed(4)); }
+        });
+      }
     });
     ScrollTrigger.refresh();
   }

@@ -637,8 +637,8 @@ body[data-page="about"] #vision .feat-card{
 .vm-glow{ position:absolute; inset:0; z-index:0; pointer-events:none;
   background:radial-gradient(46% 40% at 50% 46%, rgba(242,111,33,.10), rgba(242,111,33,0) 70%); }
 .vm-scene .wrap{ position:relative; z-index:1; }
-.vm-stage{ position:relative; display:flex; gap:44px; width:min(1200px,94vw); margin:40px auto 0; align-items:stretch; }
-.vm-card{ position:relative; flex:0 0 calc(50% - 22px); opacity:0;
+.vm-stage{ position:relative; display:flex; gap:36px; width:100%; margin:44px auto 0; align-items:stretch; }
+.vm-card{ position:relative; flex:1 1 0; min-width:0; opacity:0;
   transition:opacity .7s var(--btr), transform .9s var(--btr); }
 .vm-vision{ transform:translateX(40px) scale(.96); }
 .vm-mission{ transform:translateX(-40px) scale(.96); }
@@ -655,44 +655,48 @@ body[data-page="about"] #vision .feat-card{
 .vm-scene.in-view .vm-mission .l1{ transition-delay:.47s } .vm-scene.in-view .vm-mission .l2{ transition-delay:.56s }
 .vm-scene.in-view .vm-mission .l3{ transition-delay:.65s } .vm-scene.in-view .vm-mission .l4{ transition-delay:.74s }
 .vm-scene.in-view .vm-mission .vm-cite{ transition-delay:.83s }
-.vm-face{ position:relative; height:100%; min-height:340px; border-radius:26px; overflow:hidden; padding:48px 50px 40px;
+.vm-face{ position:relative; height:100%; border-radius:20px; overflow:hidden; padding:46px 54px 50px;
   background:linear-gradient(135deg, rgba(255,255,255,.5), rgba(255,248,242,.42)),
              radial-gradient(120% 90% at 18% 0%, rgba(242,111,33,.08), rgba(242,111,33,0) 60%);
   -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
   border:1px solid rgba(255,255,255,.6);
   box-shadow:0 34px 74px -44px rgba(242,111,33,.26), 0 12px 40px -26px rgba(36,48,64,.3);
   transition:transform .5s var(--ease), box-shadow .5s var(--ease); }
-.vm-label{ display:block; font-family:'Manrope',sans-serif; font-weight:600; color:var(--ink3);
-  font-size:.78rem; letter-spacing:.22em; text-transform:uppercase; padding-bottom:15px;
-  border-bottom:1px solid var(--hair); margin-bottom:28px; }
-.vm-quote-body{ position:relative; font-family:'Fraunces',serif; font-style:italic; color:var(--ink);
-  font-size:1.68rem; line-height:1.34; }
-.vm-quote-body::before{ content:'\201C'; position:absolute; top:-.5em; left:-.05em; z-index:0;
-  font-size:4rem; line-height:1; color:var(--orange); opacity:.15; pointer-events:none; }
+.vm-label{ display:flex; align-items:center; gap:11px; font-family:'Manrope',sans-serif; font-weight:600; color:var(--ink3);
+  font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; padding-bottom:16px;
+  border-bottom:1px solid rgba(26,26,26,.08); margin-bottom:30px; }
+.vm-label::before{ content:""; width:20px; height:1.5px; background:var(--orange); border-radius:2px; flex-shrink:0; }
+.vm-quote-body{ position:relative; font-family:'Fraunces',serif; font-style:italic; font-weight:340; color:var(--ink);
+  font-size:1.98rem; line-height:1.46; letter-spacing:-.005em; margin-top:14px; }
+.vm-quote-body::before{ content:'\201C'; position:absolute; top:-.28em; left:-.03em; z-index:0;
+  font-size:3.4rem; line-height:1; font-style:normal; color:var(--orange); opacity:.34; pointer-events:none; }
 .vm-quote-body .l{ display:block; position:relative; }
 .vm-quote-body .l + .l{ margin-top:.68em; }
+/* Vision & Mission: .sline elements display inline for natural editorial text flow */
+.vm-quote-body .sline{ display:inline; white-space:normal; word-spacing:normal; }
+.vm-quote-body .sline::after{ content:' '; word-spacing:normal; }
 .vm-cite{ display:block; margin-top:28px; text-align:right; font-family:'Manrope',sans-serif; font-style:normal;
   font-size:.85rem; letter-spacing:.05em; color:var(--ink3); }
 .hl{ font-style:normal; background:linear-gradient(92deg, var(--orange), var(--orange-soft));
   -webkit-background-clip:text; background-clip:text; color:transparent; }
 @media(hover:hover) and (min-width:901px){ .vm-card:hover .vm-face{ transform:translateY(-6px); box-shadow:var(--sh-m); } }
 @media(max-width:900px){
-  .vm-stage{ flex-direction:column; gap:20px; width:min(560px,92vw); }
+  .vm-stage{ flex-direction:column; gap:20px; width:100%; }
   .vm-card{ flex:none; }
-  .vm-face{ min-height:0; padding:38px 30px 30px; background:rgba(255,253,251,.95); }
-  .vm-quote-body{ font-size:1.42rem; }
+  .vm-face{ padding:42px 34px 46px; background:rgba(255,253,251,.95); }
+  .vm-quote-body{ font-size:1.58rem; line-height:1.5; }
+  .vm-quote-body::before{ font-size:2.8rem; top:-.7em; }
+  .vm-label{ font-size:.7rem; padding-bottom:14px; margin-bottom:24px; }
 }
 
-/* ============ ABOUT · Core Values — glass principle cards (grid, reveal on enter) ============ */
+/* ============ ABOUT · Core Values — sequential scroll-driven reveals ============ */
 .cv-scene{ position:relative; --btr:cubic-bezier(.22,1,.36,1); }
 .cv-pin{ position:relative; }
 .cv-glow{ position:absolute; inset:0; z-index:0; pointer-events:none;
   background:radial-gradient(58% 46% at 50% 26%, rgba(242,111,33,.07), rgba(242,111,33,0) 70%); }
 .cv-scene .wrap{ position:relative; z-index:1; }
 .cv-stage{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; width:min(1080px,94vw); margin:44px auto 0; }
-.cv-card{ opacity:0; transform:translateY(24px) scale(.98); transition:opacity .7s var(--btr), transform .8s var(--btr); }
-.cv-card.in-view{ opacity:1; transform:none; }
-.cv-card:last-child{ grid-column:1 / -1; }   /* 7th value spans full width */
+.cv-card{ position:relative; }
 .cv-face{ position:relative; height:100%; border-radius:22px; overflow:hidden; padding:38px 40px;
   background:linear-gradient(135deg, rgba(255,255,255,.6), rgba(255,248,242,.48)),
              radial-gradient(120% 100% at 12% 0%, rgba(242,111,33,.07), rgba(242,111,33,0) 55%);
@@ -712,6 +716,9 @@ body[data-page="about"] #vision .feat-card{
   .cv-face{ padding:30px 26px; } .cv-title{ font-size:1.55rem; } .cv-desc{ font-size:1.18rem; }
 }
 
+/* ============ LEFT-TO-RIGHT CLIP-PATH REVEAL (core animation language across page) ============ */
+.scroll-reveal{ clip-path: inset(0 calc((1 - var(--sr, 0)) * 100%) 0 0); }
+
 /* reduced-motion: show everything instantly, no transitions */
 @media(prefers-reduced-motion:reduce){
   .vm-card, .vm-vision, .vm-mission, .vm-label, .vm-quote-body .l, .vm-cite, .cv-card{
@@ -722,28 +729,125 @@ body[data-page="about"] #vision .feat-card{
 body[data-page="about"] .section{ padding:84px 0; }
 body[data-page="about"] .sec-head .lead{ margin-top:10px; }
 
-/* ============ ABOUT · Our Story — pinned scrubbed reveal (TEST section) ============
-   GSAP ScrollTrigger + Lenis. The per-frame scrub writes ONLY --p; CSS turns --p into
-   opacity + translateY on the right-side lines. No filter/blur/backdrop-filter anywhere. */
+/* ============ ABOUT · Our Story — native-scroll PINNED scrubbed reveal (TEST section) ============
+   GSAP ScrollTrigger (pin:true, NO Lenis). The per-frame scrub writes ONLY --p; CSS turns
+   --p into opacity + translateY on right-side lines. No filter/blur anywhere. */
 .story-scene{ position:relative; }
-.story-pin{ position:relative; }
 .story-head .eyebrow, .story-head .title{ opacity:1; }   /* left is static / visible immediately */
-/* right-side body: bigger + heavier than before (same Manrope family) */
+/* right-side body: bigger + heavier (same Manrope family) */
 .story-body{ font-size:1.3rem; font-weight:500; line-height:1.7; color:var(--ink2); }
 .story-body .story-p{ margin-bottom:1.15em; }
 .story-body .story-p:last-child{ margin-bottom:0; }
 .sline{ display:block; }
 .sline strong{ color:var(--ink); font-weight:700; }
 @media(max-width:900px){ .story-body{ font-size:1.14rem; } }
-/* LIVE (desktop + motion-ok; JS adds .story-live): lines ghosted -> revealed, scrubbed by --p.
-   Reduced-motion / mobile / no-JS never get .story-live, so the lines stay fully visible. */
+/* LIVE (desktop + motion-ok; JS adds .story-live): pinned 100vh, flex-centered. Lines
+   ghost->revealed scrubbed by --p. Reduced-motion/mobile never get .story-live (full text). */
 @media (min-width:901px) and (prefers-reduced-motion:no-preference){
-  body[data-page="about"] .story-live{ padding:0; }
-  .story-live .story-pin{ min-height:100vh; display:flex; align-items:center; }
+  body[data-page="about"] .story-live{
+    padding:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    z-index:1;
+  }
+  .story-live .wrap{ position:relative; z-index:2; }
   .story-live .sline{
     --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .15)) / .18), 1);
     opacity: calc(.12 + var(--sr) * .88);
     transform: translateY(calc((1 - var(--sr)) * 14px));
     will-change: opacity, transform;
+  }
+
+  /* ============ VISION & MISSION — pinned scrubbed reveal ============ */
+  body[data-page="about"] .vm-live{
+    padding:0 !important;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    z-index:1;
+  }
+  .vm-live .wrap{ position:relative; z-index:2; }
+  /* width/gap/padding intentionally NOT redeclared here — inherit from base .vm-stage/.vm-card/.vm-face
+     so the pinned state renders at the identical size as the static state (no size jump on pin). */
+  .vm-live .vm-card{ opacity:1 !important; transform:none !important; }
+  .vm-live .vm-label{ opacity:1 !important; transition:none !important; transform:none !important; }
+  .vm-live .sline{
+    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .12)) / .14), 1);
+    opacity: calc(.08 + var(--sr) * .92) !important;
+    transform: translateY(calc((1 - var(--sr)) * 12px)) !important;
+    will-change: opacity, transform;
+    display:block;
+  }
+
+  /* ============ CORE VALUES — pinned sequential reveals ============
+     Each of 7 cards reveals in sequence: card N activates during --p range [(N-1)/7, N/7].
+     Calculation: --sr: clamp(0, (--p - offset) * 7, 1) keeps card at 0 before its window,
+     ramps 0→1 during its window, stays 1 after. Left-to-right clip-path reveal. */
+  body[data-page="about"] .cv-live{
+    padding:0 !important;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    z-index:1;
+  }
+  .cv-live .wrap{ position:relative; z-index:2; }
+  .cv-live .cv-stage{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; width:min(1080px,94vw); margin:44px auto 0; }
+  .cv-live .cv-card:last-child{ grid-column:1 / -1; }
+  .cv-live .cv-face{ clip-path: inset(0 calc((1 - var(--sr, 0)) * 100%) 0 0); }
+  /* Sequential reveal windows for each of 7 cards: 1/7 ≈ 0.14286 per card */
+  .cv-live .cv-card:nth-child(1) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0) * 7), 1); }
+  .cv-live .cv-card:nth-child(2) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.14286) * 7), 1); }
+  .cv-live .cv-card:nth-child(3) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.28571) * 7), 1); }
+  .cv-live .cv-card:nth-child(4) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.42857) * 7), 1); }
+  .cv-live .cv-card:nth-child(5) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.57143) * 7), 1); }
+  .cv-live .cv-card:nth-child(6) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.71429) * 7), 1); }
+  .cv-live .cv-card:nth-child(7) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.85714) * 7), 1); }
+  .cv-live .cv-card:nth-child(n) .cv-face{ will-change: clip-path; }
+
+  /* ============ FOUNDER'S MESSAGE — pinned progressive reveal ============ */
+  body[data-page="about"] .qb-live{
+    padding:0 !important;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    z-index:1;
+  }
+  .qb-live .wrap{ position:relative; z-index:2; text-align:center; }
+  .qb-live .quote-inner{ max-width:860px; margin:0 auto; }
+  /* Quote mark reveals first (0-15% of --p) */
+  .qb-live .quote-mark{
+    --sr: clamp(0, var(--p, 0) * 6.67, 1);
+    clip-path: inset(0 calc((1 - var(--sr)) * 100%) 0 0);
+    will-change: clip-path;
+  }
+  /* Quote text reveals next (15-90% of --p) */
+  .qb-live blockquote{
+    --sr: clamp(0, (var(--p, 0) - 0.15) * 1.18, 1);
+    clip-path: inset(0 calc((1 - var(--sr)) * 100%) 0 0);
+    will-change: clip-path;
+  }
+  /* Citation appears at the end (85-100% of --p) */
+  .qb-live cite{
+    --sr: clamp(0, (var(--p, 0) - 0.85) * 6.67, 1);
+    opacity: var(--sr);
+  }
+  /* Disable static reveal animation when section is pinned (scrub animation takes over) */
+  .qb-live .quote-inner.reveal{
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
   }
 }
