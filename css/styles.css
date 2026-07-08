@@ -945,3 +945,126 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   .qb-live blockquote{ --rp: clamp(0, calc((var(--p,0) - .08) / .72), 1); }
   .qb-live .founder-sig{ opacity: clamp(0, calc((var(--p,0) - .82) / .14), 1); }
 }
+
+/* ==========================================================================
+   SERVICES PAGE — stacked editorial cards + floating-icon overview
+   ========================================================================== */
+body[data-page="services"] .hero{ padding-bottom:34px; }
+
+/* ---- intro line above the stack ---- */
+.svc-stack{ position:relative; padding:8px 0 96px; }
+.svc-stack .sec-head{ width:min(1120px,93vw); margin:0 auto 30px; }
+
+/* ---- the sticky stack: each card sticks at the top; as the next rises to cover it, the
+   covered card recedes (scale/dim, GSAP-scrubbed) into a layered stack. Fully scroll-driven
+   and reversible. gap gives generous reading distance before the next card arrives. ---- */
+.svc-track{ width:min(1120px,93vw); margin:0 auto; display:flex; flex-direction:column; gap:11vh; }
+.svc-card{ position:sticky; top:104px; will-change:transform; transform-origin:center top;
+  background:linear-gradient(152deg,#fffdfa,#fff5ee);
+  border:1px solid rgba(255,255,255,.75); border-radius:30px;
+  box-shadow:0 44px 96px -54px rgba(242,111,33,.30), 0 22px 64px -44px rgba(36,48,64,.34);
+  padding:44px 50px 46px; overflow:hidden; }
+.svc-card::before{ content:""; position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg,var(--orange),var(--orange-soft)); }
+.svc-card::after{ content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(58% 68% at 88% 4%, rgba(242,111,33,.06), transparent 60%); }
+.svc-card > *{ position:relative; z-index:1; }
+
+/* card header */
+.svc-head{ display:flex; align-items:center; gap:18px; }
+.svc-ic{ width:58px; height:58px; border-radius:16px; flex:none; display:grid; place-items:center;
+  font-size:27px; color:var(--orange); background:rgba(242,111,33,.10);
+  border:1px solid rgba(242,111,33,.16); }
+.svc-ic .ic{ width:1em; height:1em; }
+.svc-htext{ display:flex; flex-direction:column; gap:3px; }
+.svc-num{ font-family:'Manrope',sans-serif; font-size:.72rem; font-weight:700; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--orange); }
+.svc-title{ font-family:'Fraunces',serif; font-weight:300; letter-spacing:-.01em; color:var(--ink);
+  font-size:clamp(1.6rem,2.5vw,2.25rem); line-height:1.04; }
+.svc-title b{ font-weight:600; }
+
+/* card body — Overview (left) + structured details (right) */
+.svc-body{ display:grid; grid-template-columns:.92fr 1.08fr; gap:44px; margin-top:26px; align-items:start; }
+.svc-col-label{ font-family:'Manrope',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--ink3); display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.svc-col-label::before{ content:""; width:18px; height:1.5px; background:var(--orange); border-radius:2px; }
+.svc-lead{ font-family:'Fraunces',serif; font-style:italic; font-weight:340; color:var(--ink);
+  font-size:1.18rem; line-height:1.55; letter-spacing:-.003em; }
+.svc-tag{ display:inline-flex; align-items:center; gap:9px; margin-top:22px; padding:11px 17px;
+  border-radius:100px; background:var(--glass2); border:1px solid rgba(242,111,33,.18);
+  font-family:'Manrope',sans-serif; font-size:.86rem; font-weight:600; color:var(--ink); }
+.svc-tag svg{ width:17px; height:17px; color:var(--orange); flex:none; }
+
+/* right column: labelled rows and/or bullet list */
+.svc-details{ display:flex; flex-direction:column; }
+.svc-row{ display:grid; grid-template-columns:118px 1fr; gap:18px; align-items:baseline;
+  padding:13px 0; border-bottom:1px solid rgba(26,26,26,.08); }
+.svc-row:first-child{ padding-top:0; }
+.svc-row:last-child{ border-bottom:0; }
+.svc-label{ font-family:'Manrope',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--orange); }
+.svc-val{ font-family:'Manrope',sans-serif; font-size:.97rem; line-height:1.5; color:var(--ink2); }
+.svc-val b, .svc-val strong{ color:var(--ink); font-weight:600; }
+.svc-blist{ display:grid; gap:13px; }
+.svc-blist li{ display:grid; grid-template-columns:20px 1fr; gap:12px; align-items:start;
+  font-family:'Manrope',sans-serif; font-size:.97rem; line-height:1.5; color:var(--ink2); }
+.svc-blist li svg{ width:19px; height:19px; color:var(--orange); margin-top:2px; }
+.svc-blist li b{ color:var(--ink); font-weight:600; }
+
+/* per-card reveal on enter (JS toggles .in) — GPU-friendly */
+.svc-card .svc-body, .svc-card .svc-head{ transition:none; }
+.svc-reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+.svc-card.in .svc-reveal{ opacity:1; transform:none; }
+.svc-card.in .svc-reveal.d1{ transition-delay:.06s } .svc-card.in .svc-reveal.d2{ transition-delay:.12s }
+.svc-card.in .svc-reveal.d3{ transition-delay:.18s }
+
+/* ==== SERVICES OVERVIEW — central content ringed by floating service icons ==== */
+.svc-overview{ position:relative; overflow:hidden; padding:70px 0 96px; }
+.ov-glow{ position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(46% 42% at 50% 46%, rgba(242,111,33,.10), transparent 70%); }
+.ov-wrap{ position:relative; z-index:1; width:min(1120px,94vw); margin:0 auto; min-height:600px;
+  display:grid; place-items:center; }
+.ov-center{ position:relative; z-index:3; text-align:center; max-width:540px; padding:0 10px; }
+.ov-center .lead{ margin:14px auto 26px; }
+.ov-icon{ position:absolute; z-index:2; display:flex; flex-direction:column; align-items:center; gap:10px;
+  width:132px; text-align:center; will-change:transform;
+  animation:ovFloat var(--fd,7s) ease-in-out var(--fdel,0s) infinite alternate; }
+.ov-badge{ width:74px; height:74px; border-radius:22px; display:grid; place-items:center; font-size:31px;
+  color:var(--orange); background:linear-gradient(150deg, rgba(255,255,255,.9), rgba(255,246,239,.82));
+  border:1px solid rgba(255,255,255,.8);
+  box-shadow:0 22px 46px -26px rgba(242,111,33,.4), 0 8px 24px -16px rgba(36,48,64,.3); }
+.ov-badge .ic{ width:1em; height:1em; }
+.ov-label{ font-family:'Manrope',sans-serif; font-size:.78rem; font-weight:600; color:var(--ink2);
+  letter-spacing:.01em; line-height:1.25; }
+@keyframes ovFloat{ from{ transform:translateY(-9px) } to{ transform:translateY(9px) } }
+/* six positions ringing the centre */
+.ov-icon.p1{ top:1%;  left:50%; margin-left:-66px; --fd:6.5s; --fdel:-.2s; }
+.ov-icon.p2{ top:20%; left:5%;  --fd:7.5s; --fdel:-1.1s; }
+.ov-icon.p3{ top:20%; right:5%; --fd:7s;   --fdel:-.6s; }
+.ov-icon.p4{ bottom:16%; left:11%; --fd:8s; --fdel:-1.6s; }
+.ov-icon.p5{ bottom:16%; right:11%; --fd:6.8s; --fdel:-.9s; }
+.ov-icon.p6{ bottom:0;  left:50%; margin-left:-66px; --fd:7.4s; --fdel:-.4s; }
+
+@media (prefers-reduced-motion:reduce){ .ov-icon{ animation:none; } }
+.ov-mobile-grid{ display:none; }   /* desktop: floating ringed icons only */
+
+/* fallback: the reveal engine only runs on desktop + motion-ok; everywhere else show content */
+@media (max-width:900px), (prefers-reduced-motion:reduce){
+  .svc-reveal{ opacity:1 !important; transform:none !important; }
+}
+@media (prefers-reduced-motion:reduce){ .svc-card{ position:static; } }
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .svc-card{ position:static; padding:30px 24px 32px; border-radius:24px; margin-bottom:2px; }
+  .svc-body{ grid-template-columns:1fr; gap:24px; margin-top:20px; }
+  .svc-row{ grid-template-columns:98px 1fr; gap:12px; }
+  .svc-track{ gap:6vh; }
+  .svc-title{ font-size:1.5rem; }
+  /* overview: hide the ringed floating icons, show a tidy centred grid instead */
+  .ov-wrap{ min-height:auto; }
+  .ov-icon.p1,.ov-icon.p2,.ov-icon.p3,.ov-icon.p4,.ov-icon.p5,.ov-icon.p6{ display:none; }
+  .ov-mobile-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:26px 18px; margin:38px auto 0;
+    width:min(440px,92vw); }
+  .ov-mobile-grid .ov-icon{ position:static; width:auto; animation:none; }
+}
