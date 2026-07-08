@@ -755,21 +755,25 @@ body[data-page="about"] .sec-head .lead{ margin-top:10px; }
   }
   .story-live .wrap{ position:relative; z-index:2; }
 
-  /* ---- Shared LEFT-TO-RIGHT reveal: a soft-edged mask sweeps across the TEXT element only.
-     mask-image never affects layout — every container keeps its full natural width/height
-     from the first frame. No transforms, no clip on parents, no display/size changes.
-     --sr 0 = hidden, 1 = fully uncovered; 12% feathered edge for a premium sweep. ---- */
+  /* ---- Shared LEFT-TO-RIGHT "ink develop" reveal.
+     One soft-edged mask sweeps across each TEXT element. The unrevealed zone is NOT
+     transparent — it keeps 13% alpha, so the complete text is always present as a faint
+     printed placeholder (perfectly aligned: it is the same pixels), and the sweep simply
+     develops it to full ink like a newspaper page becoming readable.
+     mask-image never affects layout: no shifts, no reflow, no height change, ever.
+     Decorative quotation marks are intentionally NOT in this list — always visible. ---- */
   .story-live .sline,
   .vm-live .sline,
-  .cv-live .cv-num, .cv-live .cv-title, .cv-live .cv-accent, .cv-live .cv-desc,
-  .qb-live .quote-mark, .qb-live blockquote{
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), transparent calc(var(--sr, 0) * 112%));
-            mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), transparent calc(var(--sr, 0) * 112%));
+  .qb-live .sline,
+  .cv-live .cv-num, .cv-live .cv-title, .cv-live .cv-accent, .cv-live .cv-desc{
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr, 0) * 112%));
+            mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr, 0) * 112%));
   }
 
-  /* Our Story — 6 lines uncover strictly one after another (window .15 each, hold .90→1) */
+  /* Our Story — one visual line at a time: line i sweeps during [.05+i*.055, .05+i*.055+.045],
+     then holds a beat before line i+1 begins (window < step = brief pause). Fully reversible. */
   .story-live .sline{
-    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .15)) / .15), 1);
+    --sr: clamp(0, calc((var(--p, 0) - .05 - (var(--i) * .055)) / .045), 1);
   }
 
   /* ============ VISION & MISSION — pinned scrubbed reveal ============ */
@@ -817,9 +821,16 @@ body[data-page="about"] .sec-head .lead{ margin-top:10px; }
 
   /* ============ FOUNDER'S MESSAGE — pinned at its NATURAL size and layout ============
      No width/height/display/padding overrides: the section pins exactly as designed
-     (full-width band, centered 860px quote). Only text visibility animates. */
+     (full-width band, centered 860px quote). The quote mark is decorative and NEVER
+     masked (it was getting clipped by its own mask — its glyph ink overflows the
+     line box). The quote is marked up as one span per visual line; each line is a
+     block so lines are deterministic — the whole quote sits in place as a 13%-ink
+     placeholder from frame one, and lines develop to full ink strictly one at a
+     time: line i sweeps during [.16+i*.058, .16+i*.058+.048], brief hold between. */
   .qb-live .quote-inner.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
-  .qb-live .quote-mark{ --sr: clamp(0, calc(var(--p, 0) / .10), 1); }
-  .qb-live blockquote{ --sr: clamp(0, calc((var(--p, 0) - .10) / .75), 1); }
-  .qb-live cite{ opacity: clamp(0, calc((var(--p, 0) - .86) / .10), 1); }
+  .qb-live blockquote .sline{
+    display:block;
+    --sr: clamp(0, calc((var(--p, 0) - .16 - (var(--i) * .058)) / .048), 1);
+  }
+  .qb-live cite{ opacity: clamp(0, calc((var(--p, 0) - .90) / .07), 1); }
 }
