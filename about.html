@@ -19,6 +19,9 @@
 </head>
 <body data-page="about">
 
+<!-- Scroll-linked progress indicator: fills in proportion to page scroll (scrubbed) -->
+<div class="scroll-progress" aria-hidden="true"><span></span></div>
+
 <!-- One calm environmental illustration behind the entire About page (soft watermark).
      position:fixed, ~7% — never animates. Content sits above it (wraps are z-index:2). -->
 <div class="about-bg" aria-hidden="true"></div>
@@ -346,11 +349,14 @@
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
 <script src="js/vendor/gsap.min.js"></script>
 <script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/vendor/split-type.min.js"></script>
 <script src="js/main.js"></script>
 <script>
-/* Vision & Mission + Core Values reveal on enter via IntersectionObserver (UNCHANGED).
-   Our Story (TEST) is a NATIVE-scroll pinned (pin:true) scrubbed reveal (NO Lenis).
-   Its per-frame scrub writes ONLY --p (drives opacity + translateY) — never filter/blur. */
+/* About-page scroll engine:
+   Lenis (eased smooth scroll, desktop) + GSAP ScrollTrigger (pin/scrub/toggle-on-enter)
+   + SplitType (heading word reveals). Scrubbed reveals write ONLY --p / --sp per frame
+   (mask + transform driven) — never filter/blur. */
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
   var targets = document.querySelectorAll('.vm-scene, .cv-card');
@@ -397,6 +403,25 @@
     gsap.registerPlugin(ScrollTrigger);
     gsap.config({ nullTargetWarn:false });
     ScrollTrigger.config({ ignoreMobileResize:true });
+
+    /* ---- Lenis smooth scroll (desktop): eased, weighted inertia synced to ScrollTrigger
+       through the GSAP ticker. Mobile keeps native touch scroll. ---- */
+    if(typeof window.Lenis !== 'undefined' && matchMedia('(min-width:901px)').matches){
+      var lenis = new Lenis({ duration:1.1 });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    /* ---- Scroll-linked progress indicator: top bar fills with page scroll ---- */
+    var spBar = document.querySelector('.scroll-progress span');
+    if(spBar){
+      ScrollTrigger.create({
+        start:0, end:'max',
+        onUpdate:function(self){ spBar.style.setProperty('--sp', self.progress.toFixed(4)); }
+      });
+    }
+
     var mm = gsap.matchMedia();
     mm.add('(min-width:901px) and (prefers-reduced-motion:no-preference)', function(){
       /* Our Story — pins when it reaches top, unpins after full reveal */
@@ -457,7 +482,31 @@
           onUpdate:function(self){ qb.style.setProperty('--p', self.progress.toFixed(4)); }
         });
       }
+      /* ---- Parallax depth: background ornaments drift slower than the content.
+         y-transform only (compositor-friendly), scrubbed, very subtle. ---- */
+      gsap.to('.hero .bg-doodle', {
+        y:140, ease:'none',
+        scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true }
+      });
+      gsap.from('.foot-orn', {
+        y:-90, ease:'none',
+        scrollTrigger:{ trigger:'#siteFooter', start:'top bottom', end:'bottom bottom', scrub:true }
+      });
     });
+
+    /* ---- Text-split heading reveals (headings ONLY — body/quote text keeps the
+       ink-develop mask). Words stagger up once on enter; not scrubbed. Created after
+       the pins so ScrollTrigger computes positions inside pin spacers correctly. ---- */
+    if(typeof window.SplitType !== 'undefined'){
+      document.querySelectorAll('h1.display, h2.title').forEach(function(el){
+        var split = new SplitType(el, { types:'words' });
+        gsap.from(split.words, {
+          yPercent:55, opacity:0, duration:.75, ease:'power3.out', stagger:.05,
+          scrollTrigger:{ trigger:el, start:'top 88%', once:true }
+        });
+      });
+    }
+
     ScrollTrigger.refresh();
   }
 })();
