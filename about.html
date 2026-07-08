@@ -404,27 +404,29 @@
           onUpdate:function(self){ vm.style.setProperty('--p', self.progress.toFixed(4)); }
         });
       }
-      /* Core Values — sequential reveals, one card at a time (7 cards = 7/1400 ≈ 200px each) */
+      /* Core Values — NO pin (section is taller than the viewport; pinning would clip it).
+         Scrub tied to the section's natural journey through the viewport: cards reveal
+         strictly one after another while each is on screen. Layout never changes. */
       var cv = document.querySelector('.cv-scene');
       if(cv){
         cv.classList.add('cv-live');
         ScrollTrigger.create({
           trigger:'#values',
-          start:'top top',
-          end:'+=1400',
-          pin:true,
+          start:'top 72%',
+          end:'bottom 45%',
           scrub:true,
           invalidateOnRefresh:true,
           onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
         });
       }
-      /* Founder's Message — pinned progressive reveal (heading → quote → citation) */
+      /* Founder's Message — pins at its natural size, centered in the viewport.
+         Quote mark → quote text (L2R) → citation, then a brief hold before unpin. */
       var qb = document.querySelector('#founder');
       if(qb){
         qb.classList.add('qb-live');
         ScrollTrigger.create({
           trigger:'#founder',
-          start:'top top',
+          start:'center center',
           end:'+=1400',
           pin:true,
           scrub:true,

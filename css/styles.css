@@ -696,7 +696,9 @@ body[data-page="about"] #vision .feat-card{
   background:radial-gradient(58% 46% at 50% 26%, rgba(242,111,33,.07), rgba(242,111,33,0) 70%); }
 .cv-scene .wrap{ position:relative; z-index:1; }
 .cv-stage{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; width:min(1080px,94vw); margin:44px auto 0; }
-.cv-card{ position:relative; }
+.cv-card{ opacity:0; transform:translateY(24px) scale(.98); transition:opacity .7s var(--btr), transform .8s var(--btr); }
+.cv-card.in-view{ opacity:1; transform:none; }
+.cv-card:last-child{ grid-column:1 / -1; }   /* 7th value spans full width */
 .cv-face{ position:relative; height:100%; border-radius:22px; overflow:hidden; padding:38px 40px;
   background:linear-gradient(135deg, rgba(255,255,255,.6), rgba(255,248,242,.48)),
              radial-gradient(120% 100% at 12% 0%, rgba(242,111,33,.07), rgba(242,111,33,0) 55%);
@@ -715,9 +717,6 @@ body[data-page="about"] #vision .feat-card{
   .cv-card:last-child{ grid-column:auto; }
   .cv-face{ padding:30px 26px; } .cv-title{ font-size:1.55rem; } .cv-desc{ font-size:1.18rem; }
 }
-
-/* ============ LEFT-TO-RIGHT CLIP-PATH REVEAL (core animation language across page) ============ */
-.scroll-reveal{ clip-path: inset(0 calc((1 - var(--sr, 0)) * 100%) 0 0); }
 
 /* reduced-motion: show everything instantly, no transitions */
 @media(prefers-reduced-motion:reduce){
@@ -755,11 +754,22 @@ body[data-page="about"] .sec-head .lead{ margin-top:10px; }
     z-index:1;
   }
   .story-live .wrap{ position:relative; z-index:2; }
+
+  /* ---- Shared LEFT-TO-RIGHT reveal: a soft-edged mask sweeps across the TEXT element only.
+     mask-image never affects layout — every container keeps its full natural width/height
+     from the first frame. No transforms, no clip on parents, no display/size changes.
+     --sr 0 = hidden, 1 = fully uncovered; 12% feathered edge for a premium sweep. ---- */
+  .story-live .sline,
+  .vm-live .sline,
+  .cv-live .cv-num, .cv-live .cv-title, .cv-live .cv-accent, .cv-live .cv-desc,
+  .qb-live .quote-mark, .qb-live blockquote{
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), transparent calc(var(--sr, 0) * 112%));
+            mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), transparent calc(var(--sr, 0) * 112%));
+  }
+
+  /* Our Story — 6 lines uncover strictly one after another (window .15 each, hold .90→1) */
   .story-live .sline{
-    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .15)) / .18), 1);
-    opacity: calc(.12 + var(--sr) * .88);
-    transform: translateY(calc((1 - var(--sr)) * 14px));
-    will-change: opacity, transform;
+    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .15)) / .15), 1);
   }
 
   /* ============ VISION & MISSION — pinned scrubbed reveal ============ */
@@ -778,76 +788,38 @@ body[data-page="about"] .sec-head .lead{ margin-top:10px; }
      so the pinned state renders at the identical size as the static state (no size jump on pin). */
   .vm-live .vm-card{ opacity:1 !important; transform:none !important; }
   .vm-live .vm-label{ opacity:1 !important; transition:none !important; transform:none !important; }
+  /* 7 phrases (--i 0-6) uncover in reading order across the two cards: Vision first, then
+     Mission. Spans keep their natural inline flow — only the mask moves. */
   .vm-live .sline{
-    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .12)) / .14), 1);
-    opacity: calc(.08 + var(--sr) * .92) !important;
-    transform: translateY(calc((1 - var(--sr)) * 12px)) !important;
-    will-change: opacity, transform;
-    display:block;
+    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .13)) / .13), 1);
   }
 
-  /* ============ CORE VALUES — pinned sequential reveals ============
-     Each of 7 cards reveals in sequence: card N activates during --p range [(N-1)/7, N/7].
-     Calculation: --sr: clamp(0, (--p - offset) * 7, 1) keeps card at 0 before its window,
-     ramps 0→1 during its window, stays 1 after. Left-to-right clip-path reveal. */
-  body[data-page="about"] .cv-live{
-    padding:0 !important;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    overflow:hidden;
-    position:relative;
-    z-index:1;
-  }
-  .cv-live .wrap{ position:relative; z-index:2; }
-  .cv-live .cv-stage{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; width:min(1080px,94vw); margin:44px auto 0; }
-  .cv-live .cv-card:last-child{ grid-column:1 / -1; }
-  .cv-live .cv-face{ clip-path: inset(0 calc((1 - var(--sr, 0)) * 100%) 0 0); }
-  /* Sequential reveal windows for each of 7 cards: 1/7 ≈ 0.14286 per card */
-  .cv-live .cv-card:nth-child(1) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0) * 7), 1); }
-  .cv-live .cv-card:nth-child(2) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.14286) * 7), 1); }
-  .cv-live .cv-card:nth-child(3) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.28571) * 7), 1); }
-  .cv-live .cv-card:nth-child(4) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.42857) * 7), 1); }
-  .cv-live .cv-card:nth-child(5) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.57143) * 7), 1); }
-  .cv-live .cv-card:nth-child(6) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.71429) * 7), 1); }
-  .cv-live .cv-card:nth-child(7) .cv-face{ --sr: clamp(0, calc((var(--p, 0) - 0.85714) * 7), 1); }
-  .cv-live .cv-card:nth-child(n) .cv-face{ will-change: clip-path; }
+  /* ============ CORE VALUES — scrub-driven strict-sequential reveal (NO pin) ============
+     The section is taller than one viewport, so it is never pinned/clipped — it scrolls in
+     natural flow and the reveal is scrubbed to its journey through the viewport. The grid,
+     all 7 cards and their sizes are untouched: cards always occupy their full slot (ghost
+     glass at 15% opacity before their turn), then card N fades in and its text uncovers
+     left-to-right; card N+1 starts only after N's window ends. */
+  .cv-live .cv-card{ opacity:1 !important; transform:none !important; transition:none !important; }
+  .cv-live .cv-card:nth-child(1){ --cr: clamp(0, calc((var(--p, 0) - 0.00) / .13), 1); }
+  .cv-live .cv-card:nth-child(2){ --cr: clamp(0, calc((var(--p, 0) - 0.13) / .13), 1); }
+  .cv-live .cv-card:nth-child(3){ --cr: clamp(0, calc((var(--p, 0) - 0.26) / .13), 1); }
+  .cv-live .cv-card:nth-child(4){ --cr: clamp(0, calc((var(--p, 0) - 0.39) / .13), 1); }
+  .cv-live .cv-card:nth-child(5){ --cr: clamp(0, calc((var(--p, 0) - 0.52) / .13), 1); }
+  .cv-live .cv-card:nth-child(6){ --cr: clamp(0, calc((var(--p, 0) - 0.65) / .13), 1); }
+  .cv-live .cv-card:nth-child(7){ --cr: clamp(0, calc((var(--p, 0) - 0.78) / .13), 1); }
+  /* glass face fades in fast at the start of the card's window (opacity only — layout keeps).
+     Floor of .25 keeps every upcoming card clearly present in its grid slot at all times. */
+  .cv-live .cv-face{ opacity: calc(.25 + clamp(0, calc(var(--cr, 0) * 3), 1) * .75); }
+  /* text uncovers L2R inside the card: number/title/accent lead, description follows */
+  .cv-live .cv-num, .cv-live .cv-title, .cv-live .cv-accent{ --sr: clamp(0, calc(var(--cr, 0) / .5), 1); }
+  .cv-live .cv-desc{ --sr: clamp(0, calc((var(--cr, 0) - .35) / .65), 1); }
 
-  /* ============ FOUNDER'S MESSAGE — pinned progressive reveal ============ */
-  body[data-page="about"] .qb-live{
-    padding:0 !important;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    overflow:hidden;
-    position:relative;
-    z-index:1;
-  }
-  .qb-live .wrap{ position:relative; z-index:2; text-align:center; }
-  .qb-live .quote-inner{ max-width:860px; margin:0 auto; }
-  /* Quote mark reveals first (0-15% of --p) */
-  .qb-live .quote-mark{
-    --sr: clamp(0, var(--p, 0) * 6.67, 1);
-    clip-path: inset(0 calc((1 - var(--sr)) * 100%) 0 0);
-    will-change: clip-path;
-  }
-  /* Quote text reveals next (15-90% of --p) */
-  .qb-live blockquote{
-    --sr: clamp(0, (var(--p, 0) - 0.15) * 1.18, 1);
-    clip-path: inset(0 calc((1 - var(--sr)) * 100%) 0 0);
-    will-change: clip-path;
-  }
-  /* Citation appears at the end (85-100% of --p) */
-  .qb-live cite{
-    --sr: clamp(0, (var(--p, 0) - 0.85) * 6.67, 1);
-    opacity: var(--sr);
-  }
-  /* Disable static reveal animation when section is pinned (scrub animation takes over) */
-  .qb-live .quote-inner.reveal{
-    opacity:1 !important;
-    transform:none !important;
-    transition:none !important;
-  }
+  /* ============ FOUNDER'S MESSAGE — pinned at its NATURAL size and layout ============
+     No width/height/display/padding overrides: the section pins exactly as designed
+     (full-width band, centered 860px quote). Only text visibility animates. */
+  .qb-live .quote-inner.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+  .qb-live .quote-mark{ --sr: clamp(0, calc(var(--p, 0) / .10), 1); }
+  .qb-live blockquote{ --sr: clamp(0, calc((var(--p, 0) - .10) / .75), 1); }
+  .qb-live cite{ opacity: clamp(0, calc((var(--p, 0) - .86) / .10), 1); }
 }
