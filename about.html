@@ -108,24 +108,9 @@
         <h2 class="title">Born from a gap <b>too big to ignore</b></h2>
       </div>
       <div class="story-body">
-        <p class="story-p">
-          <span class="sline" style="--i:0">Talent Expert was born from a simple but powerful observation:</span>
-          <span class="sline" style="--i:1">India's small and medium businesses are desperate for reliable talent,</span>
-          <span class="sline" style="--i:2">while millions of motivated rural youth in Tamil Nadu go unnoticed —</span>
-          <span class="sline" style="--i:3">untrained and underemployed.</span>
-        </p>
-        <p class="story-p">
-          <span class="sline" style="--i:4">We bridge this gap. Through grassroots community networks,</span>
-          <span class="sline" style="--i:5">structured training, and dedicated employer partnerships, we</span>
-          <span class="sline" style="--i:6">transform raw potential into workplace excellence — creating</span>
-          <span class="sline" style="--i:7">outcomes that matter for individuals, businesses, and communities.</span>
-        </p>
-        <p class="story-p">
-          <span class="sline" style="--i:8">Our founders bring <strong>25+ years</strong> of combined experience in HR, training,</span>
-          <span class="sline" style="--i:9">talent development, and business consulting — backed by deep rural</span>
-          <span class="sline" style="--i:10">community connections built through years of social work.</span>
-          <span class="sline" style="--i:11">We don't just understand recruitment; we understand people.</span>
-        </p>
+        <p class="story-p develop" style="--i:0">Talent Expert was born from a simple but powerful observation: India's small and medium businesses are desperate for reliable talent, while millions of motivated rural youth in Tamil Nadu go unnoticed — untrained and underemployed.</p>
+        <p class="story-p develop" style="--i:1">We bridge this gap. Through grassroots community networks, structured training, and dedicated employer partnerships, we transform raw potential into workplace excellence — creating outcomes that matter for individuals, businesses, and communities.</p>
+        <p class="story-p develop" style="--i:2">Our founders bring <strong>25+ years</strong> of combined experience in HR, training, talent development, and business consulting — backed by deep rural community connections built through years of social work. We don't just understand recruitment; we understand people.</p>
       </div>
     </div>
   </div>
@@ -221,15 +206,7 @@
       <div class="founder-msg">
         <span class="quote-mark">&ldquo;</span>
         <h2 class="founder-title">Founder's Message</h2>
-        <blockquote>
-          <span class="sline" style="--i:0">Transforming talent into action… Every business leader I speak with says the</span>
-          <span class="sline" style="--i:1">number one problem in their business is getting manpower. On the other side,</span>
-          <span class="sline" style="--i:2">lakhs of students in rural areas — I see <em>untapped potential</em> and joblessness.</span>
-          <span class="sline" style="--i:3">We want to bridge this gap, connecting rural talents with aspiring entrepreneurs</span>
-          <span class="sline" style="--i:4">and fueling their business growth and the young community. Our years of</span>
-          <span class="sline" style="--i:5">experience in training rural students make us confident that we will make an</span>
-          <span class="sline" style="--i:6">effective contribution to both the SMEs and the youth of our country.</span>
-        </blockquote>
+        <blockquote class="develop">Transforming talent into action… Every business leader I speak with says the number one problem in their business is getting manpower. On the other side, lakhs of students in rural areas — I see <em>untapped potential</em> and joblessness. We want to bridge this gap, connecting rural talents with aspiring entrepreneurs and fueling their business growth and the young community. Our years of experience in training rural students make us confident that we will make an effective contribution to both the SMEs and the youth of our country.</blockquote>
       </div>
       <aside class="founder-sig">
         <div class="sig-name">Founder</div>
@@ -436,9 +413,9 @@
         ScrollTrigger.create({
           trigger:'#story',
           start:'top top',
-          end:'+=1800',
+          end:'+=2200',
           pin:true,
-          scrub:true,
+          scrub:1,
           invalidateOnRefresh:true,
           onUpdate:function(self){ story.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -450,9 +427,9 @@
         ScrollTrigger.create({
           trigger:'#vision',
           start:'top top',
-          end:'+=1400',
+          end:'+=1700',
           pin:true,
-          scrub:true,
+          scrub:1,
           invalidateOnRefresh:true,
           onUpdate:function(self){ vm.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -465,9 +442,9 @@
         cv.classList.add('cv-live');
         ScrollTrigger.create({
           trigger:'#values',
-          start:'top 72%',
-          end:'bottom 45%',
-          scrub:true,
+          start:'top 86%',
+          end:'bottom 12%',
+          scrub:1,
           invalidateOnRefresh:true,
           onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -480,9 +457,9 @@
         ScrollTrigger.create({
           trigger:'#founder',
           start:'center center',
-          end:'+=1800',
+          end:'+=2000',
           pin:true,
-          scrub:true,
+          scrub:1,
           invalidateOnRefresh:true,
           onUpdate:function(self){ qb.style.setProperty('--p', self.progress.toFixed(4)); }
         });

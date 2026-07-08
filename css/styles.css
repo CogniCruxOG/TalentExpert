@@ -380,18 +380,21 @@ table.data td strong{color:var(--ink)}
 .quote-inner blockquote em{font-style:italic;color:var(--green)}
 .quote-inner cite{font-style:normal;font-size:.9rem;color:var(--ink2);font-weight:600}
 
-/* ---- Founder's Message: premium two-column editorial (message left, signature panel right) ---- */
-.founder-grid{ display:grid; grid-template-columns:1.95fr 1fr; gap:64px; align-items:start;
+/* ---- Founder's Message: premium two-column editorial (message left, signature panel right).
+   Signature card is vertically centered against the message block (align-items:center). ---- */
+.founder-grid{ display:grid; grid-template-columns:1.9fr 1fr; gap:60px; align-items:center;
   max-width:1200px; margin:0 auto; text-align:left; }
 .founder-msg{ position:relative; }
 .founder-msg .quote-mark{ font-size:4.4rem; color:var(--orange); opacity:.85; line-height:.5; margin-bottom:10px; }
 .founder-title{ font-family:'Manrope',sans-serif; font-size:.78rem; font-weight:700; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--ink3); margin:0 0 20px; display:flex; align-items:center; gap:12px; }
+  text-transform:uppercase; color:var(--ink3); margin:0 0 22px; display:flex; align-items:center; gap:12px; }
 .founder-title::before{ content:""; width:26px; height:1.5px; background:var(--orange); border-radius:2px; }
+/* natural left-aligned editorial measure (~62ch) — text wraps by itself, no manual line breaks,
+   no justification, so it stays correct at any font width */
 .founder-msg blockquote{ font-family:'Fraunces',serif; font-style:italic; font-weight:340;
-  font-size:1.42rem; line-height:1.5; letter-spacing:-.005em; color:var(--ink); margin:0; }
+  font-size:1.42rem; line-height:1.62; letter-spacing:-.005em; color:var(--ink); margin:0;
+  max-width:62ch; text-align:left; text-wrap:pretty; }
 .founder-msg blockquote em{ font-style:italic; color:var(--orange); }
-.founder-msg blockquote .sline{ display:block; }
 /* signature panel — stacked hierarchy, thin dividers, subtle orange accents */
 .founder-sig{ text-align:center; padding:34px 28px; border:1px solid var(--hair); border-radius:18px;
   background:var(--glass); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); box-shadow:var(--sh-s); }
@@ -775,11 +778,12 @@ body[data-page="about"] .cta{ padding-top:56px; }
    --p into opacity + translateY on right-side lines. No filter/blur anywhere. */
 .story-scene{ position:relative; }
 .story-head .eyebrow, .story-head .title{ opacity:1; }   /* left is static / visible immediately */
-/* wider text column + tighter type so each paragraph reflows to ~4 compact lines */
-.story-scene .split{ grid-template-columns:0.82fr 1.4fr; gap:50px; }
-.story-body{ font-size:1.12rem; font-weight:500; line-height:1.5; color:var(--ink2); }
-.story-body .story-p{ margin-bottom:1em; }
+/* wide, balanced text column; natural-flow paragraphs (no manual line breaks) */
+.story-scene .split{ grid-template-columns:0.78fr 1.5fr; gap:56px; align-items:center; }
+.story-body{ font-size:1.16rem; font-weight:500; line-height:1.62; color:var(--ink2); max-width:none; }
+.story-body .story-p{ margin-bottom:1.05em; }
 .story-body .story-p:last-child{ margin-bottom:0; }
+.story-body strong{ color:var(--ink); font-weight:700; }
 .sline{ display:block; }
 .sline strong{ color:var(--ink); font-weight:700; }
 @media(max-width:900px){ .story-scene .split{ grid-template-columns:1fr; } .story-body{ font-size:1.08rem; } }
@@ -798,25 +802,31 @@ body[data-page="about"] .cta{ padding-top:56px; }
   }
   .story-live .wrap{ position:relative; z-index:2; }
 
-  /* ---- Shared LEFT-TO-RIGHT "ink develop" reveal.
-     One soft-edged mask sweeps across each TEXT element. The unrevealed zone is NOT
-     transparent — it keeps 13% alpha, so the complete text is always present as a faint
-     printed placeholder (perfectly aligned: it is the same pixels), and the sweep simply
-     develops it to full ink like a newspaper page becoming readable.
-     mask-image never affects layout: no shifts, no reflow, no height change, ever.
-     Decorative quotation marks are intentionally NOT in this list — always visible. ---- */
-  .story-live .sline,
+  /* ---- Reveal mechanism A — VERTICAL "ink develop" (font-robust, no manual line breaks).
+     A soft-edged mask sweeps top→bottom across a naturally-wrapped paragraph. The unrevealed
+     zone keeps 12% alpha so the whole paragraph is always present as faint printed ink and
+     "develops" downward line by line as scroll progresses. Because the text wraps naturally,
+     this is correct at ANY font width — no orphans, no justification, no wrap-guessing.
+     Only mask-image animates: zero layout reflow, GPU-composited. --rp = 0..1 per element. */
+  .story-live .develop,
+  .qb-live .develop,
+  .cv-live .cv-desc{
+    -webkit-mask-image: linear-gradient(180deg, #000 calc(var(--rp,0) * 122% - 22%), rgba(0,0,0,.12) calc(var(--rp,0) * 122%));
+            mask-image: linear-gradient(180deg, #000 calc(var(--rp,0) * 122% - 22%), rgba(0,0,0,.12) calc(var(--rp,0) * 122%));
+    will-change: mask-image;
+  }
+  /* ---- Reveal mechanism B — LEFT-TO-RIGHT sweep for SHORT single-line elements only
+     (never wraps, so safe): Vision/Mission phrases and each card's number + title. ---- */
   .vm-live .sline,
-  .qb-live .sline,
-  .cv-live .cv-num, .cv-live .cv-title, .cv-live .cv-accent, .cv-live .cv-desc{
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr, 0) * 112%));
-            mask-image: linear-gradient(90deg, #000 calc(var(--sr, 0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr, 0) * 112%));
+  .cv-live .cv-num, .cv-live .cv-title{
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sr,0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr,0) * 112%));
+            mask-image: linear-gradient(90deg, #000 calc(var(--sr,0) * 112% - 12%), rgba(0,0,0,.13) calc(var(--sr,0) * 112%));
   }
 
-  /* Our Story — one visual line at a time: line i sweeps during [.05+i*.055, .05+i*.055+.045],
-     then holds a beat before line i+1 begins (window < step = brief pause). Fully reversible. */
-  .story-live .sline{
-    --sr: clamp(0, calc((var(--p, 0) - .05 - (var(--i) * .055)) / .045), 1);
+  /* Our Story — 3 paragraphs develop top→bottom, one after another, each over a wide, slow
+     window (~0.26 of progress). Strictly sequential; fully reversible. */
+  .story-live .story-p{
+    --rp: clamp(0, calc((var(--p,0) - .04 - (var(--i) * .28)) / .26), 1);
   }
 
   /* ============ VISION & MISSION — pinned scrubbed reveal ============ */
@@ -831,51 +841,43 @@ body[data-page="about"] .cta{ padding-top:56px; }
     z-index:1;
   }
   .vm-live .wrap{ position:relative; z-index:2; }
-  /* width/gap/padding intentionally NOT redeclared here — inherit from base .vm-stage/.vm-card/.vm-face
-     so the pinned state renders at the identical size as the static state (no size jump on pin). */
   .vm-live .vm-card{ opacity:1 !important; transform:none !important; }
   .vm-live .vm-label{ opacity:1 !important; transition:none !important; transform:none !important; }
-  /* 7 phrases (--i 0-6) uncover in reading order across the two cards: Vision first, then
-     Mission. Spans keep their natural inline flow — only the mask moves. */
+  /* 7 phrases uncover in reading order, slower spacing for a calmer sweep */
   .vm-live .sline{
-    --sr: clamp(0, calc((var(--p, 0) - (var(--i) * .13)) / .13), 1);
+    --sr: clamp(0, calc((var(--p,0) - .02 - (var(--i) * .125)) / .15), 1);
   }
 
-  /* ============ CORE VALUES — scrub-driven strict-sequential reveal (NO pin) ============
-     The section is taller than one viewport, so it is never pinned/clipped — it scrolls in
-     natural flow and the reveal is scrubbed to its journey through the viewport. The grid,
-     all 7 cards and their sizes are untouched: cards always occupy their full slot (ghost
-     glass at 15% opacity before their turn), then card N fades in and its text uncovers
-     left-to-right; card N+1 starts only after N's window ends. */
-  .cv-live .cv-card{ opacity:1 !important; transform:none !important; transition:none !important; }
-  .cv-live .cv-card:nth-child(1){ --cr: clamp(0, calc((var(--p, 0) - 0.00) / .13), 1); }
-  .cv-live .cv-card:nth-child(2){ --cr: clamp(0, calc((var(--p, 0) - 0.13) / .13), 1); }
-  .cv-live .cv-card:nth-child(3){ --cr: clamp(0, calc((var(--p, 0) - 0.26) / .13), 1); }
-  .cv-live .cv-card:nth-child(4){ --cr: clamp(0, calc((var(--p, 0) - 0.39) / .13), 1); }
-  .cv-live .cv-card:nth-child(5){ --cr: clamp(0, calc((var(--p, 0) - 0.52) / .13), 1); }
-  .cv-live .cv-card:nth-child(6){ --cr: clamp(0, calc((var(--p, 0) - 0.65) / .13), 1); }
-  .cv-live .cv-card:nth-child(7){ --cr: clamp(0, calc((var(--p, 0) - 0.78) / .13), 1); }
-  /* glass face fades in fast at the start of the card's window (opacity only — layout keeps).
-     Floor of .25 keeps every upcoming card clearly present in its grid slot at all times. */
-  .cv-live .cv-face{ opacity: calc(.25 + clamp(0, calc(var(--cr, 0) * 3), 1) * .75); }
-  /* text uncovers L2R inside the card: number/title/accent lead, description follows */
-  .cv-live .cv-num, .cv-live .cv-title, .cv-live .cv-accent{ --sr: clamp(0, calc(var(--cr, 0) / .5), 1); }
-  .cv-live .cv-desc{ --sr: clamp(0, calc((var(--cr, 0) - .35) / .65), 1); }
+  /* ============ CORE VALUES — staged, strictly one card at a time ============
+     Each card owns a --cr window (0..1). Within it, the card resolves in stages with a
+     deliberate pause between: (1) slide + fade in → (2) pause → (3) number+title sweep →
+     (4) orange accent line grows → (5) body develops line-by-line → (6) hold. Card N+1
+     does not begin until card N's window ends. Only transform/opacity/mask animate. */
+  .cv-live .cv-card{ opacity:1 !important; transition:none !important; }
+  .cv-live .cv-card:nth-child(1){ --cr: clamp(0, calc((var(--p,0) - 0.00) / .13), 1); }
+  .cv-live .cv-card:nth-child(2){ --cr: clamp(0, calc((var(--p,0) - 0.13) / .13), 1); }
+  .cv-live .cv-card:nth-child(3){ --cr: clamp(0, calc((var(--p,0) - 0.26) / .13), 1); }
+  .cv-live .cv-card:nth-child(4){ --cr: clamp(0, calc((var(--p,0) - 0.39) / .13), 1); }
+  .cv-live .cv-card:nth-child(5){ --cr: clamp(0, calc((var(--p,0) - 0.52) / .13), 1); }
+  .cv-live .cv-card:nth-child(6){ --cr: clamp(0, calc((var(--p,0) - 0.65) / .13), 1); }
+  .cv-live .cv-card:nth-child(7){ --cr: clamp(0, calc((var(--p,0) - 0.78) / .13), 1); }
+  /* stage 1 — card slides up + glass fades in (transform + opacity only) */
+  .cv-live .cv-card{ --ci: clamp(0, calc(var(--cr,0) / .12), 1);
+    transform: translateY(calc((1 - var(--ci)) * 26px)); will-change: transform; }
+  .cv-live .cv-face{ opacity: calc(.12 + var(--ci) * .88); }
+  /* stage 3 — number + title sweep in (after a pause at cr .12–.24) */
+  .cv-live .cv-num, .cv-live .cv-title{ --sr: clamp(0, calc((var(--cr,0) - .24) / .20), 1); }
+  /* stage 4 — orange accent line grows from the left */
+  .cv-live .cv-accent{ transform-origin:left center;
+    transform: scaleX(clamp(0, calc((var(--cr,0) - .46) / .12), 1)); will-change: transform; }
+  /* stage 5 — body paragraph develops top→bottom, line by line */
+  .cv-live .cv-desc{ --rp: clamp(0, calc((var(--cr,0) - .60) / .26), 1); }
 
-  /* ============ FOUNDER'S MESSAGE — pinned at its NATURAL size and layout ============
-     No width/height/display/padding overrides: the section pins exactly as designed
-     (full-width band, centered 860px quote). The quote mark is decorative and NEVER
-     masked (it was getting clipped by its own mask — its glyph ink overflows the
-     line box). The quote is marked up as one span per visual line; each line is a
-     block so lines are deterministic — the whole quote sits in place as a 13%-ink
-     placeholder from frame one, and lines develop to full ink strictly one at a
-     time: line i sweeps during [.16+i*.058, .16+i*.058+.048], brief hold between. */
+  /* ============ FOUNDER'S MESSAGE — natural editorial paragraph, vertical develop ============
+     The quote is one naturally-wrapped left-aligned paragraph (.develop) that inks in
+     top→bottom over a long, slow window. Quote mark is decorative and always visible.
+     Signature panel fades in once the quote is essentially complete. */
   .qb-live .founder-grid.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
-  /* quote develops line-by-line; 7 lines (i 0-6) finish near p=.63 */
-  .qb-live blockquote .sline{
-    display:block;
-    --sr: clamp(0, calc((var(--p, 0) - .14 - (var(--i) * .078)) / .066), 1);
-  }
-  /* signature panel fades in right after the quote completes (no dead scroll gap) */
-  .qb-live .founder-sig{ opacity: clamp(0, calc((var(--p, 0) - .66) / .16), 1); }
+  .qb-live blockquote{ --rp: clamp(0, calc((var(--p,0) - .08) / .72), 1); }
+  .qb-live .founder-sig{ opacity: clamp(0, calc((var(--p,0) - .82) / .14), 1); }
 }
