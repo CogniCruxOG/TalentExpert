@@ -766,21 +766,25 @@ body[data-page="about"] #vision .feat-card{
     transition:none !important; opacity:1 !important; transform:none !important; }
 }
 
-/* ---- About: connected vertical rhythm — tightened to remove large empty gaps ---- */
-body[data-page="about"] .section{ padding:52px 0; }
-body[data-page="about"] .sec-head{ margin-bottom:34px; }
+/* ---- About: connected vertical rhythm — tightened for a continuous story ---- */
+body[data-page="about"] .section{ padding:40px 0; }
+body[data-page="about"] .sec-head{ margin-bottom:30px; }
 body[data-page="about"] .sec-head .lead{ margin-top:10px; }
-body[data-page="about"] .quote-band{ padding:64px 0; }
-body[data-page="about"] .cta{ padding-top:56px; }
+body[data-page="about"] .quote-band{ padding:52px 0; }
+body[data-page="about"] .cta{ padding-top:48px; }
+/* pinned sections fill the viewport themselves — no extra section padding around them */
+body[data-page="about"] .story-live,
+body[data-page="about"] .vm-live,
+body[data-page="about"] .cv-live{ padding:0 !important; }
 
 /* ============ ABOUT · Our Story — native-scroll PINNED scrubbed reveal (TEST section) ============
    GSAP ScrollTrigger (pin:true, NO Lenis). The per-frame scrub writes ONLY --p; CSS turns
    --p into opacity + translateY on right-side lines. No filter/blur anywhere. */
 .story-scene{ position:relative; }
 .story-head .eyebrow, .story-head .title{ opacity:1; }   /* left is static / visible immediately */
-/* wide, balanced text column; natural-flow paragraphs (no manual line breaks) */
-.story-scene .split{ grid-template-columns:0.78fr 1.5fr; gap:56px; align-items:center; }
-.story-body{ font-size:1.16rem; font-weight:500; line-height:1.62; color:var(--ink2); max-width:none; }
+/* balanced ~40/60 columns; natural-flow paragraphs (no manual line breaks) */
+.story-scene .split{ grid-template-columns:40fr 60fr; gap:52px; align-items:center; }
+.story-body{ font-size:1.18rem; font-weight:500; line-height:1.62; color:var(--ink2); max-width:none; }
 .story-body .story-p{ margin-bottom:1.05em; }
 .story-body .story-p:last-child{ margin-bottom:0; }
 .story-body strong{ color:var(--ink); font-weight:700; }
@@ -848,35 +852,49 @@ body[data-page="about"] .cta{ padding-top:56px; }
     --sr: clamp(0, calc((var(--p,0) - .02 - (var(--i) * .125)) / .15), 1);
   }
 
-  /* ============ CORE VALUES — staged, strictly one card at a time ============
-     Each card owns a --cr window (0..1). Within it, the card resolves in stages with a
-     deliberate pause between: (1) slide + fade in → (2) pause → (3) number+title sweep →
-     (4) orange accent line grows → (5) body develops line-by-line → (6) hold. Card N+1
-     does not begin until card N's window ends. Only transform/opacity/mask animate. */
-  .cv-live .cv-card{ opacity:1 !important; transition:none !important; }
-  .cv-live .cv-card:nth-child(1){ --cr: clamp(0, calc((var(--p,0) - 0.00) / .13), 1); }
-  .cv-live .cv-card:nth-child(2){ --cr: clamp(0, calc((var(--p,0) - 0.13) / .13), 1); }
-  .cv-live .cv-card:nth-child(3){ --cr: clamp(0, calc((var(--p,0) - 0.26) / .13), 1); }
-  .cv-live .cv-card:nth-child(4){ --cr: clamp(0, calc((var(--p,0) - 0.39) / .13), 1); }
-  .cv-live .cv-card:nth-child(5){ --cr: clamp(0, calc((var(--p,0) - 0.52) / .13), 1); }
-  .cv-live .cv-card:nth-child(6){ --cr: clamp(0, calc((var(--p,0) - 0.65) / .13), 1); }
-  .cv-live .cv-card:nth-child(7){ --cr: clamp(0, calc((var(--p,0) - 0.78) / .13), 1); }
-  /* stage 1 — card slides up + glass fades in (transform + opacity only) */
-  .cv-live .cv-card{ --ci: clamp(0, calc(var(--cr,0) / .12), 1);
-    transform: translateY(calc((1 - var(--ci)) * 26px)); will-change: transform; }
-  .cv-live .cv-face{ opacity: calc(.12 + var(--ci) * .88); }
-  /* stage 3 — number + title sweep in (after a pause at cr .12–.24) */
-  .cv-live .cv-num, .cv-live .cv-title{ --sr: clamp(0, calc((var(--cr,0) - .24) / .20), 1); }
-  /* stage 4 — orange accent line grows from the left */
+  /* ============ CORE VALUES — PINNED, one card at a time (stacked in one slot) ============
+     All 7 cards are stacked absolutely in a single centered slot, so the section fits the
+     viewport and can be pinned without clipping. Exactly ONE card is visible at a time; it
+     runs a full staged sequence, holds for reading, fades out, then the next fades in. The
+     section stays pinned until card 07 completes. --i (0..6) comes from each card's style. */
+  body[data-page="about"] .cv-live{
+    padding:0 !important; height:100vh; display:flex; flex-direction:column;
+    justify-content:center; overflow:hidden; position:relative; z-index:1;
+  }
+  .cv-live .wrap{ position:relative; z-index:2; }
+  .cv-live .sec-head{ margin-bottom:6px; }
+  .cv-live .cv-stage{ position:relative; display:block; width:min(720px,92vw); height:300px; margin:18px auto 0; }
+  .cv-live .cv-card{ position:absolute; inset:0; width:100% !important; justify-self:auto;
+    transition:none !important; pointer-events:none;
+    /* local time for this card: <0 before its turn, 0..1 during, >1 after */
+    --lt: calc((var(--p,0) - (var(--i) * 0.142857)) / 0.142857);
+    /* cross-fade gate: fade in over first 8%, hold, fade out over last 8% */
+    --in:  clamp(0, calc(var(--lt) / 0.08), 1);
+    --out: clamp(0, calc((1 - var(--lt)) / 0.08), 1);
+    opacity: calc(var(--in) * var(--out)) !important;
+    /* subtle settle: rise 22px as it enters */
+    transform: translateY(calc((1 - var(--in)) * 22px)) !important; will-change: opacity, transform;
+    /* --cr = staged progress within the card's own window */
+    --cr: clamp(0, var(--lt), 1);
+  }
+  .cv-live .cv-face{ opacity:1; height:100%; }
+  /* stage: number + title sweep in (after the card has settled + a pause) */
+  .cv-live .cv-num, .cv-live .cv-title{ --sr: clamp(0, calc((var(--cr,0) - .18) / .16), 1); }
+  /* stage: orange divider grows from the left */
   .cv-live .cv-accent{ transform-origin:left center;
-    transform: scaleX(clamp(0, calc((var(--cr,0) - .46) / .12), 1)); will-change: transform; }
-  /* stage 5 — body paragraph develops top→bottom, line by line */
-  .cv-live .cv-desc{ --rp: clamp(0, calc((var(--cr,0) - .60) / .26), 1); }
+    transform: scaleX(clamp(0, calc((var(--cr,0) - .38) / .10), 1)); will-change: transform; }
+  /* stage: body paragraph develops top→bottom, line by line, then holds */
+  .cv-live .cv-desc{ --rp: clamp(0, calc((var(--cr,0) - .50) / .30), 1); }
 
   /* ============ FOUNDER'S MESSAGE — natural editorial paragraph, vertical develop ============
-     The quote is one naturally-wrapped left-aligned paragraph (.develop) that inks in
-     top→bottom over a long, slow window. Quote mark is decorative and always visible.
-     Signature panel fades in once the quote is essentially complete. */
+     Pinned 100vh like the other story sections (uniform sequential rhythm, no inter-section
+     gap). The quote is one naturally-wrapped left-aligned paragraph (.develop) that inks in
+     top→bottom over a long, slow window. Quote mark decorative + always visible. Signature
+     panel fades in once the quote is essentially complete. */
+  body[data-page="about"] .qb-live{
+    padding:0 !important; min-height:100vh; display:flex; flex-direction:column;
+    justify-content:center; overflow:hidden; position:relative; z-index:1;
+  }
   .qb-live .founder-grid.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
   .qb-live blockquote{ --rp: clamp(0, calc((var(--p,0) - .08) / .72), 1); }
   .qb-live .founder-sig{ opacity: clamp(0, calc((var(--p,0) - .82) / .14), 1); }

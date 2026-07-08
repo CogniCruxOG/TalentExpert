@@ -434,16 +434,18 @@
           onUpdate:function(self){ vm.style.setProperty('--p', self.progress.toFixed(4)); }
         });
       }
-      /* Core Values — NO pin (section is taller than the viewport; pinning would clip it).
-         Scrub tied to the section's natural journey through the viewport: cards reveal
-         strictly one after another while each is on screen. Layout never changes. */
+      /* Core Values — PINNED one-card-at-a-time. In live mode the 7 cards stack in a single
+         centered slot (fits the viewport, so pinning never clips). Section stays pinned until
+         card 07's animation finishes, THEN releases → Founder begins. No section overlap.
+         Long pin distance = generous reading time per card, fully scrubbed + reversible. */
       var cv = document.querySelector('.cv-scene');
       if(cv){
         cv.classList.add('cv-live');
         ScrollTrigger.create({
           trigger:'#values',
-          start:'top 86%',
-          end:'bottom 12%',
+          start:'top top',
+          end:'+=4200',
+          pin:true,
           scrub:1,
           invalidateOnRefresh:true,
           onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
@@ -456,7 +458,7 @@
         qb.classList.add('qb-live');
         ScrollTrigger.create({
           trigger:'#founder',
-          start:'center center',
+          start:'top top',
           end:'+=2000',
           pin:true,
           scrub:1,
