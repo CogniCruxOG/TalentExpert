@@ -413,9 +413,9 @@
         ScrollTrigger.create({
           trigger:'#story',
           start:'top top',
-          end:'+=2200',
+          end:'+=2600',
           pin:true,
-          scrub:1,
+          scrub:1.8,
           invalidateOnRefresh:true,
           onUpdate:function(self){ story.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -427,9 +427,9 @@
         ScrollTrigger.create({
           trigger:'#vision',
           start:'top top',
-          end:'+=1700',
+          end:'+=2400',
           pin:true,
-          scrub:1,
+          scrub:1.8,
           invalidateOnRefresh:true,
           onUpdate:function(self){ vm.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -444,9 +444,9 @@
         ScrollTrigger.create({
           trigger:'#values',
           start:'top top',
-          end:'+=4200',
+          end:'+=5200',
           pin:true,
-          scrub:1,
+          scrub:1.8,
           invalidateOnRefresh:true,
           onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -459,9 +459,9 @@
         ScrollTrigger.create({
           trigger:'#founder',
           start:'top top',
-          end:'+=2000',
+          end:'+=2400',
           pin:true,
-          scrub:1,
+          scrub:1.8,
           invalidateOnRefresh:true,
           onUpdate:function(self){ qb.style.setProperty('--p', self.progress.toFixed(4)); }
         });
