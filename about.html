@@ -389,7 +389,7 @@
     /* ---- Lenis smooth scroll (desktop): eased, weighted inertia synced to ScrollTrigger
        through the GSAP ticker. Mobile keeps native touch scroll. ---- */
     if(typeof window.Lenis !== 'undefined' && matchMedia('(min-width:901px)').matches){
-      var lenis = new Lenis({ duration:1.1 });
+      var lenis = new Lenis({ duration:1.4 });
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
       gsap.ticker.lagSmoothing(0);
@@ -415,7 +415,7 @@
           start:'top top',
           end:'+=2600',
           pin:true,
-          scrub:1.8,
+          scrub:2,
           invalidateOnRefresh:true,
           onUpdate:function(self){ story.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -429,7 +429,7 @@
           start:'top top',
           end:'+=2400',
           pin:true,
-          scrub:1.8,
+          scrub:2,
           invalidateOnRefresh:true,
           onUpdate:function(self){ vm.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -444,9 +444,9 @@
         ScrollTrigger.create({
           trigger:'#values',
           start:'top top',
-          end:'+=5200',
+          end:'+=6200',
           pin:true,
-          scrub:1.8,
+          scrub:2,
           invalidateOnRefresh:true,
           onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
         });
@@ -461,7 +461,7 @@
           start:'top top',
           end:'+=2400',
           pin:true,
-          scrub:1.8,
+          scrub:2,
           invalidateOnRefresh:true,
           onUpdate:function(self){ qb.style.setProperty('--p', self.progress.toFixed(4)); }
         });

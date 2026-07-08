@@ -853,62 +853,69 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   }
 
   /* ============ CORE VALUES — PINNED story: one card at a time, then zoom out to all 7 ============
-     PHASE A (--p 0 → .68): the 7 cards are stacked at the viewport centre; exactly ONE shows
-       at a time and runs a staged reveal (settle → number+title → divider grows → body
-       develops), holds, then hands off to the next.
-     PHASE B (--p .68 → .90, driven by --t): the section "pulls back" — the heading fades out,
-       the whole stage scales down, and every card slides from centre into its final grid slot
-       (01 02 / 03 04 / 05 06 / 07 centred), staggered, so the reader sees all seven together.
-     HOLD (--p .90 → 1): the complete overview holds, then the pin releases → Founder.
-     Only transform / opacity / mask animate. --i and per-card grid offsets --gx/--gy drive it. */
+     PHASE A (--p 0 → .70): the 7 cards share one large centred slot; exactly ONE shows at a
+       time and runs a staged reveal (settle → number+title → divider grows → body develops),
+       holds for reading, then gently drifts up-and-away as the next slides up into place.
+     PHASE B (--p .70 → .90, via --t): the section pulls back and every card slides from centre
+       into a full-width 3-column overview (01 02 03 / 04 05 06 / 07 centred).
+     HOLD (--p .90 → 1): the overview holds, then the pin releases → Founder.
+     Only transform / opacity / mask animate. --i drives the sequence; --gx/--gy the grid. */
   body[data-page="about"] .cv-live{
     padding:0 !important; height:100vh; overflow:hidden; position:relative; z-index:1;
-    --t: clamp(0, calc((var(--p,0) - .68) / .22), 1);   /* phase-B "assemble" progress */
+    --t: clamp(0, calc((var(--p,0) - .70) / .20), 1);   /* phase-B "assemble" progress */
   }
   .cv-live .cv-pin, .cv-live .wrap{ position:static; }
-  /* heading sits near the top and fades out as the overview assembles */
-  .cv-live .sec-head{ position:absolute; top:11vh; left:50%; transform:translateX(-50%);
-    width:min(1080px,92vw); z-index:3; margin:0;
-    opacity: calc(1 - clamp(0, calc((var(--p,0) - .68) / .10), 1)); }
-  /* stage is a zero-size anchor at viewport centre; scales down for the pull-back */
+  /* heading near the top; fades out as the overview assembles */
+  .cv-live .sec-head{ position:absolute; top:9vh; left:50%; transform:translateX(-50%);
+    width:min(1100px,92vw); z-index:3; margin:0;
+    opacity: calc(1 - clamp(0, calc((var(--p,0) - .70) / .10), 1)); }
+  /* stage = zero-size anchor at viewport centre; scales back a touch for the "pull-back".
+     Scale ends at .70 so the 3-col grid of big cards fills the section width. */
   .cv-live .cv-stage{ position:absolute; top:50%; left:50%; width:0; height:0; z-index:2;
     display:block; margin:0; will-change:transform;
-    transform: translate(-50%,-50%) scale(calc(1 - .40 * var(--t))); transform-origin:center; }
-  .cv-live .cv-card{ position:absolute; top:0; left:0; width:468px; height:258px;
-    margin:-129px 0 0 -234px; justify-self:auto; transition:none !important; pointer-events:none;
-    /* per-card local time: <0 before its turn, 0..1 during, >1 after (7 windows over 0..0.68) */
-    --lt: calc((var(--p,0) - (var(--i) * 0.0971)) / 0.0971);
-    --in:  clamp(0, calc(var(--lt) / 0.12), 1);
-    --out: clamp(0, calc((1 - var(--lt)) / 0.12), 1);
-    /* opacity: phase A = one-at-a-time gate; phase B = all fade to 1 (whichever is larger) */
+    transform: translate(-50%,-50%) scale(calc(1 - .30 * var(--t))); transform-origin:center; }
+  /* big, comfortable card cell (520×330) — generous room for the text */
+  .cv-live .cv-card{ position:absolute; top:0; left:0; width:520px; height:330px;
+    margin:-165px 0 0 -260px; justify-self:auto; transition:none !important; pointer-events:none;
+    /* per-card local time: <0 before its turn, 0..1 during, >1 after (7 windows over 0..0.70) */
+    --lt: calc((var(--p,0) - (var(--i) * 0.10)) / 0.10);
+    /* fade zones OVERLAP the neighbouring card (in over lt 0→.32; full .32→1; out over
+       1→1.32) so a leaving card cross-fades with the arriving one — never a blank moment */
+    --in:  clamp(0, calc(var(--lt) / 0.32), 1);
+    --out: clamp(0, calc((1.32 - var(--lt)) / 0.32), 1);
+    /* opacity: phase A one-at-a-time gate; phase B all → 1 (whichever is larger) */
     opacity: max(calc(var(--in) * var(--out)), var(--t)) !important;
-    /* transform: slide from centre (t=0) to grid slot (t=1); + a small settle-rise on enter */
+    /* transform: phase A drift (enter from below +34, leave upward -34) blended out as the
+       grid assembles; phase B slides each card to its 3-col grid slot (--gx/--gy * --t) */
     transform: translate(calc(var(--gx,0) * var(--t)),
-                         calc(var(--gy,0) * var(--t) + (1 - var(--in)) * 18px)) !important;
+                 calc(var(--gy,0) * var(--t) + 34px * (var(--out) - var(--in)) * (1 - var(--t)))) !important;
     will-change: opacity, transform;
     --cr: clamp(0, var(--lt), 1);   /* staged progress within the card's own window */
   }
-  .cv-live .cv-card:last-child{ --out: 1; }  /* last card never fades out before phase B */
-  /* final grid-slot offsets (card cell 468×258): cols ±250, rows ∓465/∓155/±155, card7 centred.
-     All values carry px units (incl. 0px) so the transform calc stays valid for every card. */
-  .cv-live .cv-card:nth-child(1){ --gx:-250px; --gy:-465px; }
-  .cv-live .cv-card:nth-child(2){ --gx: 250px; --gy:-465px; }
-  .cv-live .cv-card:nth-child(3){ --gx:-250px; --gy:-155px; }
-  .cv-live .cv-card:nth-child(4){ --gx: 250px; --gy:-155px; }
-  .cv-live .cv-card:nth-child(5){ --gx:-250px; --gy: 155px; }
-  .cv-live .cv-card:nth-child(6){ --gx: 250px; --gy: 155px; }
-  .cv-live .cv-card:nth-child(7){ --gx: 0px;   --gy: 465px; }
-  /* nearly-opaque face in live mode so cards occlude cleanly while they slide past each
-     other during the assemble (the faint page illustration behind stays subtle regardless) */
-  .cv-live .cv-face{ opacity:1; height:100%;
-    background:linear-gradient(135deg, rgba(255,253,250,.94), rgba(255,247,241,.9)),
+  .cv-live .cv-card:last-child{ --out: 1; }  /* last card doesn't drift/fade out before phase B */
+  /* full-width 3-column overview offsets (cell 520, gutter 48 → col step 568, row step 378):
+     cols ∓568/0/±568, rows ∓378/0, card 7 centred on the third row. px units on every value. */
+  .cv-live .cv-card:nth-child(1){ --gx:-568px; --gy:-378px; }
+  .cv-live .cv-card:nth-child(2){ --gx: 0px;   --gy:-378px; }
+  .cv-live .cv-card:nth-child(3){ --gx: 568px; --gy:-378px; }
+  .cv-live .cv-card:nth-child(4){ --gx:-568px; --gy: 0px;   }
+  .cv-live .cv-card:nth-child(5){ --gx: 0px;   --gy: 0px;   }
+  .cv-live .cv-card:nth-child(6){ --gx: 568px; --gy: 0px;   }
+  .cv-live .cv-card:nth-child(7){ --gx: 0px;   --gy: 378px; }
+  /* nearly-opaque face so cards occlude cleanly while sliding past each other */
+  .cv-live .cv-face{ opacity:1; height:100%; padding:48px 50px;
+    background:linear-gradient(135deg, rgba(255,253,250,.95), rgba(255,247,241,.92)),
                radial-gradient(120% 100% at 12% 0%, rgba(242,111,33,.07), rgba(242,111,33,0) 55%); }
-  /* within-card staging (phase A: number+title sweep → divider grows → body develops).
-     Each also OR's in --t so that in the assembled overview every card is fully inked. */
-  .cv-live .cv-num, .cv-live .cv-title{ --sr: max(clamp(0, calc((var(--cr,0) - .18) / .18), 1), var(--t)); }
+  /* roomier internal type so nothing feels cramped */
+  .cv-live .cv-title{ font-size:1.86rem; margin-top:8px; }
+  .cv-live .cv-accent{ margin:18px 0 22px; }
+  .cv-live .cv-desc{ font-size:1.3rem; line-height:1.62; }
+  /* within-card staging (slower windows): number+title sweep → divider grows → body develops.
+     Each OR's in --t so every card is fully inked in the assembled overview. */
+  .cv-live .cv-num, .cv-live .cv-title{ --sr: max(clamp(0, calc((var(--cr,0) - .18) / .22), 1), var(--t)); }
   .cv-live .cv-accent{ transform-origin:left center; will-change: transform;
-    transform: scaleX(max(clamp(0, calc((var(--cr,0) - .40) / .12), 1), var(--t))); }
-  .cv-live .cv-desc{ --rp: max(clamp(0, calc((var(--cr,0) - .54) / .34), 1), var(--t)); }
+    transform: scaleX(max(clamp(0, calc((var(--cr,0) - .42) / .14), 1), var(--t))); }
+  .cv-live .cv-desc{ --rp: max(clamp(0, calc((var(--cr,0) - .56) / .36), 1), var(--t)); }
 
   /* ============ FOUNDER'S MESSAGE — natural editorial paragraph, vertical develop ============
      Pinned 100vh like the other story sections (uniform sequential rhythm, no inter-section
