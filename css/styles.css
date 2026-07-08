@@ -380,6 +380,33 @@ table.data td strong{color:var(--ink)}
 .quote-inner blockquote em{font-style:italic;color:var(--green)}
 .quote-inner cite{font-style:normal;font-size:.9rem;color:var(--ink2);font-weight:600}
 
+/* ---- Founder's Message: premium two-column editorial (message left, signature panel right) ---- */
+.founder-grid{ display:grid; grid-template-columns:1.95fr 1fr; gap:64px; align-items:start;
+  max-width:1200px; margin:0 auto; text-align:left; }
+.founder-msg{ position:relative; }
+.founder-msg .quote-mark{ font-size:4.4rem; color:var(--orange); opacity:.85; line-height:.5; margin-bottom:10px; }
+.founder-title{ font-family:'Manrope',sans-serif; font-size:.78rem; font-weight:700; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--ink3); margin:0 0 20px; display:flex; align-items:center; gap:12px; }
+.founder-title::before{ content:""; width:26px; height:1.5px; background:var(--orange); border-radius:2px; }
+.founder-msg blockquote{ font-family:'Fraunces',serif; font-style:italic; font-weight:340;
+  font-size:1.42rem; line-height:1.5; letter-spacing:-.005em; color:var(--ink); margin:0; }
+.founder-msg blockquote em{ font-style:italic; color:var(--orange); }
+.founder-msg blockquote .sline{ display:block; }
+/* signature panel — stacked hierarchy, thin dividers, subtle orange accents */
+.founder-sig{ text-align:center; padding:34px 28px; border:1px solid var(--hair); border-radius:18px;
+  background:var(--glass); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); box-shadow:var(--sh-s); }
+.sig-name{ font-family:'Fraunces',serif; font-size:1.55rem; font-weight:400; color:var(--ink); line-height:1.1; }
+.sig-org{ font-family:'Manrope',sans-serif; font-size:.82rem; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--orange); margin-top:7px; }
+.sig-div{ width:44px; height:1px; background:var(--hair); margin:20px auto; }
+.sig-roles{ display:flex; flex-direction:column; gap:9px; }
+.sig-roles span{ font-family:'Manrope',sans-serif; font-size:1rem; color:var(--ink2); letter-spacing:.01em; }
+.sig-exp{ font-family:'Fraunces',serif; font-style:italic; font-size:1.08rem; color:var(--ink); }
+@media(max-width:900px){
+  .founder-grid{ grid-template-columns:1fr; gap:32px; }
+  .founder-msg blockquote{ font-size:1.24rem; }
+}
+
 /* ============ CTA BAND ============ */
 .cta{padding:96px 0}
 .cta-inner{max-width:940px;margin:0 auto;text-align:center;padding:56px;border-radius:var(--r-xl);background:linear-gradient(135deg,#242424,#131313);color:#fff;box-shadow:var(--sh-m);position:relative;overflow:hidden}
@@ -709,7 +736,8 @@ body[data-page="about"] #vision .feat-card{
 .cv-stage{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; width:min(1080px,94vw); margin:44px auto 0; }
 .cv-card{ opacity:0; transform:translateY(24px) scale(.98); transition:opacity .7s var(--btr), transform .8s var(--btr); }
 .cv-card.in-view{ opacity:1; transform:none; }
-.cv-card:last-child{ grid-column:1 / -1; }   /* 7th value spans full width */
+/* 7th value: normal card width, centered under the pair above (not stretched full-width) */
+.cv-card:last-child{ grid-column:1 / -1; justify-self:center; width:calc(50% - 12px); }
 .cv-face{ position:relative; height:100%; border-radius:22px; overflow:hidden; padding:38px 40px;
   background:linear-gradient(135deg, rgba(255,255,255,.6), rgba(255,248,242,.48)),
              radial-gradient(120% 100% at 12% 0%, rgba(242,111,33,.07), rgba(242,111,33,0) 55%);
@@ -735,22 +763,26 @@ body[data-page="about"] #vision .feat-card{
     transition:none !important; opacity:1 !important; transform:none !important; }
 }
 
-/* ---- About: connected vertical rhythm ---- */
-body[data-page="about"] .section{ padding:84px 0; }
+/* ---- About: connected vertical rhythm — tightened to remove large empty gaps ---- */
+body[data-page="about"] .section{ padding:52px 0; }
+body[data-page="about"] .sec-head{ margin-bottom:34px; }
 body[data-page="about"] .sec-head .lead{ margin-top:10px; }
+body[data-page="about"] .quote-band{ padding:64px 0; }
+body[data-page="about"] .cta{ padding-top:56px; }
 
 /* ============ ABOUT · Our Story — native-scroll PINNED scrubbed reveal (TEST section) ============
    GSAP ScrollTrigger (pin:true, NO Lenis). The per-frame scrub writes ONLY --p; CSS turns
    --p into opacity + translateY on right-side lines. No filter/blur anywhere. */
 .story-scene{ position:relative; }
 .story-head .eyebrow, .story-head .title{ opacity:1; }   /* left is static / visible immediately */
-/* right-side body: bigger + heavier (same Manrope family) */
-.story-body{ font-size:1.3rem; font-weight:500; line-height:1.7; color:var(--ink2); }
-.story-body .story-p{ margin-bottom:1.15em; }
+/* wider text column + tighter type so each paragraph reflows to ~4 compact lines */
+.story-scene .split{ grid-template-columns:0.82fr 1.4fr; gap:50px; }
+.story-body{ font-size:1.12rem; font-weight:500; line-height:1.5; color:var(--ink2); }
+.story-body .story-p{ margin-bottom:1em; }
 .story-body .story-p:last-child{ margin-bottom:0; }
 .sline{ display:block; }
 .sline strong{ color:var(--ink); font-weight:700; }
-@media(max-width:900px){ .story-body{ font-size:1.14rem; } }
+@media(max-width:900px){ .story-scene .split{ grid-template-columns:1fr; } .story-body{ font-size:1.08rem; } }
 /* LIVE (desktop + motion-ok; JS adds .story-live): pinned 100vh, flex-centered. Lines
    ghost->revealed scrubbed by --p. Reduced-motion/mobile never get .story-live (full text). */
 @media (min-width:901px) and (prefers-reduced-motion:no-preference){
@@ -838,10 +870,12 @@ body[data-page="about"] .sec-head .lead{ margin-top:10px; }
      block so lines are deterministic — the whole quote sits in place as a 13%-ink
      placeholder from frame one, and lines develop to full ink strictly one at a
      time: line i sweeps during [.16+i*.058, .16+i*.058+.048], brief hold between. */
-  .qb-live .quote-inner.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+  .qb-live .founder-grid.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+  /* quote develops line-by-line; 7 lines (i 0-6) finish near p=.63 */
   .qb-live blockquote .sline{
     display:block;
-    --sr: clamp(0, calc((var(--p, 0) - .16 - (var(--i) * .058)) / .048), 1);
+    --sr: clamp(0, calc((var(--p, 0) - .14 - (var(--i) * .078)) / .066), 1);
   }
-  .qb-live cite{ opacity: clamp(0, calc((var(--p, 0) - .90) / .07), 1); }
+  /* signature panel fades in right after the quote completes (no dead scroll gap) */
+  .qb-live .founder-sig{ opacity: clamp(0, calc((var(--p, 0) - .66) / .16), 1); }
 }
