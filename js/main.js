@@ -159,9 +159,16 @@
      The native <select> is kept (transparent, tab-skipped) for its value,
      `required` validation and submission; a styled trigger + menu drive it. ---- */
   (function customSelects() {
-    const closeAll = (except) => $$('.sel.open').forEach(s => {
-      if (s !== except) { s.classList.remove('open'); const f = s.closest('.fld'); if (f) f.classList.remove('sel-open'); s._trigger && s._trigger.setAttribute('aria-expanded', 'false'); }
-    });
+    /* While a dropdown is open, pause Lenis so the wheel scrolls the MENU (which
+       carries data-lenis-prevent), not the whole site — like a native <select>.
+       No-op on pages without Lenis (they use the menu's native overflow). */
+    const lockPage = (lock) => { if (window.__lenis) { lock ? window.__lenis.stop() : window.__lenis.start(); } };
+    const closeAll = (except) => {
+      $$('.sel.open').forEach(s => {
+        if (s !== except) { s.classList.remove('open'); const f = s.closest('.fld'); if (f) f.classList.remove('sel-open'); s._trigger && s._trigger.setAttribute('aria-expanded', 'false'); }
+      });
+      if (!except) lockPage(false);
+    };
     $$('.fld > select').forEach((select) => {
       if (select.dataset.sel) return;
       select.dataset.sel = '1';
@@ -180,7 +187,7 @@
       const caret = document.createElement('span'); caret.className = 'sel-caret';
       caret.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
       trigger.append(val, caret);
-      const menu = document.createElement('ul'); menu.className = 'sel-menu'; menu.setAttribute('role', 'listbox');
+      const menu = document.createElement('ul'); menu.className = 'sel-menu'; menu.setAttribute('role', 'listbox'); menu.setAttribute('data-lenis-prevent', '');
 
       const items = [];
       [...select.options].forEach((o) => {
@@ -209,11 +216,11 @@
       };
       const open = () => {
         closeAll(sel); sel.classList.add('open'); fld.classList.add('sel-open');
-        trigger.setAttribute('aria-expanded', 'true');
+        trigger.setAttribute('aria-expanded', 'true'); lockPage(true);
         const i = items.findIndex((li) => li.dataset.value === select.value);
         setActive(i >= 0 ? i : 0);
       };
-      const close = () => { sel.classList.remove('open'); fld.classList.remove('sel-open'); trigger.setAttribute('aria-expanded', 'false'); };
+      const close = () => { sel.classList.remove('open'); fld.classList.remove('sel-open'); trigger.setAttribute('aria-expanded', 'false'); lockPage(false); };
       const pick = (value) => { select.value = value; select.dispatchEvent(new Event('change', { bubbles: true })); render(); close(); trigger.focus(); };
 
       trigger.addEventListener('click', (e) => { e.stopPropagation(); sel.classList.contains('open') ? close() : open(); });
