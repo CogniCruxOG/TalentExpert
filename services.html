@@ -79,12 +79,12 @@
 <div class="hero-actions" style="margin-top:26px"><a class="btn btn-blue lg" href="employers.html#contact" data-portal-choice="business">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a><a class="btn btn-ghost lg" href="process.html">See our process</a></div></div></div></section>
 <!-- ============ STACKED EDITORIAL SERVICE CARDS ============ -->
 <section class="svc-stack" id="services">
-  <div class="sec-head reveal">
-    <span class="eyebrow">What we do</span>
-    <h2 class="title">Six services, <b>one partner</b></h2>
-    <p class="lead">Scroll through each service — from mid-management to the C-suite. Every engagement is structured, rigorous, and built around your organisation.</p>
-  </div>
-  <div class="svc-pin"><div class="svc-stage">
+  <div class="svc-pin">
+    <div class="sec-head svc-headline reveal">
+      <span class="eyebrow">What we do</span>
+      <h2 class="title">Six services, <b>one partner</b></h2>
+    </div>
+    <div class="svc-stage">
 
     <article class="svc-card" data-i="0">
       <div class="svc-head svc-reveal">
@@ -374,16 +374,17 @@
   var mm = gsap.matchMedia();
 
   /* ===== centred, pinned stacked-card story — desktop, motion, tall enough to pin a card ===== */
-  mm.add('(min-width:901px) and (min-height:680px) and (prefers-reduced-motion:no-preference)', function(){
+  mm.add('(min-width:901px) and (min-height:720px) and (prefers-reduced-motion:no-preference)', function(){
     var stack = document.querySelector('.svc-stack');
     var cards = gsap.utils.toArray('.svc-stage > .svc-card');
     if(!stack || cards.length < 2) return;
 
     /* size every card to the tallest so the covering card always fully hides the one beneath,
-       with comfortable headroom (floor keeps it safe even if measured before Fraunces settles) */
+       with comfortable headroom (floor keeps it safe even if measured before Fraunces settles).
+       Cap leaves room for the pinned heading + navbar above the card. */
     var tallest = 0;
     cards.forEach(function(c){ tallest = Math.max(tallest, c.scrollHeight); });
-    var cardH = Math.min(Math.max(Math.ceil(tallest) + 26, 500), Math.round(window.innerHeight - 110));
+    var cardH = Math.min(Math.max(Math.ceil(tallest) + 26, 500), Math.round(window.innerHeight - 210));
     document.documentElement.style.setProperty('--svc-card-h', cardH + 'px');
 
     stack.classList.add('stack-on');
@@ -395,7 +396,7 @@
       document.fonts.ready.then(function(){
         var over = 0; cards.forEach(function(c){ over = Math.max(over, c.scrollHeight); });
         if(over > cardH + 1){
-          cardH = Math.min(over + 16, Math.round(window.innerHeight - 90));
+          cardH = Math.min(over + 16, Math.round(window.innerHeight - 190));
           document.documentElement.style.setProperty('--svc-card-h', cardH + 'px');
         }
         ScrollTrigger.refresh();
@@ -446,7 +447,7 @@
         scrollTrigger:{ trigger:ov, start:'top 72%', once:true } });
       /* hold the composition briefly so the full ecosystem can be read, then release */
       ScrollTrigger.create({ trigger:ov, start:'top top',
-        end:function(){ return '+=' + Math.round(window.innerHeight * 0.55); },
+        end:function(){ return '+=' + Math.round(window.innerHeight * 0.32); },
         pin:true, pinSpacing:true, anticipatePin:1, invalidateOnRefresh:true });
     }
   });

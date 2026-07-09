@@ -950,10 +950,10 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
    SERVICES PAGE — stacked editorial cards + floating-icon overview
    ========================================================================== */
 /* hero fills the viewport so "What We Do" can never peek in behind it (desktop only;
-   mobile keeps the natural, tighter hero height) */
+   mobile keeps the natural, tighter hero height). No flex here — a plain block keeps the
+   .wrap at full --maxw so content left-aligns exactly like the About hero (sec-head left=76). */
 @media (min-width:901px){
-  body[data-page="services"] .hero{ min-height:100vh; box-sizing:border-box; padding-bottom:8vh;
-    display:flex; flex-direction:column; justify-content:center; }
+  body[data-page="services"] .hero{ min-height:100vh; box-sizing:border-box; }
 }
 
 /* ---- "What we do" intro above the stack ---- */
@@ -968,9 +968,14 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 .svc-stage{ width:min(1120px,93vw); margin:0 auto; display:flex; flex-direction:column; gap:24px; }
 
 @media (min-width:901px){
-  .svc-stack.stack-on .svc-pin{ height:100vh; }
-  .svc-stack.stack-on .svc-stage{ height:100%; display:grid; place-items:center; gap:0;
-    padding-top:52px; box-sizing:border-box; }
+  /* pinned viewport: the section heading stays fixed at the top, the cards animate centred beneath it */
+  .svc-stack.stack-on .svc-pin{ height:100vh; display:flex; flex-direction:column;
+    padding:94px 0 3vh; box-sizing:border-box; }
+  .svc-stack.stack-on .svc-headline{ flex:none; padding:0; margin:0 auto 2.2vh; text-align:center; }
+  .svc-stack.stack-on .svc-headline::after{ content:""; display:block; height:1px; margin:2.2vh auto 0;
+    width:min(1120px,93vw); background:linear-gradient(90deg,transparent,rgba(242,111,33,.4) 20%,rgba(242,111,33,.4) 80%,transparent); }
+  .svc-stack.stack-on .svc-stage{ flex:1; min-height:0; display:grid; place-items:center; gap:0;
+    box-sizing:border-box; }
   /* every card occupies the SAME centred cell → they stack on top of each other;
      equal min-height guarantees the covering card fully hides the one beneath it. */
   .svc-stack.stack-on .svc-stage > .svc-card{ grid-area:1 / 1; width:100%; align-self:center;
@@ -1037,8 +1042,8 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 .svc-reveal{ opacity:1; transform:none; }
 
 /* ==== SERVICES OVERVIEW — 3 icons left · centre content · 3 icons right ==== */
-.svc-overview{ position:relative; overflow:hidden; min-height:88vh; display:flex; align-items:center;
-  padding:6vh 0; }
+.svc-overview{ position:relative; overflow:hidden; min-height:70vh; display:flex; align-items:center;
+  padding:5vh 0 6vh; }
 .ov-glow{ position:absolute; inset:0; pointer-events:none;
   background:radial-gradient(44% 44% at 50% 48%, rgba(242,111,33,.11), transparent 70%); }
 .ov-grid{ position:relative; z-index:1; width:min(1180px,94vw); margin:0 auto; display:grid;
@@ -1073,7 +1078,7 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   .ov-icon{ animation:none; transform:translate(var(--ox,0px), var(--oy,0px)); }
 }
 /* breathing zone between the card story and the overview so the next pin eases in (desktop) */
-@media (min-width:901px){ .svc-overview{ margin-top:18vh; } }
+@media (min-width:901px){ .svc-overview{ margin-top:12vh; } }
 
 /* ---------- responsive ---------- */
 @media (max-width:900px){
