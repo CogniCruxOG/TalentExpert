@@ -949,7 +949,12 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 /* ==========================================================================
    SERVICES PAGE — stacked editorial cards + floating-icon overview
    ========================================================================== */
-body[data-page="services"] .hero{ padding-bottom:5.5vh; }
+/* hero fills the viewport so "What We Do" can never peek in behind it (desktop only;
+   mobile keeps the natural, tighter hero height) */
+@media (min-width:901px){
+  body[data-page="services"] .hero{ min-height:100vh; box-sizing:border-box; padding-bottom:8vh;
+    display:flex; flex-direction:column; justify-content:center; }
+}
 
 /* ---- "What we do" intro above the stack ---- */
 .svc-stack{ position:relative; padding:0 0 4vh; }
@@ -1041,8 +1046,8 @@ body[data-page="services"] .hero{ padding-bottom:5.5vh; }
 .ov-col{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:48px; }
 .ov-center{ text-align:center; }
 .ov-center .lead{ margin:14px auto 26px; }
-.ov-icon{ display:flex; flex-direction:column; align-items:center; gap:11px; width:160px; text-align:center;
-  will-change:transform;
+.ov-icon{ --ox:0px; --oy:0px; display:flex; flex-direction:column; align-items:center; gap:11px;
+  width:160px; text-align:center; will-change:transform;
   animation:ovFloat var(--fd,7s) ease-in-out var(--fdel,0s) infinite alternate; }
 .ov-badge{ width:76px; height:76px; border-radius:22px; display:grid; place-items:center; font-size:32px;
   color:var(--orange); background:linear-gradient(150deg,#ffffff,#fff2e8);
@@ -1051,8 +1056,24 @@ body[data-page="services"] .hero{ padding-bottom:5.5vh; }
 .ov-badge .ic{ width:1em; height:1em; }
 .ov-label{ font-family:'Manrope',sans-serif; font-size:.82rem; font-weight:600; color:var(--ink2);
   letter-spacing:.01em; line-height:1.25; }
-@keyframes ovFloat{ from{ transform:translateY(-7px) } to{ transform:translateY(7px) } }
-@media (prefers-reduced-motion:reduce){ .ov-icon{ animation:none; } }
+/* float carries the per-icon organic offset (--ox/--oy) so the two don't fight over `transform` */
+@keyframes ovFloat{
+  from{ transform:translate(var(--ox,0px), calc(var(--oy,0px) - 7px)); }
+  to{   transform:translate(var(--ox,0px), calc(var(--oy,0px) + 7px)); }
+}
+/* organic arc: each side's MIDDLE icon bows outward, top & bottom tuck inward; gentle vertical stagger */
+.ov-left  .ov-icon:nth-child(1){ --ox:24px;  --oy:-12px; }
+.ov-left  .ov-icon:nth-child(2){ --ox:-16px; --oy:6px; }
+.ov-left  .ov-icon:nth-child(3){ --ox:24px;  --oy:-2px; }
+.ov-right .ov-icon:nth-child(1){ --ox:-24px; --oy:10px; }
+.ov-right .ov-icon:nth-child(2){ --ox:16px;  --oy:-6px; }
+.ov-right .ov-icon:nth-child(3){ --ox:-24px; --oy:2px; }
+.ov-right{ margin-top:30px; }   /* stagger the right column so rows aren't perfectly aligned */
+@media (prefers-reduced-motion:reduce){
+  .ov-icon{ animation:none; transform:translate(var(--ox,0px), var(--oy,0px)); }
+}
+/* breathing zone between the card story and the overview so the next pin eases in (desktop) */
+@media (min-width:901px){ .svc-overview{ margin-top:18vh; } }
 
 /* ---------- responsive ---------- */
 @media (max-width:900px){
@@ -1067,5 +1088,6 @@ body[data-page="services"] .hero{ padding-bottom:5.5vh; }
   .ov-grid{ grid-template-columns:1fr; gap:32px; }
   .ov-center{ order:-1; }
   .ov-col{ flex-direction:row; flex-wrap:wrap; gap:26px 24px; }
-  .ov-icon{ width:132px; }
+  .ov-right{ margin-top:0; }
+  .ov-icon{ width:132px; --ox:0px; --oy:0px; }   /* drop the arc offsets in the stacked mobile grid */
 }

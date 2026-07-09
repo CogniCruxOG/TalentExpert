@@ -357,7 +357,7 @@
 
   /* Lenis smooth scroll (desktop + motion) synced to ScrollTrigger — buttery, long easing */
   if(matchMedia('(min-width:901px)').matches && motionOK && typeof window.Lenis !== 'undefined'){
-    var lenis = new Lenis({ duration:1.4,
+    var lenis = new Lenis({ duration:1.6, wheelMultiplier:0.9,
       easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
@@ -407,20 +407,20 @@
     for(var j=1;j<cards.length;j++){ gsap.set(cards[j], { yPercent:120, scale:0.98, opacity:1 }); }
 
     var tl = gsap.timeline({
-      defaults:{ ease:'power3.out' },
+      defaults:{ ease:'power2.inOut' },
       scrollTrigger:{
         trigger:'.svc-pin', start:'top top',
-        end:function(){ return '+=' + Math.round(window.innerHeight * cards.length * 1.15); },
-        pin:'.svc-pin', pinSpacing:true, scrub:1.1, anticipatePin:1, invalidateOnRefresh:true
+        end:function(){ return '+=' + Math.round(window.innerHeight * cards.length * 1.35); },
+        pin:'.svc-pin', pinSpacing:true, scrub:1.6, anticipatePin:1, invalidateOnRefresh:true
       }
     });
-    tl.to({}, { duration:0.5 });                                  // hold on card 01
+    tl.to({}, { duration:0.85 });                                 // opening hold on card 01
     for(var i=1;i<cards.length;i++){
-      tl.to(cards[i],   { yPercent:0, scale:1, duration:1.0 });   // slide up & settle, covering prev
-      tl.to(cards[i-1], { scale:0.965, duration:1.0 }, '<');      // prev eases back a touch (hidden behind)
-      tl.to({}, { duration:0.62 });                               // PAUSE — reading moment
+      tl.to(cards[i],   { yPercent:0, scale:1, duration:1.15 });  // slide up & settle, covering prev
+      tl.to(cards[i-1], { scale:0.965, duration:1.15 }, '<');     // prev eases back a touch (hidden behind)
+      tl.to({}, { duration:0.9 });                                // PAUSE — reading moment
     }
-    tl.to({}, { duration:0.4 });                                  // final hold before release
+    tl.to({}, { duration:1.3 });                                  // long final hold before release
 
     return function(){                                            // revert cleanly to static stack
       stack.classList.remove('stack-on');
