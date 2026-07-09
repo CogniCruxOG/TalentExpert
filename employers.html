@@ -78,10 +78,9 @@
 <p class="lead" style="margin-top:20px">Stop struggling to find the right people. We do that — so you don't have to.</p>
 <div class="hero-actions" style="margin-top:26px"><a class="btn btn-blue lg" href="#contact">Get Talent in 7 Days <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a><a class="btn btn-ghost lg" href="#contact">Schedule a Free Consultation</a></div>
 </div></div></section>
-<section class="section alt" id="problem"><div class="wrap">
-<div class="sec-head center reveal"><span class="eyebrow">The Problem We Solve</span>
-<h2 class="title">Every business leader tells us the <b>same thing</b></h2>
-<p class="lead">These are the pains we hear every week. Hover each one to watch it resolve.</p></div>
+<section class="section alt eb-sec" id="problem"><div class="wrap">
+<div class="sec-head center reveal eb-head"><span class="eyebrow">The Problem We Solve</span>
+<h2 class="title">Every business leader tells us the <b>same thing</b></h2></div>
 <div class="prob-list"><div class="prob reveal"><div class="prob-state"><svg class="ic x"><use href="assets/icons/sprite.svg#i-x"/></svg><svg class="ic v"><use href="assets/icons/sprite.svg#i-check"/></svg></div>
 <div class="prob-txt"><div class="q">"I can't find reliable staff who show up and perform."</div><div class="a">Pre-screened, psychologically evaluated candidates only.</div></div><span class="tag">Solved</span></div><div class="prob reveal"><div class="prob-state"><svg class="ic x"><use href="assets/icons/sprite.svg#i-x"/></svg><svg class="ic v"><use href="assets/icons/sprite.svg#i-check"/></svg></div>
 <div class="prob-txt"><div class="q">"New hires leave within 3 months — we wasted money training them."</div><div class="a">Rural talent with high loyalty and commitment — lower attrition rates.</div></div><span class="tag">Solved</span></div><div class="prob reveal"><div class="prob-state"><svg class="ic x"><use href="assets/icons/sprite.svg#i-x"/></svg><svg class="ic v"><use href="assets/icons/sprite.svg#i-check"/></svg></div>
@@ -240,4 +239,85 @@
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
-<script src="js/main.js"></script></body></html>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/vendor/split-type.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+/* ============ Business Owners — pinned editorial scroll engine ============
+   Each section pins, its heading stays fixed, and its content animates
+   progressively with reading pauses. One scrubbed, reversible timeline per
+   section. Desktop + motion only; mobile / reduced-motion keep the plain
+   readable layout. Animates transform/opacity/colour only. */
+(function(){
+  var hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  if(!hasGSAP) return;
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.config({ nullTargetWarn:false });
+  ScrollTrigger.config({ ignoreMobileResize:true });
+
+  var motionOK = matchMedia('(prefers-reduced-motion:no-preference)').matches;
+  if(matchMedia('(min-width:901px)').matches && motionOK && typeof window.Lenis !== 'undefined'){
+    var lenis = new Lenis({ duration:1.5, wheelMultiplier:0.9,
+      easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+  var cssv = function(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); };
+
+  var mm = gsap.matchMedia();
+
+  /* ===== Section 1 — The Problem We Solve =====
+     Pin the section (heading fixed at top). Each row brightens to reveal the
+     PROBLEM, pauses, then resolves to its SOLUTION (X->check, answer fades in,
+     "Solved"), pauses, next row. All six stay inside the one pinned viewport. */
+  mm.add('(min-width:901px) and (min-height:720px) and (prefers-reduced-motion:no-preference)', function(){
+    var sec = document.querySelector('#problem');
+    var rows = gsap.utils.toArray('#problem .prob');
+    if(!sec || rows.length < 2) return;
+    sec.classList.add('eb-on');
+    var gT = cssv('--green-t') || 'rgba(60,160,90,.14)';
+    var gC = cssv('--green')   || '#3aa564';
+    ScrollTrigger.refresh();
+
+    gsap.set(rows, { opacity:0.28 });
+    rows.forEach(function(p){
+      gsap.set(p.querySelector('.a'), { opacity:0 });
+      gsap.set(p.querySelector('.prob-state .v'), { opacity:0, scale:0.4 });
+      gsap.set(p.querySelector('.prob-state .x'), { opacity:1, scale:1 });
+    });
+
+    var tl = gsap.timeline({ defaults:{ ease:'power2.inOut' },
+      scrollTrigger:{ trigger:'#problem', start:'top top',
+        end:function(){ return '+=' + Math.round(window.innerHeight * (rows.length * 0.7 + 1)); },
+        pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
+    tl.to({}, { duration:0.4 });                                   // settle
+    rows.forEach(function(p, i){
+      var x=p.querySelector('.prob-state .x'), v=p.querySelector('.prob-state .v'),
+          a=p.querySelector('.a'), st=p.querySelector('.prob-state'), tag=p.querySelector('.tag');
+      tl.to(p, { opacity:1, x:8, duration:0.7 });                  // reveal the problem
+      tl.to({}, { duration:0.3 });                                 // pause — read it
+      tl.addLabel('r'+i);
+      tl.to(x,   { opacity:0, scale:0.4, duration:0.4 }, 'r'+i);   // resolve to the solution
+      tl.to(v,   { opacity:1, scale:1,   duration:0.45 }, 'r'+i);
+      tl.to(a,   { opacity:1,            duration:0.5 }, 'r'+i);
+      tl.to(st,  { backgroundColor:gT,   duration:0.45 }, 'r'+i);
+      tl.to(tag, { color:gC,             duration:0.45 }, 'r'+i);
+      tl.to({}, { duration:0.5 });                                 // pause — read the solution
+    });
+    tl.to({}, { duration:0.6 });                                   // hold before release
+
+    return function(){
+      sec.classList.remove('eb-on');
+      rows.forEach(function(p){
+        gsap.set([p, p.querySelector('.a'), p.querySelector('.prob-state .v'),
+          p.querySelector('.prob-state .x'), p.querySelector('.prob-state'), p.querySelector('.tag')],
+          { clearProps:'all' });
+      });
+    };
+  });
+})();
+</script>
+</body></html>

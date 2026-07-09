@@ -1097,3 +1097,23 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   .ov-right{ margin-top:0; }
   .ov-icon{ width:132px; --ox:0px; --oy:0px; }   /* drop the arc offsets in the stacked mobile grid */
 }
+
+/* ==========================================================================
+   BUSINESS OWNERS (employers.html) — pinned editorial scroll sections
+   ========================================================================== */
+/* ---- Section 1: The Problem We Solve ----
+   When JS pins the section (.eb-on), the heading sits at the top and all six
+   rows fit in the one viewport; the engine drives the sequential reveal so CSS
+   transitions/hover are disabled here. */
+@media (min-width:901px){
+  #problem.eb-on{ min-height:100vh; box-sizing:border-box; padding-top:104px; padding-bottom:34px;
+    display:flex; flex-direction:column; justify-content:flex-start; }
+  #problem.eb-on .wrap{ width:100%; }
+  #problem.eb-on .sec-head{ margin-bottom:20px; }
+  #problem.eb-on .prob-list{ gap:9px; max-width:920px; }
+  #problem.eb-on .prob{ padding:13px 22px; transition:none; cursor:default; }
+  #problem.eb-on .prob:hover{ transform:none; }               /* scroll controls it, not hover */
+  #problem.eb-on .prob .q{ font-size:.98rem; }
+  #problem.eb-on .prob .a{ max-height:none; overflow:visible; margin-top:2px; font-size:.85rem;
+    line-height:1.42; }                                        /* reserve space → fade only, no shift */
+}
