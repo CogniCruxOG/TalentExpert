@@ -212,7 +212,12 @@
       const setActive = (i) => {
         activeIdx = Math.max(0, Math.min(items.length - 1, i));
         items.forEach((li, j) => li.classList.toggle('active', j === activeIdx));
-        if (items[activeIdx]) items[activeIdx].scrollIntoView({ block: 'nearest' });
+        const li = items[activeIdx];                        // scroll only the MENU, never the page
+        if (li) {                                           // (scrollIntoView + scroll-behavior:smooth
+          const top = li.offsetTop, bot = top + li.offsetHeight;   // would smooth-scroll the whole site = the "shake")
+          if (top < menu.scrollTop) menu.scrollTop = top - 6;
+          else if (bot > menu.scrollTop + menu.clientHeight) menu.scrollTop = bot - menu.clientHeight + 6;
+        }
       };
       const open = () => {
         closeAll(sel); sel.classList.add('open'); fld.classList.add('sel-open');

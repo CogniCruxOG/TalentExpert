@@ -63,7 +63,9 @@ li{text-wrap:pretty}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto !important}
 .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
-.lenis.lenis-stopped{overflow:hidden}
+/* NB: no `.lenis-stopped{overflow:hidden}` — that hid the scrollbar whenever a
+   custom dropdown pins the page (lenis.stop), shifting the layout ("shake").
+   Lenis still blocks wheel/touch while stopped, so the page stays pinned. */
 
 /* Global cursor spotlight (injected by main.js): bright warm centre + soft dark vignette */
 .cursor-glow{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .5s ease;will-change:opacity;
