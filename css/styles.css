@@ -960,7 +960,8 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 @media (min-width:901px){
   body[data-page="services"] .hero,
   body[data-page="employers"] .hero,
-  body[data-page="job-seekers"] .hero{ min-height:100vh; box-sizing:border-box; }
+  body[data-page="job-seekers"] .hero,
+  body[data-page="blog"] .hero{ min-height:100vh; box-sizing:border-box; }
 }
 
 /* ---- "What we do" intro above the stack ---- */
@@ -1279,4 +1280,33 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   #eligibility.eb-on .elig-card li{ grid-template-columns:18px 1fr; column-gap:12px; }
   #eligibility.eb-on .elig-card li span{ font-size:.85rem; line-height:1.42; }
   #eligibility.eb-on .elig-note{ padding-top:15px; font-size:.9rem; }
+}
+
+/* ---- Blog: editorial featured card + pinned "More Insights" grid ---- */
+.blog-feat{ display:grid; grid-template-columns:1.15fr .85fr; overflow:hidden;
+  border-radius:var(--r-lg); background:var(--glass2); border:1px solid rgba(255,255,255,.7);
+  box-shadow:var(--sh-m); }
+.blog-feat .bf-body{ padding:48px 46px; display:flex; flex-direction:column; align-items:flex-start; }
+.blog-feat .bf-kicker{ font-family:'Fraunces'; font-style:italic; color:var(--accent);
+  font-size:.96rem; letter-spacing:.005em; margin-bottom:12px; }
+.blog-feat .bf-body h2{ font-family:'Fraunces',serif; font-size:clamp(1.6rem,2.4vw,2.15rem);
+  font-weight:500; line-height:1.08; letter-spacing:-.015em; margin-bottom:14px; }
+.blog-feat .bf-body p{ color:var(--ink2); line-height:1.62; margin-bottom:28px; max-width:46ch; }
+.blog-feat .bf-visual{ background:linear-gradient(135deg,var(--orange),#d85f16);
+  display:grid; place-items:center; min-height:260px; }
+.blog-feat .bf-visual .ic{ width:72px; height:72px; color:#fff; }
+/* blog article cards — Fraunces titles (was inline Manrope), editorial rhythm */
+body[data-page="blog"] .feat-card{ display:flex; flex-direction:column; }
+body[data-page="blog"] .feat-card .num{ font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; }
+body[data-page="blog"] .feat-card h3{ font-family:'Fraunces',serif; font-size:1.12rem; font-weight:500;
+  line-height:1.24; letter-spacing:-.01em; margin:12px 0 0; }
+body[data-page="blog"] .feat-card .soon{ margin-top:auto; padding-top:14px; font-family:'Fraunces';
+  font-style:italic; color:var(--ink3); font-size:.84rem; }
+@media (max-width:760px){ .blog-feat{ grid-template-columns:1fr; } .blog-feat .bf-body{ padding:34px 28px; } }
+@media (min-width:901px){
+  /* More Insights — pin, heading held at top, grid cascades in */
+  #insights.eb-on{ min-height:100vh; box-sizing:border-box; padding:86px 0 40px;
+    display:flex; flex-direction:column; justify-content:center; }
+  #insights.eb-on .wrap{ width:100%; }
+  #insights.eb-on .sec-head{ margin-bottom:28px; }
 }
