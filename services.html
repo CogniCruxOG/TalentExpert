@@ -84,7 +84,7 @@
     <h2 class="title">Six services, <b>one partner</b></h2>
     <p class="lead">Scroll through each service — from mid-management to the C-suite. Every engagement is structured, rigorous, and built around your organisation.</p>
   </div>
-  <div class="svc-track">
+  <div class="svc-pin"><div class="svc-stage">
 
     <article class="svc-card" data-i="0">
       <div class="svc-head svc-reveal">
@@ -216,34 +216,30 @@
       </div>
     </article>
 
-  </div>
+  </div></div>
 </section>
 
-<!-- ============ SERVICES OVERVIEW — floating icons around central content ============ -->
+<!-- ============ SERVICES OVERVIEW — 3 icons left · centre · 3 icons right ============ -->
 <section class="svc-overview" id="svc-overview">
   <div class="ov-glow" aria-hidden="true"></div>
-  <div class="wrap"><div class="ov-wrap">
+  <div class="ov-grid">
+    <div class="ov-col ov-left">
+      <div class="ov-icon" style="--fd:6.6s;--fdel:-.2s"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-users"/></svg></span><span class="ov-label">Mid-Management</span></div>
+      <div class="ov-icon" style="--fd:7.6s;--fdel:-1.1s"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-briefcase"/></svg></span><span class="ov-label">Senior Management</span></div>
+      <div class="ov-icon" style="--fd:7.1s;--fdel:-.6s"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></span><span class="ov-label">CXO Search</span></div>
+    </div>
     <div class="ov-center reveal">
       <span class="eyebrow">One partner, every level</span>
       <h2 class="title">Six ways we build <b>your team</b></h2>
       <p class="lead">From high-potential graduates to CXO leaders — a complete white-collar hiring system for SMEs and corporates across Tamil&nbsp;Nadu.</p>
       <div class="hero-actions" style="justify-content:center"><a class="btn btn-blue lg" href="employers.html#contact" data-portal-choice="business">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a></div>
     </div>
-    <div class="ov-icon p1" data-par="26"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-users"/></svg></span><span class="ov-label">Mid-Management</span></div>
-    <div class="ov-icon p2" data-par="46"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-briefcase"/></svg></span><span class="ov-label">Senior Management</span></div>
-    <div class="ov-icon p3" data-par="38"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></span><span class="ov-label">CXO Search</span></div>
-    <div class="ov-icon p4" data-par="52"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-sprout"/></svg></span><span class="ov-label">Fresher Placement</span></div>
-    <div class="ov-icon p5" data-par="42"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span><span class="ov-label">Training &amp; Development</span></div>
-    <div class="ov-icon p6" data-par="30"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><span class="ov-label">Recruitment Management</span></div>
+    <div class="ov-col ov-right">
+      <div class="ov-icon" style="--fd:8s;--fdel:-1.6s"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-sprout"/></svg></span><span class="ov-label">Fresher Placement</span></div>
+      <div class="ov-icon" style="--fd:6.9s;--fdel:-.9s"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span><span class="ov-label">Training &amp; Development</span></div>
+      <div class="ov-icon" style="--fd:7.4s;--fdel:-.4s"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><span class="ov-label">Recruitment Management</span></div>
+    </div>
   </div>
-  <div class="ov-mobile-grid" aria-hidden="true">
-    <div class="ov-icon"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-users"/></svg></span><span class="ov-label">Mid-Management</span></div>
-    <div class="ov-icon"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-briefcase"/></svg></span><span class="ov-label">Senior Management</span></div>
-    <div class="ov-icon"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></span><span class="ov-label">CXO Search</span></div>
-    <div class="ov-icon"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-sprout"/></svg></span><span class="ov-label">Fresher Placement</span></div>
-    <div class="ov-icon"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-cap"/></svg></span><span class="ov-label">Training</span></div>
-    <div class="ov-icon"><span class="ov-badge"><svg class="ic"><use href="assets/icons/sprite.svg#i-flow"/></svg></span><span class="ov-label">Recruitment</span></div>
-  </div></div>
 </section>
 <section class="cta"><div class="wrap"><div class="cta-inner reveal">
 <span class="cta-glow" style="top:-80px;left:-40px"></span>
@@ -345,10 +341,10 @@
 <script src="js/vendor/split-type.min.js"></script>
 <script src="js/main.js"></script>
 <script>
-/* Services scroll engine: Lenis smooth scroll + GSAP ScrollTrigger.
-   The service cards are CSS position:sticky (native stacking, buttery + reversible under Lenis).
-   GSAP only scrubs a subtle "recede" (scale/dim/lift) on each card AS THE NEXT ONE covers it,
-   plus a play-on-enter content reveal, a scroll progress bar, and gentle icon parallax.
+/* Services scroll engine — GSAP ScrollTrigger + Lenis.
+   Story: each service card slides up from below, PINS CENTERED in the viewport, holds for a
+   reading pause, then the next card slides up and covers it. Solid opaque cards + equal heights
+   mean a covered card is never visible. Everything is one scrubbed, fully reversible timeline.
    Animates transform/opacity only. */
 (function(){
   var hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
@@ -357,12 +353,12 @@
   gsap.config({ nullTargetWarn:false });
   ScrollTrigger.config({ ignoreMobileResize:true });
 
-  var desktop = matchMedia('(min-width:901px)').matches;
   var motionOK = matchMedia('(prefers-reduced-motion:no-preference)').matches;
 
-  /* Lenis smooth scroll (desktop, motion-ok) synced to ScrollTrigger */
-  if(desktop && motionOK && typeof window.Lenis !== 'undefined'){
-    var lenis = new Lenis({ duration:1.35 });
+  /* Lenis smooth scroll (desktop + motion) synced to ScrollTrigger — buttery, long easing */
+  if(matchMedia('(min-width:901px)').matches && motionOK && typeof window.Lenis !== 'undefined'){
+    var lenis = new Lenis({ duration:1.4,
+      easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
     gsap.ticker.lagSmoothing(0);
@@ -376,42 +372,83 @@
   }
 
   var mm = gsap.matchMedia();
+
+  /* ===== centred, pinned stacked-card story — desktop, motion, tall enough to pin a card ===== */
+  mm.add('(min-width:901px) and (min-height:680px) and (prefers-reduced-motion:no-preference)', function(){
+    var stack = document.querySelector('.svc-stack');
+    var cards = gsap.utils.toArray('.svc-stage > .svc-card');
+    if(!stack || cards.length < 2) return;
+
+    /* size every card to the tallest so the covering card always fully hides the one beneath,
+       with comfortable headroom (floor keeps it safe even if measured before Fraunces settles) */
+    var tallest = 0;
+    cards.forEach(function(c){ tallest = Math.max(tallest, c.scrollHeight); });
+    var cardH = Math.min(Math.max(Math.ceil(tallest) + 26, 500), Math.round(window.innerHeight - 110));
+    document.documentElement.style.setProperty('--svc-card-h', cardH + 'px');
+
+    stack.classList.add('stack-on');
+    ScrollTrigger.refresh();
+
+    /* fonts can grow text height after first paint. Non-destructive: if any card's content now
+       exceeds the deck height, grow the deck to fit (never let a card overflow its equal-height box). */
+    if(document.fonts && document.fonts.ready){
+      document.fonts.ready.then(function(){
+        var over = 0; cards.forEach(function(c){ over = Math.max(over, c.scrollHeight); });
+        if(over > cardH + 1){
+          cardH = Math.min(over + 16, Math.round(window.innerHeight - 90));
+          document.documentElement.style.setProperty('--svc-card-h', cardH + 'px');
+        }
+        ScrollTrigger.refresh();
+      });
+    }
+
+    /* card 01 starts centred; the rest wait just below the viewport */
+    gsap.set(cards[0], { yPercent:0, scale:1, opacity:1 });
+    for(var j=1;j<cards.length;j++){ gsap.set(cards[j], { yPercent:120, scale:0.98, opacity:1 }); }
+
+    var tl = gsap.timeline({
+      defaults:{ ease:'power3.out' },
+      scrollTrigger:{
+        trigger:'.svc-pin', start:'top top',
+        end:function(){ return '+=' + Math.round(window.innerHeight * cards.length * 1.15); },
+        pin:'.svc-pin', pinSpacing:true, scrub:1.1, anticipatePin:1, invalidateOnRefresh:true
+      }
+    });
+    tl.to({}, { duration:0.5 });                                  // hold on card 01
+    for(var i=1;i<cards.length;i++){
+      tl.to(cards[i],   { yPercent:0, scale:1, duration:1.0 });   // slide up & settle, covering prev
+      tl.to(cards[i-1], { scale:0.965, duration:1.0 }, '<');      // prev eases back a touch (hidden behind)
+      tl.to({}, { duration:0.62 });                               // PAUSE — reading moment
+    }
+    tl.to({}, { duration:0.4 });                                  // final hold before release
+
+    return function(){                                            // revert cleanly to static stack
+      stack.classList.remove('stack-on');
+      cards.forEach(function(c){ gsap.set(c, { clearProps:'all' }); });
+      document.documentElement.style.removeProperty('--svc-card-h');
+    };
+  });
+
+  /* ===== section-heading word reveals + overview (assemble → brief pin → gentle float) ===== */
   mm.add('(min-width:901px) and (prefers-reduced-motion:no-preference)', function(){
-    var cards = gsap.utils.toArray('.svc-card');
-
-    /* per-card content reveal on enter */
-    cards.forEach(function(card){
-      ScrollTrigger.create({ trigger:card, start:'top 78%', once:true,
-        onEnter:function(){ card.classList.add('in'); } });
-    });
-
-    /* recede-on-cover: as card i+1 rises from below to fully cover card i, card i eases back
-       (scale down, lift, dim) into a layered stack behind. Fully scrubbed + reversible. */
-    cards.forEach(function(card, i){
-      if(i === cards.length - 1) return;
-      gsap.fromTo(card,
-        { scale:1, yPercent:0, opacity:1 },
-        { scale:0.915, yPercent:-4, opacity:0.5, ease:'none',
-          scrollTrigger:{ trigger:cards[i+1], start:'top bottom', end:'top top', scrub:1 } });
-    });
-
-    /* SplitType word reveal on section headings */
     if(typeof window.SplitType !== 'undefined'){
-      document.querySelectorAll('.svc-stack .title, .svc-overview .title').forEach(function(el){
+      document.querySelectorAll('.svc-stack .sec-head .title, .svc-overview .title').forEach(function(el){
         var split = new SplitType(el, { types:'words' });
         gsap.from(split.words, { yPercent:60, opacity:0, duration:.7, ease:'power3.out', stagger:.05,
           scrollTrigger:{ trigger:el, start:'top 88%', once:true } });
       });
     }
 
-    /* gentle icon parallax in the overview (y only, very subtle) */
-    gsap.utils.toArray('.svc-overview .ov-icon').forEach(function(ic){
-      var p = parseFloat(ic.getAttribute('data-par')) || 30;
-      gsap.fromTo(ic, { y:p }, { y:-p, ease:'none',
-        scrollTrigger:{ trigger:'.svc-overview', start:'top bottom', end:'bottom top', scrub:true } });
-    });
-
-    ScrollTrigger.refresh();
+    var ov = document.querySelector('.svc-overview');
+    if(ov){
+      /* icons fade in (opacity only — CSS keeps the gentle idle float on transform) */
+      gsap.from('.svc-overview .ov-icon', { opacity:0, duration:.6, ease:'power2.out', stagger:.08,
+        scrollTrigger:{ trigger:ov, start:'top 72%', once:true } });
+      /* hold the composition briefly so the full ecosystem can be read, then release */
+      ScrollTrigger.create({ trigger:ov, start:'top top',
+        end:function(){ return '+=' + Math.round(window.innerHeight * 0.55); },
+        pin:true, pinSpacing:true, anticipatePin:1, invalidateOnRefresh:true });
+    }
   });
 })();
 </script>
