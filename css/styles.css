@@ -1101,6 +1101,9 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 /* ==========================================================================
    BUSINESS OWNERS (employers.html) — pinned editorial scroll sections
    ========================================================================== */
+/* highlighter mark for a key phrase in a display heading (e.g. hero "#1 business problem") */
+.hl-mark{ background:linear-gradient(180deg, transparent 60%, rgba(242,111,33,.24) 60%,
+  rgba(242,111,33,.24) 92%, transparent 92%); padding:0 .04em; border-radius:2px; }
 /* ---- Section 1: The Problem We Solve ----
    When JS pins the section (.eb-on), the heading sits at the top and all six
    rows fit in the one viewport; the engine drives the sequential reveal so CSS
@@ -1116,4 +1119,24 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   #problem.eb-on .prob .q{ font-size:.98rem; }
   #problem.eb-on .prob .a{ max-height:none; overflow:visible; margin-top:2px; font-size:.85rem;
     line-height:1.42; }                                        /* reserve space → fade only, no shift */
+}
+
+/* ---- Section 2: Why Choose — horizontal centre-focus carousel ----
+   Base (mobile / no-JS): a plain readable 3-col grid. When JS pins it (.eb-on)
+   the track becomes a full-width flex row that slides each card through the
+   viewport centre; the engine sets each card's scale/opacity by its distance
+   from centre (coverflow). */
+.why-track{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; width:min(1120px,93vw);
+  margin:26px auto 0; }
+.why-track .feat-card{ margin:0; }
+@media (max-width:900px){ .why-track{ grid-template-columns:1fr; width:min(460px,92vw); } }
+@media (min-width:901px){
+  #why.eb-on{ min-height:100vh; box-sizing:border-box; padding:100px 0 40px;
+    display:flex; flex-direction:column; overflow:hidden; }
+  #why.eb-on .wrap{ flex:none; }
+  #why.eb-on .sec-head{ margin-bottom:22px; }
+  #why.eb-on .why-track{ flex:1; width:auto; max-width:none; margin:0; display:flex;
+    align-items:center; gap:40px; padding:0 calc(50vw - 235px); will-change:transform; }
+  #why.eb-on .why-track .feat-card{ flex:0 0 470px; max-width:470px; min-height:360px;
+    display:flex; flex-direction:column; justify-content:center; will-change:transform,opacity; }
 }
