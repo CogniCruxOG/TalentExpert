@@ -185,4 +185,20 @@
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
-<script src="js/main.js"></script></body></html>
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+/* Smooth scroll (Lenis) — desktop + motion only; mobile keeps native touch scroll.
+   Standalone RAF loop (no GSAP on this page). Exposed as window.__lenis so main.js's
+   instant anchor-nav can jump through it. */
+(function(){
+  if(matchMedia('(min-width:901px)').matches && matchMedia('(prefers-reduced-motion:no-preference)').matches && typeof window.Lenis !== 'undefined'){
+    var lenis = new Lenis({ duration:1.5, wheelMultiplier:0.9,
+      easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
+    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    window.__lenis = lenis;
+  }
+})();
+</script>
+</body></html>
