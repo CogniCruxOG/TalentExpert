@@ -335,6 +335,8 @@ table.data{width:100%;border-collapse:collapse;min-width:640px;background:var(--
 table.data th{background:var(--blue);color:#fff;font-family:'Manrope';font-weight:600;font-size:.86rem;text-align:left;padding:16px 20px;letter-spacing:.02em}
 table.data td{padding:16px 20px;border-top:1px solid var(--hair);font-size:.92rem;vertical-align:top}
 table.data tr:nth-child(even) td{background:rgba(246,243,238,.5)}
+table.data tbody tr{transition:background .25s var(--ease)}
+table.data tbody tr:hover td{background:var(--accent-t)}
 table.data td strong{color:var(--ink)}
 
 /* ============ TESTIMONIALS ============ */
@@ -1201,3 +1203,34 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   #models.eb-on .sec-head .lead{ font-size:.88rem; margin-top:3px; }
   #models.eb-on .hm-compare{ margin-top:6px; }
 }
+
+/* ---- Job Seekers — Who Can Apply: editorial eligibility comparison ----
+   Same card language as the employers Hiring Models (fixed icon column, aligned
+   checklist, Fraunces italic footer note pinned to the card foot, equal height),
+   tuned a touch more generous since this section is NOT pinned. Meaning is carried
+   by icon tint within the orange/charcoal/grey palette (orange checks = warm,
+   muted-grey crosses = reassuring). Gentle .reveal d1/d2/d3 upward stagger. */
+.elig-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px;
+  width:min(1180px,94vw); margin:6px auto 0; align-items:stretch; }
+.elig-card{ display:flex; flex-direction:column; padding:34px 34px 30px;
+  border-radius:var(--r-lg); background:var(--glass2); border:1px solid rgba(255,255,255,.7);
+  backdrop-filter:blur(12px); box-shadow:var(--sh-m);
+  transition:opacity .7s var(--ease), transform .55s var(--ease), box-shadow .45s var(--ease); }
+.elig-card:hover{ transform:translateY(-4px); box-shadow:0 34px 70px -36px rgba(36,48,64,.46); }
+.elig-card .chip{ margin-bottom:20px; width:48px; height:48px; border-radius:14px; font-size:22px; }
+.elig-card h3{ font-size:1.44rem; font-weight:500; line-height:1.08; letter-spacing:-.015em;
+  color:var(--ink); margin-bottom:8px; }
+.elig-card .elig-intro{ font-size:.92rem; color:var(--ink2); line-height:1.55;
+  margin-bottom:24px; max-width:36ch; }
+.elig-card ul{ display:grid; gap:15px; margin:0; padding:0; list-style:none; }
+.elig-card li{ display:grid; grid-template-columns:19px 1fr; column-gap:14px; align-items:start; }
+.elig-card li .ic{ width:17px; height:17px; margin-top:3px; flex:none; }
+.elig-card li span{ font-size:.93rem; color:var(--ink2); line-height:1.5; }
+.elig-yes li .ic, .elig-do li .ic{ color:var(--accent); }
+.elig-no li .ic{ color:var(--ink3); }
+.elig-note{ margin-top:auto; padding-top:22px; border-top:1px solid var(--hair);
+  font-family:'Fraunces'; font-style:italic; font-size:.98rem; line-height:1.5; }
+.elig-yes .elig-note{ color:var(--accent); }
+.elig-do .elig-note{ color:var(--ink); }
+.elig-no .elig-note{ color:var(--ink2); }
+@media (max-width:900px){ .elig-grid{ grid-template-columns:1fr; width:min(560px,100%); margin-top:4px; } }
