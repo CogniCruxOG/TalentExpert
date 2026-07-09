@@ -954,7 +954,8 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
    .wrap at full --maxw so content left-aligns exactly like the About hero (sec-head left=76). */
 @media (min-width:901px){
   body[data-page="services"] .hero,
-  body[data-page="employers"] .hero{ min-height:100vh; box-sizing:border-box; }
+  body[data-page="employers"] .hero,
+  body[data-page="job-seekers"] .hero{ min-height:100vh; box-sizing:border-box; }
 }
 
 /* ---- "What we do" intro above the stack ---- */
@@ -1234,3 +1235,26 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 .elig-do .elig-note{ color:var(--ink); }
 .elig-no .elig-note{ color:var(--ink2); }
 @media (max-width:900px){ .elig-grid{ grid-template-columns:1fr; width:min(560px,100%); margin-top:4px; } }
+
+/* ---- Job Seekers pinned sections (mirror the employers #process / #services) ---- */
+@media (min-width:901px){
+  /* How It Works — pin, heading fixed, 7 steps compacted to one viewport */
+  #how.eb-on{ min-height:100vh; box-sizing:border-box; padding:94px 0 32px;
+    display:flex; flex-direction:column; justify-content:flex-start; }
+  #how.eb-on .wrap{ width:100%; }
+  #how.eb-on .sec-head{ margin-bottom:16px; }
+  #how.eb-on .timeline{ margin:0 auto; }
+  #how.eb-on .tl-step{ padding:7px 0; grid-template-columns:50px 1fr; gap:20px; }
+  #how.eb-on .tl-num{ width:50px; height:50px; font-size:1.15rem; border-radius:15px; }
+  #how.eb-on .timeline::before{ left:24px; top:14px; bottom:14px; }
+  #how.eb-on .tl-body h3{ font-size:1.04rem; margin-bottom:1px; }
+  #how.eb-on .tl-body p{ font-size:.88rem; line-height:1.38; }
+  /* Job Categories — pin, heading fixed, reveal 8 rows (compacted to fit) */
+  #categories.eb-on{ min-height:100vh; box-sizing:border-box; padding:86px 0 34px;
+    display:flex; flex-direction:column; justify-content:center; }
+  #categories.eb-on .wrap{ width:100%; }
+  #categories.eb-on .sec-head{ margin-bottom:18px; }
+  #categories.eb-on .sec-head .lead{ margin-top:8px; }
+  #categories.eb-on table.data th{ padding:12px 20px; }
+  #categories.eb-on table.data td{ padding:10px 20px; font-size:.88rem; }
+}
