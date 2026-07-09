@@ -155,6 +155,81 @@
     sel.addEventListener('change', set); set();
   });
 
+  /* ---- Custom dropdowns: replace the native OS <select> popup on every form.
+     The native <select> is kept (transparent, tab-skipped) for its value,
+     `required` validation and submission; a styled trigger + menu drive it. ---- */
+  (function customSelects() {
+    const closeAll = (except) => $$('.sel.open').forEach(s => {
+      if (s !== except) { s.classList.remove('open'); const f = s.closest('.fld'); if (f) f.classList.remove('sel-open'); s._trigger && s._trigger.setAttribute('aria-expanded', 'false'); }
+    });
+    $$('.fld > select').forEach((select) => {
+      if (select.dataset.sel) return;
+      select.dataset.sel = '1';
+      const fld = select.closest('.fld');
+      select.classList.add('sel-native');
+      select.tabIndex = -1;
+
+      const sel = document.createElement('div'); sel.className = 'sel'; sel._trigger = null;
+      const trigger = document.createElement('button');
+      trigger.type = 'button'; trigger.className = 'sel-trigger';
+      trigger.setAttribute('aria-haspopup', 'listbox');
+      trigger.setAttribute('aria-expanded', 'false');
+      const lab = fld.querySelector('label');
+      if (lab) { if (!lab.id) lab.id = 'sl' + Math.round(performance.now() * 1000) % 1e9 + (Math.floor(performance.now()) % 97); trigger.setAttribute('aria-labelledby', lab.id); }
+      const val = document.createElement('span'); val.className = 'sel-val';
+      const caret = document.createElement('span'); caret.className = 'sel-caret';
+      caret.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+      trigger.append(val, caret);
+      const menu = document.createElement('ul'); menu.className = 'sel-menu'; menu.setAttribute('role', 'listbox');
+
+      const items = [];
+      [...select.options].forEach((o) => {
+        if (o.value === '' && o.disabled) return;               // skip empty placeholder
+        const li = document.createElement('li');
+        li.className = 'sel-opt'; li.setAttribute('role', 'option');
+        li.dataset.value = o.value; li.textContent = o.textContent;
+        li.addEventListener('click', () => pick(o.value));
+        menu.appendChild(li); items.push(li);
+      });
+      menu.addEventListener('click', (e) => e.stopPropagation());
+      sel.append(trigger, menu); sel._trigger = trigger; fld.appendChild(sel);
+
+      let activeIdx = -1;
+      const render = () => {
+        const cur = select.options[select.selectedIndex];
+        const has = cur && cur.value !== '';
+        val.textContent = has ? cur.textContent : '';
+        trigger.classList.toggle('placeholder', !has);
+        items.forEach((li) => li.setAttribute('aria-selected', li.dataset.value === select.value ? 'true' : 'false'));
+      };
+      const setActive = (i) => {
+        activeIdx = Math.max(0, Math.min(items.length - 1, i));
+        items.forEach((li, j) => li.classList.toggle('active', j === activeIdx));
+        if (items[activeIdx]) items[activeIdx].scrollIntoView({ block: 'nearest' });
+      };
+      const open = () => {
+        closeAll(sel); sel.classList.add('open'); fld.classList.add('sel-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        const i = items.findIndex((li) => li.dataset.value === select.value);
+        setActive(i >= 0 ? i : 0);
+      };
+      const close = () => { sel.classList.remove('open'); fld.classList.remove('sel-open'); trigger.setAttribute('aria-expanded', 'false'); };
+      const pick = (value) => { select.value = value; select.dispatchEvent(new Event('change', { bubbles: true })); render(); close(); trigger.focus(); };
+
+      trigger.addEventListener('click', (e) => { e.stopPropagation(); sel.classList.contains('open') ? close() : open(); });
+      trigger.addEventListener('keydown', (e) => {
+        const isOpen = sel.classList.contains('open');
+        if (e.key === 'ArrowDown') { e.preventDefault(); isOpen ? setActive(activeIdx + 1) : open(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); isOpen ? setActive(activeIdx - 1) : open(); }
+        else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (isOpen && items[activeIdx]) pick(items[activeIdx].dataset.value); else open(); }
+        else if (e.key === 'Escape' || e.key === 'Tab') { close(); }
+      });
+      render();
+    });
+    document.addEventListener('click', () => closeAll());
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+  })();
+
   /* ---- Forms → Formspree (progressive enhancement) ---- */
   $$('form[data-formspree]').forEach(form => {
     const msg = $('.form-msg', form);
