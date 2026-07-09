@@ -129,7 +129,7 @@ header.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1
 .nav-item>a .caret{width:13px;height:13px;transition:transform .3s}
 .nav-item:hover>a .caret{transform:rotate(180deg)}
 /* Mega panel */
-.mega{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(8px);min-width:520px;background:var(--glass2);backdrop-filter:blur(20px) saturate(1.4);border:1px solid rgba(255,255,255,.7);border-radius:var(--r-lg);box-shadow:var(--sh-m);padding:18px;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mega{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(8px);min-width:520px;background:#fdfcfa;border:1px solid var(--hair);border-radius:var(--r-lg);box-shadow:var(--sh-m);padding:18px;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .nav-item:hover .mega,.nav-item:focus-within .mega{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .mega-link{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:16px;transition:background .25s}
 .mega-link:hover{background:var(--accent-t)}
