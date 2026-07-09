@@ -281,8 +281,6 @@
     sec.classList.add('eb-on');
     var gT = cssv('--green-t') || 'rgba(60,160,90,.14)';
     var gC = cssv('--green')   || '#3aa564';
-    ScrollTrigger.refresh();
-
     gsap.set(rows, { opacity:0.28 });
     rows.forEach(function(p){
       gsap.set(p.querySelector('.a'), { opacity:0 });
@@ -291,7 +289,7 @@
     });
 
     var tl = gsap.timeline({ defaults:{ ease:'power2.inOut' },
-      scrollTrigger:{ trigger:'#problem', start:'top top',
+      scrollTrigger:{ trigger:'#problem', start:'top top', refreshPriority:7,
         end:function(){ return '+=' + Math.round(window.innerHeight * (rows.length * 0.7 + 1)); },
         pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
     tl.to({}, { duration:0.4 });                                   // settle
@@ -331,8 +329,6 @@
     var cards = gsap.utils.toArray('#why .why-track .feat-card');
     if(!sec || !track || cards.length < 2) return;
     sec.classList.add('eb-on');
-    ScrollTrigger.refresh();
-
     var focus = function(){
       var vc = window.innerWidth / 2, cw = (cards[0].offsetWidth || 470) * 1.15;  // unscaled → no feedback
       cards.forEach(function(c){
@@ -346,7 +342,7 @@
     var centerX = function(c){ return -(c.offsetLeft + c.offsetWidth / 2 - track.clientWidth / 2); };
 
     var tl = gsap.timeline({ defaults:{ ease:'power2.inOut' },
-      scrollTrigger:{ trigger:'#why', start:'top top',
+      scrollTrigger:{ trigger:'#why', start:'top top', refreshPriority:6,
         end:function(){ return '+=' + Math.round(window.innerHeight * cards.length * 0.82); },
         pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true, onRefresh:focus } });
     tl.eventCallback('onUpdate', focus);
@@ -372,12 +368,10 @@
     var steps = gsap.utils.toArray('#process .tl-step');
     var cta = sec ? sec.querySelector('.eb-cta') : null;
     if(!sec || steps.length < 2) return;
-    sec.classList.add('eb-on');
-    ScrollTrigger.refresh();
-    gsap.set(steps, { opacity:0.2, x:-14 });
+    sec.classList.add('eb-on');    gsap.set(steps, { opacity:0.2, x:-14 });
     if(cta) gsap.set(cta, { opacity:0, y:16 });
     var tl = gsap.timeline({ defaults:{ ease:'power2.inOut' },
-      scrollTrigger:{ trigger:'#process', start:'top top',
+      scrollTrigger:{ trigger:'#process', start:'top top', refreshPriority:5,
         end:function(){ return '+=' + Math.round(window.innerHeight * (steps.length * 0.58 + 1.4)); },
         pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
     tl.to({}, { duration:0.4 });
@@ -398,11 +392,9 @@
     var sec = document.querySelector('#services');
     var rows = gsap.utils.toArray('#services table.data tbody tr');
     if(!sec || rows.length < 2) return;
-    sec.classList.add('eb-on');
-    ScrollTrigger.refresh();
-    gsap.set(rows, { opacity:0 });
+    sec.classList.add('eb-on');    gsap.set(rows, { opacity:0 });
     var tl = gsap.timeline({ defaults:{ ease:'power2.out' },
-      scrollTrigger:{ trigger:'#services', start:'top top',
+      scrollTrigger:{ trigger:'#services', start:'top top', refreshPriority:4,
         end:function(){ return '+=' + Math.round(window.innerHeight * (rows.length * 0.52 + 1)); },
         pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
     tl.to({}, { duration:0.4 });
@@ -419,11 +411,9 @@
     var sec = document.querySelector('#stories');
     var cards = gsap.utils.toArray('#stories .tst-card');
     if(!sec || cards.length < 2) return;
-    sec.classList.add('eb-on');
-    ScrollTrigger.refresh();
-    gsap.set(cards, { opacity:0, y:28 });
+    sec.classList.add('eb-on');    gsap.set(cards, { opacity:0, y:28 });
     var tl = gsap.timeline({ defaults:{ ease:'power2.out' },
-      scrollTrigger:{ trigger:'#stories', start:'top top',
+      scrollTrigger:{ trigger:'#stories', start:'top top', refreshPriority:2,
         end:function(){ return '+=' + Math.round(window.innerHeight * (cards.length * 0.62 + 0.8)); },
         pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
     tl.to({}, { duration:0.4 });
@@ -440,9 +430,7 @@
     var sec = document.querySelector('#faq');
     var items = gsap.utils.toArray('#faq .faq-item');
     if(!sec || items.length < 2) return;
-    sec.classList.add('eb-on');
-    ScrollTrigger.refresh();
-    gsap.set(items, { opacity:0.42 });
+    sec.classList.add('eb-on');    gsap.set(items, { opacity:0.42 });
     items.forEach(function(it){ gsap.set(it.querySelector('.faq-a'), { maxHeight:0, overflow:'hidden' }); });
     var open = function(idx){
       items.forEach(function(it, j){
@@ -454,7 +442,7 @@
       });
     };
     var last = -1;
-    ScrollTrigger.create({ trigger:'#faq', start:'top top',
+    ScrollTrigger.create({ trigger:'#faq', start:'top top', refreshPriority:1,
       end:function(){ return '+=' + Math.round(window.innerHeight * items.length * 0.72); },
       pin:true, pinSpacing:true, anticipatePin:1, invalidateOnRefresh:true,
       onUpdate:function(self){ var idx = Math.min(items.length - 1, Math.floor(self.progress * items.length * 0.999));
@@ -470,9 +458,7 @@
     var sec = document.querySelector('#models');
     var colA = document.querySelector('#models .hm-a'), colB = document.querySelector('#models .hm-b');
     if(!sec || !colA || !colB) return;
-    sec.classList.add('eb-on');
-    ScrollTrigger.refresh();
-    var hs = ':scope > :not(ul):not(.hm-best)';
+    sec.classList.add('eb-on');    var hs = ':scope > :not(ul):not(.hm-best)';
     var aHead = [].slice.call(colA.querySelectorAll(hs)), bHead = [].slice.call(colB.querySelectorAll(hs));
     var aPts = colA.querySelectorAll('ul li'), bPts = colB.querySelectorAll('ul li');
     var aBest = colA.querySelector('.hm-best'), bBest = colB.querySelector('.hm-best');
@@ -480,7 +466,7 @@
     gsap.set([colA, colB], { opacity:0.12 });
     gsap.set(aHead.concat(bHead, [].slice.call(aPts), [].slice.call(bPts), bests), { opacity:0, y:16 });
     var tl = gsap.timeline({ defaults:{ ease:'power2.out' },
-      scrollTrigger:{ trigger:'#models', start:'top top',
+      scrollTrigger:{ trigger:'#models', start:'top top', refreshPriority:3,
         end:function(){ return '+=' + Math.round(window.innerHeight * 3); },
         pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
     tl.to({}, { duration:0.3 });
@@ -503,6 +489,12 @@
       gsap.set([colA, colB].concat(aHead, bHead, [].slice.call(aPts), [].slice.call(bPts), bests), { clearProps:'all' });
     };
   });
+
+  /* refreshPriority (set per section above, top-to-bottom) makes every pin refresh in document
+     order regardless of creation order, so each pin-spacer reserves the correct space and no two
+     pinned sections overlap. Refresh once now, and again once fonts settle the layout. */
+  ScrollTrigger.refresh();
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ ScrollTrigger.refresh(); }); }
 })();
 </script>
 </body></html>
