@@ -1140,3 +1140,26 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   #why.eb-on .why-track .feat-card{ flex:0 0 470px; max-width:470px; min-height:360px;
     display:flex; flex-direction:column; justify-content:center; will-change:transform,opacity; }
 }
+
+/* ---- Section 3: Hiring Process — pinned, heading fixed at top, 7 steps compacted to fit ---- */
+@media (min-width:901px){
+  #process.eb-on{ min-height:100vh; box-sizing:border-box; padding:94px 0 32px;
+    display:flex; flex-direction:column; justify-content:flex-start; }
+  #process.eb-on .wrap{ width:100%; }
+  #process.eb-on .sec-head{ margin-bottom:16px; }
+  #process.eb-on .timeline{ margin:0 auto; }
+  #process.eb-on .tl-step{ padding:7px 0; grid-template-columns:50px 1fr; gap:20px; }
+  #process.eb-on .tl-num{ width:50px; height:50px; font-size:1.15rem; border-radius:15px; }
+  #process.eb-on .timeline::before{ left:24px; top:14px; bottom:14px; }
+  #process.eb-on .tl-body h3{ font-size:1.04rem; margin-bottom:1px; }
+  #process.eb-on .tl-body p{ font-size:.88rem; line-height:1.38; }
+}
+/* ---- Sections 4 / 6 / 7: pinned, heading held, content revealed ---- */
+@media (min-width:901px){
+  #services.eb-on, #stories.eb-on, #faq.eb-on{ min-height:100vh; box-sizing:border-box;
+    padding:100px 0 40px; display:flex; flex-direction:column; justify-content:center; }
+  #services.eb-on .wrap, #stories.eb-on .wrap, #faq.eb-on .wrap{ width:100%; }
+  #services.eb-on .sec-head{ margin-bottom:22px; }
+  #stories.eb-on .sec-head{ margin-bottom:28px; }
+  #faq.eb-on .sec-head{ margin-bottom:24px; }
+}
