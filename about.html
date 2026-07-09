@@ -83,9 +83,6 @@
 
 <!-- ============ PAGE HERO ============ -->
 <section class="hero" id="top">
-  <div class="bg-doodle">
-    <svg viewBox="0 0 200 200" width="260" style="bottom:-30px;left:-40px;opacity:.6"><circle class="stroke s-g" cx="100" cy="100" r="70"/><path class="stroke s-a" d="M40 100h120M100 40v120"/></svg>
-  </div>
   <div class="wrap">
     <div class="crumb reveal"><a href="index.html">Home</a><span class="sep">/</span><span>About Us</span></div>
     <div class="sec-head reveal" style="max-width:820px">
@@ -468,10 +465,6 @@
       }
       /* ---- Parallax depth: background ornaments drift slower than the content.
          y-transform only (compositor-friendly), scrubbed, very subtle. ---- */
-      gsap.to('.hero .bg-doodle', {
-        y:140, ease:'none',
-        scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true }
-      });
       gsap.from('.foot-orn', {
         y:-90, ease:'none',
         scrollTrigger:{ trigger:'#siteFooter', start:'top bottom', end:'bottom bottom', scrub:true }

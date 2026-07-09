@@ -169,9 +169,7 @@ header.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1
 .rhythm{font-family:'Fraunces';font-style:italic;font-size:1.25rem;color:var(--ink);margin-bottom:30px}
 .rhythm span{color:var(--accent)}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-.bg-doodle{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.bg-doodle svg{position:absolute}
-.bg-doodle .stroke{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.5;filter:blur(.6px)}
+/* (bg-doodle backgrounds removed site-wide — keeping only the footer illustration + soft gradients) */
 .s-o{stroke:var(--orange)} .s-b{stroke:var(--blue)} .s-g{stroke:var(--green)} .s-a{stroke:var(--amber)}
 .section>.wrap,.hero>.wrap{position:relative;z-index:2}
 
@@ -953,7 +951,8 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
    mobile keeps the natural, tighter hero height). No flex here — a plain block keeps the
    .wrap at full --maxw so content left-aligns exactly like the About hero (sec-head left=76). */
 @media (min-width:901px){
-  body[data-page="services"] .hero{ min-height:100vh; box-sizing:border-box; }
+  body[data-page="services"] .hero,
+  body[data-page="employers"] .hero{ min-height:100vh; box-sizing:border-box; }
 }
 
 /* ---- "What we do" intro above the stack ---- */
