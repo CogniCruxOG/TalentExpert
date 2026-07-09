@@ -146,7 +146,7 @@
 <section class="section eb-sec" id="stories"><div class="wrap">
 <div class="sec-head center reveal"><span class="eyebrow">Real Stories</span>
 <h2 class="title">Real stories. <b>Real transformations</b></h2></div>
-<div class="tst-grid"><div class="card tst-card reveal"><div class="stars"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></div><p class="q">&ldquo;I was a fresher from a small village near Madurai with no idea where to start. Talent Expert took me through the entire journey — counselling, guidance, and placement. Today I work as a Sales Executive in Chennai. My family's life has changed.&rdquo;</p><cite>— Priya M. — Sales Executive · Placed by Talent Expert</cite></div><div class="card tst-card reveal"><div class="stars"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></div><p class="q">&ldquo;After their guidance on communication and mock interviews, I walked into the interview with a completely different level of confidence — and received the job offer the same day.&rdquo;</p><cite>— Karthik S. — Operations Associate · Placed by Talent Expert</cite></div><div class="card tst-card reveal"><div class="stars"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></div><p class="q">&ldquo;What I appreciated most was that they didn't treat me like just another CV. They understood what I wanted and guided me to the right path. Even after placement, they checked in every month.&rdquo;</p><cite>— Amutha R. — Accounts Assistant · Placed by Talent Expert</cite></div></div>
+<div class="tst-grid"><div class="card tst-card reveal"><div class="stars"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></div><p class="q">&ldquo;I was a fresher from a small village near Madurai with no idea where to start. Talent Expert took me through the entire journey — counselling, guidance, and placement. Today I work as a Sales Executive in Chennai. My family's life has changed.&rdquo;</p><cite><b class="tst-name">Priya M.</b><span class="tst-role">Sales Executive</span><span class="tst-meta">Placed by Talent Expert</span></cite></div><div class="card tst-card reveal"><div class="stars"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></div><p class="q">&ldquo;After their guidance on communication and mock interviews, I walked into the interview with a completely different level of confidence — and received the job offer the same day.&rdquo;</p><cite><b class="tst-name">Karthik S.</b><span class="tst-role">Operations Associate</span><span class="tst-meta">Placed by Talent Expert</span></cite></div><div class="card tst-card reveal"><div class="stars"><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg><svg class="ic"><use href="assets/icons/sprite.svg#i-star"/></svg></div><p class="q">&ldquo;What I appreciated most was that they didn't treat me like just another CV. They understood what I wanted and guided me to the right path. Even after placement, they checked in every month.&rdquo;</p><cite><b class="tst-name">Amutha R.</b><span class="tst-role">Accounts Assistant</span><span class="tst-meta">Placed by Talent Expert</span></cite></div></div>
 <div style="text-align:center;margin-top:36px" class="eb-cta"><a class="btn btn-ghost" href="career-tips.html">Read our 2026 career guide <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a></div></div></section>
 <section class="section alt eb-sec" id="faq"><div class="wrap">
 <div class="sec-head center reveal"><span class="eyebrow">FAQs</span><h2 class="title">Job Seeker FAQs</h2><p class="lead">Everything you want to know before you register.</p></div>
@@ -298,6 +298,7 @@
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
     gsap.ticker.lagSmoothing(0);
+    window.__lenis = lenis;   // exposed so main.js can jump instantly for anchor nav
   }
 
   var mm = gsap.matchMedia();
@@ -322,7 +323,7 @@
     };
     var centerX = function(c){ return -(c.offsetLeft + c.offsetWidth / 2 - track.clientWidth / 2); };
     var tl = gsap.timeline({ defaults:{ ease:'power2.inOut' },
-      scrollTrigger:{ trigger:'#why', start:'top top', refreshPriority:5,
+      scrollTrigger:{ trigger:'#why', start:'top top', refreshPriority:6,
         end:function(){ return '+=' + Math.round(window.innerHeight * cards.length * 0.82); },
         pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true, onRefresh:focus } });
     tl.eventCallback('onUpdate', focus);
@@ -341,42 +342,40 @@
     };
   });
 
-  /* ===== Section 3 — Who Can Apply: signature NON-pinned scrubbed assemble =====
-     As the section scrolls through, the three cards build themselves: blur -> sharp,
-     scale 0.94 -> 1, opacity 0.4 -> 1, slight rise, then their content staggers in
-     (icon scales, checklist top-to-bottom, footer note last). Left -> Centre -> Right.
-     No pin, no scroll takeover — start:top 75%, end:bottom 45%, scrubbed. */
-  mm.add('(min-width:901px) and (prefers-reduced-motion:no-preference)', function(){
+  /* ===== Section 3 — Who Can Apply: pinned sequential spotlight =====
+     Pin the section; the three cards come into focus one after another. Each
+     activates (lifts ~6px, brightens to full, gains a soft orange-tinted shadow),
+     its checklist reveals top-to-bottom, then its footer note. The others stay
+     visible but softly dimmed (opacity + shadow only — no blur, no large movement).
+     When the third finishes, all three settle back to equal weight, then the pin
+     releases. Reading order: You're Welcome If -> What You Don't Need -> What You Do Need. */
+  mm.add('(min-width:901px) and (min-height:820px) and (prefers-reduced-motion:no-preference)', function(){
     var sec = document.querySelector('#eligibility');
-    if(!sec) return;
-    var head = sec.querySelector('.sec-head');
     var cards = gsap.utils.toArray('#eligibility .elig-card');
-    if(cards.length < 2) return;
-    var kidsOf = function(c){ return c.querySelectorAll('h3, .elig-intro, li, .elig-note'); };
-    if(head) gsap.set(head, { opacity:0, y:30 });
-    cards.forEach(function(c){
-      gsap.set(c, { autoAlpha:0.4, scale:0.94, y:52, filter:'blur(6px)', transformOrigin:'50% 62%' });
-      var chip = c.querySelector('.chip'); if(chip) gsap.set(chip, { scale:0.9, opacity:0 });
-      gsap.set(kidsOf(c), { opacity:0, y:12 });
-    });
+    if(!sec || cards.length < 2) return;
+    sec.classList.add('eb-on');
+    var BASE = '0 26px 60px -34px rgba(36,48,64,0.40)';
+    var EMPH = '0 30px 66px -28px rgba(242,111,33,0.30)';
+    gsap.set(cards, { opacity:0.42, boxShadow:BASE });
+    cards.forEach(function(c){ gsap.set(c.querySelectorAll('li, .elig-note'), { opacity:0, y:10 }); });
     var tl = gsap.timeline({ defaults:{ ease:'power2.out' },
-      scrollTrigger:{ trigger:'#eligibility', start:'top 75%', end:'bottom 45%', scrub:true } });
-    if(head){ tl.to(head, { opacity:1, y:0, duration:0.8 }); }
-    tl.to({}, { duration:0.25 });
-    cards.forEach(function(c){
-      var chip = c.querySelector('.chip');
-      tl.to(c, { autoAlpha:1, scale:1, y:0, filter:'blur(0px)', duration:0.9 });
-      if(chip) tl.to(chip, { scale:1, opacity:1, duration:0.4 }, '<0.15');
-      tl.to(kidsOf(c), { opacity:1, y:0, duration:0.5, stagger:0.06 }, '<0.1');
-      tl.to({}, { duration:0.4 });
+      scrollTrigger:{ trigger:'#eligibility', start:'top top', refreshPriority:5,
+        end:function(){ return '+=' + Math.round(window.innerHeight * (cards.length * 0.62 + 1)); },
+        pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
+    tl.to({}, { duration:0.35 });
+    cards.forEach(function(c, i){
+      var lis = c.querySelectorAll('li'), note = c.querySelector('.elig-note');
+      if(i > 0) tl.to(cards[i-1], { opacity:0.46, y:0, boxShadow:BASE, duration:0.4 });   // dim the previous
+      tl.to(c, { opacity:1, y:-6, boxShadow:EMPH, duration:0.4 }, i > 0 ? '<' : '>');      // activate this one
+      tl.to(lis, { opacity:1, y:0, duration:0.45, stagger:0.05 }, '<0.15');                // checklist, top-to-bottom
+      if(note) tl.to(note, { opacity:1, y:0, duration:0.35 }, '>-0.05');                   // footer note last
+      tl.to({}, { duration:0.5 });                                                         // read pause
     });
-    tl.to({}, { duration:0.3 });
+    tl.to(cards, { opacity:1, y:0, boxShadow:BASE, duration:0.45 });                       // settle: equal weight
+    tl.to({}, { duration:0.5 });
     return function(){
-      if(head) gsap.set(head, { clearProps:'all' });
-      cards.forEach(function(c){
-        var all = [c, c.querySelector('.chip')].concat([].slice.call(kidsOf(c)));
-        gsap.set(all, { clearProps:'all' });
-      });
+      sec.classList.remove('eb-on');
+      cards.forEach(function(c){ gsap.set([c].concat([].slice.call(c.querySelectorAll('li, .elig-note'))), { clearProps:'all' }); });
     };
   });
 

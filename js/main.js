@@ -18,6 +18,59 @@
   window.toggleMenu = (open) => { if (mnav) mnav.classList.toggle('open', open); };
   $$('#mnav a').forEach(a => a.addEventListener('click', () => window.toggleMenu(false)));
 
+  /* ---- Instant in-page navigation --------------------------------------
+     CTAs, navbar dropdown items and anchor links jump STRAIGHT to their
+     section instead of smooth-scrolling through every pinned scene (which
+     would fast-forward all the scroll-triggered animations). Uses the shared
+     Lenis instance if the page has one, else a one-off auto-scroll. Manual
+     scrolling keeps the full storytelling. */
+  const samePageHash = (a) => {
+    const href = a.getAttribute('href') || '';
+    if (!href) return null;
+    if (href.charAt(0) === '#') return href.length > 1 ? href : null;
+    try {
+      const u = new URL(a.href, location.href);
+      if (u.pathname === location.pathname && u.host === location.host && u.hash.length > 1) return u.hash;
+    } catch (_) {}
+    return null;
+  };
+  const jumpTo = (hash) => {
+    let el; try { el = document.querySelector(hash); } catch (_) { return false; }
+    if (!el) return false;
+    const lenis = window.__lenis;
+    if (lenis && typeof lenis.scrollTo === 'function') {
+      lenis.scrollTo(el, { immediate: true, force: true });
+    } else {
+      const root = document.documentElement, prev = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, el.getBoundingClientRect().top + (window.pageYOffset || root.scrollTop || 0));
+      root.style.scrollBehavior = prev;
+    }
+    if (window.ScrollTrigger && typeof window.ScrollTrigger.update === 'function') window.ScrollTrigger.update();
+    return true;
+  };
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a || a.target === '_blank') return;
+    const hash = samePageHash(a);
+    if (!hash) return;
+    let el; try { el = document.querySelector(hash); } catch (_) { return; }
+    if (!el) return;
+    e.preventDefault();
+    if (mnav && mnav.classList.contains('open')) window.toggleMenu(false);
+    jumpTo(hash);
+    try { history.pushState(null, '', hash); } catch (_) {}
+  }, false);
+  /* Arriving with a hash (e.g. a cross-page CTA): jump cleanly once layout +
+     pins have settled, so the page doesn't animate through to the target. */
+  if (location.hash && location.hash.length > 1) {
+    addEventListener('load', () => {
+      const h = location.hash;
+      setTimeout(() => { try { if (document.querySelector(h)) jumpTo(h); } catch (_) {} }, 400);
+    });
+  }
+
   /* ---- Reveal on scroll (replays) ---- */
   const revO = new IntersectionObserver(es => {
     es.forEach(e => e.target.classList.toggle('in', e.isIntersecting));

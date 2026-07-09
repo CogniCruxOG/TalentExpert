@@ -341,9 +341,14 @@ table.data td strong{color:var(--ink)}
 
 /* ============ TESTIMONIALS ============ */
 .tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.tst-card{padding:30px;border-left:4px solid var(--accent)}
+.tst-card{padding:30px;border-left:4px solid var(--accent);display:flex;flex-direction:column}
 .tst-card .q{font-family:'Fraunces';font-style:italic;font-size:1.02rem;color:var(--ink);line-height:1.5;margin-bottom:16px}
-.tst-card cite{font-style:normal;font-size:.86rem;color:var(--ink2);font-weight:600}
+/* Editorial attribution: name (emphasis) → role (secondary) → subtle metadata,
+   pinned to the card foot so footers align across cards regardless of quote length. */
+.tst-card cite{font-style:normal;display:block;margin-top:auto;padding-top:18px}
+.tst-card .tst-name{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;color:var(--ink);letter-spacing:-.01em;line-height:1.2}
+.tst-card .tst-role{display:block;font-size:.83rem;color:var(--ink2);margin-top:4px}
+.tst-card .tst-meta{display:block;font-size:.72rem;color:var(--ink3);margin-top:7px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
 .tst-card .stars{color:var(--amber);display:flex;gap:2px;margin-bottom:14px}
 .tst-card .stars .ic{width:16px;height:16px;fill:var(--amber)}
 
@@ -1257,4 +1262,21 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   #categories.eb-on .sec-head .lead{ margin-top:8px; }
   #categories.eb-on table.data th{ padding:12px 20px; }
   #categories.eb-on table.data td{ padding:10px 20px; font-size:.88rem; }
+  /* Who Can Apply — pinned spotlight: centre the heading + 3 cards, compact the
+     cards so all three fit one viewport (JS handles the sequential emphasis). */
+  #eligibility.eb-on{ min-height:100vh; box-sizing:border-box; padding:82px 0 32px;
+    display:flex; flex-direction:column; justify-content:center; }
+  #eligibility.eb-on .wrap{ width:100%; }
+  #eligibility.eb-on .sec-head{ margin-bottom:14px; }
+  #eligibility.eb-on .sec-head .title{ font-size:clamp(1.8rem,2.9vw,2.35rem); }
+  #eligibility.eb-on .sec-head .lead{ margin-top:6px; font-size:1rem; }
+  #eligibility.eb-on .elig-grid{ margin-top:4px; }
+  #eligibility.eb-on .elig-card{ padding:24px 26px 20px; }
+  #eligibility.eb-on .elig-card .chip{ margin-bottom:13px; width:42px; height:42px; }
+  #eligibility.eb-on .elig-card h3{ font-size:1.28rem; margin-bottom:6px; }
+  #eligibility.eb-on .elig-card .elig-intro{ font-size:.85rem; margin-bottom:15px; line-height:1.48; }
+  #eligibility.eb-on .elig-card ul{ gap:11px; }
+  #eligibility.eb-on .elig-card li{ grid-template-columns:18px 1fr; column-gap:12px; }
+  #eligibility.eb-on .elig-card li span{ font-size:.85rem; line-height:1.42; }
+  #eligibility.eb-on .elig-note{ padding-top:15px; font-size:.9rem; }
 }
