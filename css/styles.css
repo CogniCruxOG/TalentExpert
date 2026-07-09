@@ -1042,8 +1042,10 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 .svc-reveal{ opacity:1; transform:none; }
 
 /* ==== SERVICES OVERVIEW — 3 icons left · centre content · 3 icons right ==== */
-.svc-overview{ position:relative; overflow:hidden; min-height:70vh; display:flex; align-items:center;
-  padding:5vh 0 6vh; }
+/* fills the viewport so, when pinned (start:'top top'), the flex-centred composition sits dead-centre
+   of the screen — not attached to the top. Mobile drops to min-height:auto (see responsive block). */
+.svc-overview{ position:relative; overflow:hidden; min-height:100vh; display:flex; align-items:center;
+  padding:5vh 0; }
 .ov-glow{ position:absolute; inset:0; pointer-events:none;
   background:radial-gradient(44% 44% at 50% 48%, rgba(242,111,33,.11), transparent 70%); }
 .ov-grid{ position:relative; z-index:1; width:min(1180px,94vw); margin:0 auto; display:grid;
