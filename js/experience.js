@@ -57,6 +57,7 @@
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
     document.documentElement.classList.add('lenis-on');
+    window.__lenis = lenis;   // exposed so main.js can jump instantly for anchor nav
   }
 
   /* ---- Scroll progress bar ---- */
