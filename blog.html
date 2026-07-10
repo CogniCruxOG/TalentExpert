@@ -214,24 +214,8 @@
     window.__lenis = lenis;   // exposed so main.js can jump instantly for anchor nav
   }
 
-  var mm = gsap.matchMedia();
-
-  /* More Insights — pin, heading held, the article grid cascades in on scrub */
-  mm.add('(min-width:901px) and (min-height:820px) and (prefers-reduced-motion:no-preference)', function(){
-    var sec = document.querySelector('#insights');
-    var cards = gsap.utils.toArray('#insights .feat-card');
-    if(!sec || cards.length < 2) return;
-    sec.classList.add('eb-on');
-    gsap.set(cards, { opacity:0, y:26 });
-    var tl = gsap.timeline({ defaults:{ ease:'power2.out' },
-      scrollTrigger:{ trigger:'#insights', start:'top top', refreshPriority:1,
-        end:function(){ return '+=' + Math.round(window.innerHeight * 1.9); },
-        pin:true, pinSpacing:true, scrub:1.3, anticipatePin:1, invalidateOnRefresh:true } });
-    tl.to({}, { duration:0.3 });
-    tl.to(cards, { opacity:1, y:0, duration:0.7, stagger:0.12 });   // grid cascades in
-    tl.to({}, { duration:0.6 });
-    return function(){ sec.classList.remove('eb-on'); gsap.set(cards, { clearProps:'all' }); };
-  });
+  /* Editorial/static: no pins, no scrub. "More Insights" shows the complete article
+     grid; cards fade in once on enter via the main.js .reveal system. */
 
   ScrollTrigger.refresh();
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ ScrollTrigger.refresh(); }); }
