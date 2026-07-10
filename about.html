@@ -404,76 +404,20 @@
       });
     }
 
-    var mm = gsap.matchMedia();
-    mm.add('(min-width:901px) and (prefers-reduced-motion:no-preference)', function(){
-      /* Our Story — pins when it reaches top, unpins after full reveal */
-      var story = document.querySelector('.story-scene');
-      if(story){
-        story.classList.add('story-live');
-        ScrollTrigger.create({
-          trigger:'#story',
-          start:'top top',
-          end:'+=2600',
-          pin:true,
-          scrub:2,
-          invalidateOnRefresh:true,
-          onUpdate:function(self){ story.style.setProperty('--p', self.progress.toFixed(4)); }
-        });
-      }
-      /* Vision & Mission — pins after Our Story fully unpins (natural spacing) */
-      var vm = document.querySelector('.vm-scene');
-      if(vm){
-        vm.classList.add('vm-live');
-        ScrollTrigger.create({
-          trigger:'#vision',
-          start:'top top',
-          end:'+=2400',
-          pin:true,
-          scrub:2,
-          invalidateOnRefresh:true,
-          onUpdate:function(self){ vm.style.setProperty('--p', self.progress.toFixed(4)); }
-        });
-      }
-      /* Core Values — PINNED one-card-at-a-time. In live mode the 7 cards stack in a single
-         centered slot (fits the viewport, so pinning never clips). Section stays pinned until
-         card 07's animation finishes, THEN releases → Founder begins. No section overlap.
-         Long pin distance = generous reading time per card, fully scrubbed + reversible. */
-      var cv = document.querySelector('.cv-scene');
-      if(cv){
-        cv.classList.add('cv-live');
-        ScrollTrigger.create({
-          trigger:'#values',
-          start:'top top',
-          end:'+=8400',
-          pin:true,
-          scrub:2,
-          invalidateOnRefresh:true,
-          onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
-        });
-      }
-      /* Founder's Message — pins centered with the whole message + card already fully
-         visible (an editorial page laid out for reading); the pin just holds it for a
-         beat, then releases. No scroll-driven reveal. */
-      var qb = document.querySelector('#founder');
-      if(qb){
-        qb.classList.add('qb-live');
-        ScrollTrigger.create({
-          trigger:'#founder',
-          start:'top top',
-          end:'+=1200',
-          pin:true,
-          scrub:2,
-          invalidateOnRefresh:true,
-          onUpdate:function(self){ qb.style.setProperty('--p', self.progress.toFixed(4)); }
-        });
-      }
-      /* ---- Parallax depth: background ornaments drift slower than the content.
-         y-transform only (compositor-friendly), scrubbed, very subtle. ---- */
-      gsap.from('.foot-orn', {
-        y:-90, ease:'none',
-        scrollTrigger:{ trigger:'#siteFooter', start:'top bottom', end:'bottom bottom', scrub:true }
-      });
-    });
+    /* Editorial/static: no pins, no scrub. Vision & Mission and Core Values reveal ONCE
+       via the IntersectionObserver above. Story and Founder (previously --p-driven) get
+       the .static classes so CSS shows them complete, plus one gentle one-time entrance. */
+    (function(){
+      var story = document.querySelector('.story-scene'); if(story) story.classList.add('story-static');
+      var qb = document.querySelector('#founder'); if(qb) qb.classList.add('qb-static');
+      var enter = function(sel, trig){
+        var els = document.querySelectorAll(sel); if(!els.length) return;
+        gsap.from(els, { opacity:0, y:26, duration:0.7, ease:'power3.out', stagger:0.09,
+          scrollTrigger:{ trigger:trig || els[0], start:'top 82%', once:true } });
+      };
+      enter('#story .story-p', '#story');
+      enter('#founder .founder-msg, #founder .founder-sig', '#founder');
+    })();
 
     /* Headings render fully styled (text + highlight) on the first paint — no JS split,
        no entrance that hides the heading after paint, so there is never a highlight-before-

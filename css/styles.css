@@ -1376,3 +1376,13 @@ body[data-page="blog"] .feat-card .soon{ margin-top:auto; padding-top:14px; font
   #insights.eb-on .wrap{ width:100%; }
   #insights.eb-on .sec-head{ margin-bottom:28px; }
 }
+
+/* ============ ABOUT — de-pinned static sections (editorial refactor) ============
+   Story + Founder previously revealed via a --p scrub while pinned; now they show their
+   COMPLETE content on every width (one gentle entrance is added once in about.html's JS). */
+body[data-page="about"] .story-static .develop,
+body[data-page="about"] .qb-static blockquote.develop{ -webkit-mask-image:none !important; mask-image:none !important; }
+body[data-page="about"] .qb-static .founder-grid.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+body[data-page="about"] .qb-static .founder-sig{ opacity:1 !important; transform:none !important; }
+body[data-page="about"] .qb-static{ min-height:0 !important; }
+
