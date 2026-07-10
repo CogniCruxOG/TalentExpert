@@ -1387,3 +1387,12 @@ body[data-page="about"] .qb-static .founder-sig{ opacity:1 !important; transform
 body[data-page="about"] .qb-static{ min-height:0 !important; }
 
 
+
+
+/* ============ BUSINESS OWNERS — de-pinned static sections (editorial refactor) ============
+   The Problem rows render in their SOLVED state: green check (not the X), question AND the
+   solution answer both visible. Other sections use their base layouts + main.js .reveal. */
+body[data-page="employers"] #problem .prob{ align-items:flex-start; }
+body[data-page="employers"] #problem .prob-state .x{ display:none; }
+body[data-page="employers"] #problem .prob-state .v{ opacity:1 !important; transform:none !important; }
+body[data-page="employers"] #problem .prob .a{ max-height:none !important; overflow:visible !important; opacity:1 !important; margin-top:4px; }
