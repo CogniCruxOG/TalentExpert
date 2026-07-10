@@ -1101,8 +1101,8 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 /* ==== SERVICES OVERVIEW — 3 icons left · centre content · 3 icons right ==== */
 /* fills the viewport so, when pinned (start:'top top'), the flex-centred composition sits dead-centre
    of the screen — not attached to the top. Mobile drops to min-height:auto (see responsive block). */
-.svc-overview{ position:relative; overflow:hidden; min-height:100vh; display:flex; align-items:center;
-  padding:5vh 0; }
+.svc-overview{ position:relative; overflow:hidden; min-height:auto; display:flex; align-items:center;
+  padding:9vh 0; }
 .ov-glow{ position:absolute; inset:0; pointer-events:none;
   background:radial-gradient(44% 44% at 50% 48%, rgba(242,111,33,.11), transparent 70%); }
 .ov-grid{ position:relative; z-index:1; width:min(1180px,94vw); margin:0 auto; display:grid;
@@ -1385,4 +1385,5 @@ body[data-page="about"] .qb-static blockquote.develop{ -webkit-mask-image:none !
 body[data-page="about"] .qb-static .founder-grid.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
 body[data-page="about"] .qb-static .founder-sig{ opacity:1 !important; transform:none !important; }
 body[data-page="about"] .qb-static{ min-height:0 !important; }
+
 

@@ -372,83 +372,18 @@
       onUpdate:function(self){ spBar.style.setProperty('--sp', self.progress.toFixed(4)); } });
   }
 
-  var mm = gsap.matchMedia();
-
-  /* ===== centred, pinned stacked-card story — desktop, motion, tall enough to pin a card ===== */
-  mm.add('(min-width:901px) and (min-height:720px) and (prefers-reduced-motion:no-preference)', function(){
-    var stack = document.querySelector('.svc-stack');
-    var cards = gsap.utils.toArray('.svc-stage > .svc-card');
-    if(!stack || cards.length < 2) return;
-
-    /* size every card to the tallest so the covering card always fully hides the one beneath,
-       with comfortable headroom (floor keeps it safe even if measured before Fraunces settles).
-       Cap leaves room for the pinned heading + navbar above the card. */
-    var tallest = 0;
-    cards.forEach(function(c){ tallest = Math.max(tallest, c.scrollHeight); });
-    var cardH = Math.min(Math.max(Math.ceil(tallest) + 26, 500), Math.round(window.innerHeight - 210));
-    document.documentElement.style.setProperty('--svc-card-h', cardH + 'px');
-
-    stack.classList.add('stack-on');
-    ScrollTrigger.refresh();
-
-    /* fonts can grow text height after first paint. Non-destructive: if any card's content now
-       exceeds the deck height, grow the deck to fit (never let a card overflow its equal-height box). */
-    if(document.fonts && document.fonts.ready){
-      document.fonts.ready.then(function(){
-        var over = 0; cards.forEach(function(c){ over = Math.max(over, c.scrollHeight); });
-        if(over > cardH + 1){
-          cardH = Math.min(over + 16, Math.round(window.innerHeight - 190));
-          document.documentElement.style.setProperty('--svc-card-h', cardH + 'px');
-        }
-        ScrollTrigger.refresh();
-      });
-    }
-    addEventListener('load', function(){ ScrollTrigger.refresh(); });   // recompute after images (prod latency)
-
-    /* card 01 starts centred; the rest wait just below the viewport */
-    gsap.set(cards[0], { yPercent:0, scale:1, opacity:1 });
-    for(var j=1;j<cards.length;j++){ gsap.set(cards[j], { yPercent:120, scale:0.98, opacity:1 }); }
-
-    var tl = gsap.timeline({
-      defaults:{ ease:'power2.inOut' },
-      scrollTrigger:{
-        trigger:'.svc-pin', start:'top top',
-        end:function(){ return '+=' + Math.round(window.innerHeight * cards.length * 1.35); },
-        pin:'.svc-pin', pinSpacing:true, scrub:1.6, anticipatePin:1, invalidateOnRefresh:true
-      }
-    });
-    tl.to({}, { duration:0.85 });                                 // opening hold on card 01
-    for(var i=1;i<cards.length;i++){
-      tl.to(cards[i],   { yPercent:0, scale:1, duration:1.15 });  // slide up & settle, covering prev
-      tl.to(cards[i-1], { scale:0.965, duration:1.15 }, '<');     // prev eases back a touch (hidden behind)
-      tl.to({}, { duration:0.9 });                                // PAUSE — reading moment
-    }
-    tl.to({}, { duration:1.3 });                                  // long final hold before release
-
-    return function(){                                            // revert cleanly to static stack
-      stack.classList.remove('stack-on');
-      cards.forEach(function(c){ gsap.set(c, { clearProps:'all' }); });
-      document.documentElement.style.removeProperty('--svc-card-h');
-    };
+  /* Editorial/static: no pins, no scrub. The six service cards show in the base
+     .svc-stage vertical deck (all visible); the overview icons show in place. Each
+     reveals ONCE on enter (fade + rise), never scrubbed / never replayed. */
+  gsap.from('.svc-stage > .svc-card', {
+    opacity:0, y:28, duration:0.7, ease:'power3.out', stagger:0.1,
+    scrollTrigger:{ trigger:'.svc-stage', start:'top 85%', once:true }
   });
-
-  /* ===== section-heading word reveals + overview (assemble → brief pin → gentle float) ===== */
-  mm.add('(min-width:901px) and (prefers-reduced-motion:no-preference)', function(){
-    /* Headings render fully styled (text + highlight) on first paint — no word-split
-       entrance that hides them after paint, so there's never a highlight-before-text
-       flash. Their .sec-head parents still fade in via the CSS .reveal system. */
-
-    var ov = document.querySelector('.svc-overview');
-    if(ov){
-      /* icons fade in (opacity only — CSS keeps the gentle idle float on transform) */
-      gsap.from('.svc-overview .ov-icon', { opacity:0, duration:.6, ease:'power2.out', stagger:.08,
-        scrollTrigger:{ trigger:ov, start:'top 72%', once:true } });
-      /* hold the composition briefly so the full ecosystem can be read, then release */
-      ScrollTrigger.create({ trigger:ov, start:'top top',
-        end:function(){ return '+=' + Math.round(window.innerHeight * 0.32); },
-        pin:true, pinSpacing:true, anticipatePin:1, invalidateOnRefresh:true });
-    }
-  });
+  var ov = document.querySelector('.svc-overview');
+  if(ov){
+    gsap.from('.svc-overview .ov-icon', { opacity:0, y:20, duration:.6, ease:'power2.out', stagger:.07,
+      scrollTrigger:{ trigger:ov, start:'top 80%', once:true } });
+  }
 })();
 </script>
 </body></html>
