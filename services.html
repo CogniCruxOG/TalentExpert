@@ -437,8 +437,10 @@
     if(typeof window.SplitType !== 'undefined'){
       document.querySelectorAll('.svc-stack .sec-head .title, .svc-overview .title').forEach(function(el){
         var split = new SplitType(el, { types:'words' });
-        gsap.from(split.words, { yPercent:60, opacity:0, duration:.7, ease:'power3.out', stagger:.05,
-          scrollTrigger:{ trigger:el, start:'top 88%', once:true } });
+        /* fade the whole heading (highlight bg + text) as one unit → no empty-highlight flash */
+        gsap.timeline({ scrollTrigger:{ trigger:el, start:'top 88%', once:true } })
+          .from(el, { autoAlpha:0, duration:.5, ease:'power2.out' }, 0)
+          .from(split.words, { yPercent:60, duration:.7, ease:'power3.out', stagger:.05 }, 0);
       });
     }
 

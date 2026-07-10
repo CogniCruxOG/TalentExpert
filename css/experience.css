@@ -422,7 +422,8 @@ html.lenis,html.lenis body{height:auto}
 @media(max-width:900px){
   .x-founder{padding:90px 0}
   .x-founder-grid{grid-template-columns:1fr;gap:34px}
-  .x-founder-sign{border-left:none;border-top:2px solid var(--orange);padding:22px 0 0}
+  .x-founder-sign{padding:2px 0 2px 22px}
+  .x-founder-sign::before{transform:none}   /* keep the orange rule fully drawn on mobile (no partial/broken line) */
   .x-founder-bg .qmark-bg{font-size:16rem;top:-30px}
   .x-finale{padding:90px 0 100px}
   .x-finale-grid{grid-template-columns:1fr;gap:36px}

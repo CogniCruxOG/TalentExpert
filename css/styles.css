@@ -799,9 +799,11 @@ body[data-page="about"] #vision .feat-card{
 .cv-desc{ font-family:'Fraunces',serif; font-size:1.24rem; font-style:italic; color:var(--ink2); line-height:1.5; }
 .cv-desc .l{ display:inline; }
 @media(max-width:900px){
-  .cv-stage{ grid-template-columns:1fr; }
-  .cv-card:last-child{ grid-column:auto; }
-  .cv-face{ padding:30px 26px; } .cv-title{ font-size:1.55rem; } .cv-desc{ font-size:1.18rem; }
+  .cv-stage{ grid-template-columns:1fr; gap:18px; }
+  /* 7th card was pinned to 50% width + centered for the desktop pair-grid — reset to
+     full-width on mobile so it never collapses into a narrow 2-words-per-line column */
+  .cv-card:last-child{ grid-column:auto; width:auto; justify-self:stretch; }
+  .cv-face{ padding:28px 26px; } .cv-title{ font-size:1.5rem; } .cv-desc{ font-size:1.14rem; line-height:1.55; }
 }
 
 /* reduced-motion: show everything instantly, no transitions */
@@ -1137,13 +1139,16 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   .svc-stage{ gap:18px; }
   .svc-title{ font-size:1.5rem; }
   .svc-stack .sec-head{ padding:5vh 0 3.5vh; }
-  /* overview → stacked: centre block first, icons in balanced rows below */
+  /* overview → intentional mobile stack: heading first, then TWO tidy rows of three
+     icons on a uniform grid (no floating arc, no 2+1 wrap, no idle drift → aligned) */
   .svc-overview{ min-height:auto; padding:7vh 0; }
-  .ov-grid{ grid-template-columns:1fr; gap:32px; }
+  .ov-grid{ display:flex; flex-direction:column; gap:30px; }
   .ov-center{ order:-1; }
-  .ov-col{ flex-direction:row; flex-wrap:wrap; gap:26px 24px; }
+  .ov-col{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px 10px; width:100%; align-items:start; }
   .ov-right{ margin-top:0; }
-  .ov-icon{ width:132px; --ox:0px; --oy:0px; }   /* drop the arc offsets in the stacked mobile grid */
+  .ov-icon{ width:auto; --ox:0px; --oy:0px; animation:none; transform:none; gap:9px; }
+  .ov-badge{ width:60px; height:60px; font-size:26px; border-radius:18px; }
+  .ov-label{ font-size:.76rem; }
 }
 
 /* ==========================================================================
