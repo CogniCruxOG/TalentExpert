@@ -34,16 +34,35 @@
     } catch (_) {}
     return null;
   };
+  /* Resolve the scroll position to land at. If the section OWNS a pinned ScrollTrigger
+     (the storytelling sections — Core Values, Founder's Message, etc.), land at that
+     trigger's START so the section arrives at progress 0 (initial state) and its pin +
+     scrub play from the beginning. A pinned element's getBoundingClientRect reports its
+     FIXED position, so measuring it lands the section pre-completed — using the trigger's
+     resolved start avoids that. Non-pinned targets use their normal document position. */
+  const targetY = (el) => {
+    const ST = window.ScrollTrigger;
+    if (ST && typeof ST.getAll === 'function') {
+      let pinned = null, any = null;
+      ST.getAll().forEach((st) => {
+        if (st.trigger === el) { if (st.pin && !pinned) pinned = st; else if (!any) any = st; }
+      });
+      const best = pinned || any;
+      if (best && typeof best.start === 'number') return Math.round(best.start);
+    }
+    return Math.round(el.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0));
+  };
   const jumpTo = (hash) => {
     let el; try { el = document.querySelector(hash); } catch (_) { return false; }
     if (!el) return false;
+    const y = targetY(el);
     const lenis = window.__lenis;
     if (lenis && typeof lenis.scrollTo === 'function') {
-      lenis.scrollTo(el, { immediate: true, force: true });
+      lenis.scrollTo(y, { immediate: true, force: true });
     } else {
       const root = document.documentElement, prev = root.style.scrollBehavior;
       root.style.scrollBehavior = 'auto';
-      window.scrollTo(0, el.getBoundingClientRect().top + (window.pageYOffset || root.scrollTop || 0));
+      window.scrollTo(0, y);
       root.style.scrollBehavior = prev;
     }
     if (window.ScrollTrigger && typeof window.ScrollTrigger.update === 'function') window.ScrollTrigger.update();
