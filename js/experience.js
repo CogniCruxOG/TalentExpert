@@ -133,16 +133,38 @@
     });
   }
 
-  /* ================= Generic reveal helper (GPU transforms, replays, blur-to-sharp) ================= */
+  /* ================= Generic reveal helper (one-time, GPU transforms) ================= */
   const reveal = (els, opts) => els.forEach((el, i) => gsap.from(el, Object.assign({
     scrollTrigger: { trigger: el, start: 'top 88%', once: true },
     y: 26, opacity: 0, duration: 0.7, ease: 'power3.out', delay: (i % 4) * 0.05
   }, opts)));
 
+  /* ---- Coordinated section intro: heading reveals FIRST, then the cards/content rise in
+     together with a subtle stagger — once, never scrubbed, never replayed. When opts.pin is
+     set (desktop + motion), the section is held for a brief ~0.5s "reading pause" while the
+     reveal completes, then the pin releases automatically. ---- */
+  const sectionIntro = (sel, headSel, itemSel, opts) => {
+    opts = opts || {};
+    const sec = $(sel); if (!sec) return;
+    const head = headSel ? $(headSel, sec) : null;
+    const items = itemSel ? $$(itemSel, sec) : [];
+    const tl = gsap.timeline({ paused: true });
+    if (head) tl.from(head, { opacity: 0, y: 22, duration: 0.55, ease: 'power3.out' });
+    if (items.length) tl.from(items, { opacity: 0, y: 26, duration: 0.6, ease: 'power3.out', stagger: 0.1 }, head ? '-=0.18' : 0);
+    if (reduce) { tl.progress(1); return; }
+    if (opts.pin && matchMedia('(min-width:901px)').matches) {
+      ScrollTrigger.create({
+        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * 0.5),
+        pin: true, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
+        onEnter: () => tl.play(), onEnterBack: () => tl.progress(1)
+      });
+    } else {
+      ScrollTrigger.create({ trigger: sec, start: 'top 82%', once: true, onEnter: () => tl.play() });
+    }
+  };
+
   // section headings + supporting blocks
   reveal($$('.x-who-head'));
-  reveal($$('.x-why-head'));
-  reveal($$('.x-do-head .eyebrow, .x-do-head .title, .x-do-head .lead'), { y: 24, delay: 0 });
   reveal($$('.x-finale-copy > *'), { y: 26 });
 
   /* ================= WHO WE ARE — pinned scroll-driven story (desktop), reversible =================
@@ -198,24 +220,11 @@
     });
   }
 
-  /* ================= WHAT WE DO — all six services in a static grid; ONE-TIME entrance ================= */
-  const doPanels = $$('#doStage .do-panel');
-  if (doPanels.length) {
-    gsap.from(doPanels, {
-      scrollTrigger: { trigger: '#doStage', start: 'top 82%', once: true },
-      y: 34, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08
-    });
-  }
+  /* ============ WHAT WE DO — static grid; coordinated heading->cards intro + brief pin ============ */
+  sectionIntro('#rail', '.x-do-head', '#doStage .do-panel');
 
-  /* ================= WHY CHOOSE US — all six proof cards in a static grid; ONE-TIME entrance ================= */
-  const whyStage = $('.x-why-stage');
-  const proofs = whyStage ? $$('.proof', whyStage) : [];
-  if (whyStage && proofs.length) {
-    gsap.from(proofs, {
-      scrollTrigger: { trigger: whyStage, start: 'top 82%', once: true },
-      y: 34, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08
-    });
-  }
+  /* ============ WHY CHOOSE US — static grid; coordinated heading->cards intro + brief pin ============ */
+  sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof');
 
   /* ================= AUDIENCE PATHS — reveal + slide into place ================= */
   $$('.x-path').forEach((el, i) => gsap.from(el, {
