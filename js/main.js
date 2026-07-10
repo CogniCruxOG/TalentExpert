@@ -43,12 +43,25 @@
   const targetY = (el) => {
     const ST = window.ScrollTrigger;
     if (ST && typeof ST.getAll === 'function') {
-      let pinned = null, any = null;
+      let best = null;
       ST.getAll().forEach((st) => {
-        if (st.trigger === el) { if (st.pin && !pinned) pinned = st; else if (!any) any = st; }
+        if (typeof st.start !== 'number') return;
+        const trg = st.trigger, pin = st.pin;
+        /* This ScrollTrigger "belongs to" the target section if the section IS, contains,
+           or is pinned by the trigger/pin element — fully generic, no hard-coded ids, so it
+           covers every current and future pinned section automatically. */
+        const owns = trg === el || pin === el ||
+                     (trg && el.contains && el.contains(trg)) ||
+                     (pin && el.contains && el.contains(pin));
+        if (!owns) return;
+        if (!best) { best = st; return; }
+        /* prefer a pinning trigger; among equals, the earliest start = the section's own
+           pin engaging at its top = progress 0 */
+        const bp = !!best.pin, tp = !!pin;
+        if (tp !== bp) { if (tp) best = st; }
+        else if (st.start < best.start) best = st;
       });
-      const best = pinned || any;
-      if (best && typeof best.start === 'number') return Math.round(best.start);
+      if (best) return Math.round(best.start);
     }
     return Math.round(el.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0));
   };
