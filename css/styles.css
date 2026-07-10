@@ -1158,8 +1158,15 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 /* Signature orange highlighter mark — on the manual .hl-mark span AND, site-wide,
    on the key phrase every major heading already emphasises (title <b>, display <em>). */
 .hl-mark, h2.title b, h2.title em, h1.display em, h1.display b{
-  background:linear-gradient(180deg, transparent 58%, rgba(242,111,33,.22) 58%,
-  rgba(242,111,33,.22) 93%, transparent 93%); padding:0 .06em; border-radius:3px;
+  /* slim editorial marker: a fixed em-height band (scales with the heading, so the
+     thickness stays proportional at every breakpoint) sitting behind the lower part
+     of the text. box-decoration-break:clone → each wrapped line keeps its own neat
+     band with identical padding. Background only — never touches the bold weight. */
+  background-image:linear-gradient(rgba(242,111,33,.24), rgba(242,111,33,.24));
+  background-repeat:no-repeat;
+  background-size:100% .30em;
+  background-position:0 84%;
+  padding:0 .04em; border-radius:2px;
   -webkit-box-decoration-break:clone; box-decoration-break:clone; }
 /* ---- Section 1: The Problem We Solve ----
    When JS pins the section (.eb-on), the heading sits at the top and all six
