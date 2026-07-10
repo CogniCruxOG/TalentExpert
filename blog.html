@@ -235,6 +235,7 @@
 
   ScrollTrigger.refresh();
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ ScrollTrigger.refresh(); }); }
+  addEventListener('load', function(){ ScrollTrigger.refresh(); });   // recompute after images load (prod/Netlify latency)
 })();
 </script>
 </body></html>

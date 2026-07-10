@@ -39,7 +39,7 @@ html{scroll-behavior:smooth;font-size:16px;
   /* one continuous warm canvas so sections blend instead of stacking as boxes */
   background:linear-gradient(180deg,#FFFFFF 0%,#FFF9F4 28%,#FDF3EC 52%,#FFF8F2 74%,#FFFFFF 100%)}
 body{font-family:'Manrope',sans-serif;color:var(--ink2);background:transparent;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
-h1,h2,h3,h4,h5{font-family:'Fraunces',serif;color:var(--ink);line-height:1.08;font-weight:300;letter-spacing:-.01em;text-wrap:balance;hyphens:none}
+h1,h2,h3,h4,h5{font-family:'Fraunces',serif;color:var(--ink);line-height:1.08;font-weight:300;letter-spacing:-.01em;text-wrap:balance;hyphens:none;overflow-wrap:break-word}
 a{text-decoration:none;color:inherit}
 img,svg{max-width:100%;display:block}
 ul{list-style:none}
@@ -81,9 +81,9 @@ html.lenis,html.lenis body{height:auto}
 .section.alt{background:var(--paper2)}
 .eyebrow{font-family:'Manrope';font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:11px;margin-bottom:20px}
 .eyebrow::before{content:"";width:24px;height:1.5px;background:var(--accent);border-radius:2px}
-.display{font-size:clamp(2.6rem,6vw,4.7rem);font-weight:300;line-height:1.02;color:var(--ink)}
+.display{font-size:clamp(2rem,6vw,4.7rem);font-weight:300;line-height:1.04;color:var(--ink);overflow-wrap:break-word}
 .display em{font-style:normal;font-weight:500;color:var(--ink)}
-h2.title{font-size:clamp(2.1rem,4vw,3.3rem);font-weight:300}
+h2.title{font-size:clamp(1.55rem,4.3vw,3.3rem);font-weight:300;overflow-wrap:break-word}
 h2.title b{font-weight:600;color:var(--ink)}
 h2.title em{font-style:italic;font-weight:400;color:var(--ink)}
 .lead{font-size:clamp(1.02rem,1.4vw,1.18rem);color:var(--ink2);max-width:58ch}
@@ -164,8 +164,8 @@ header.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1
 .hero.employer{background:radial-gradient(1200px 600px at 80% 0%,var(--blue-t),transparent 62%),radial-gradient(800px 500px at 5% 100%,var(--mist),transparent 60%)}
 .hero.seeker{background:radial-gradient(1200px 600px at 80% 0%,var(--orange-t),transparent 62%),radial-gradient(800px 500px at 5% 100%,var(--green-t),transparent 60%)}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700;letter-spacing:.03em;color:var(--blue);background:var(--glass2);border:1px solid var(--hair);padding:7px 15px;border-radius:100px;margin-bottom:24px;backdrop-filter:blur(8px)}
-.hero-badge .ic{width:15px;height:15px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700;letter-spacing:.03em;color:var(--blue);background:var(--glass2);border:1px solid var(--hair);padding:7px 15px;border-radius:100px;margin-bottom:24px;backdrop-filter:blur(8px);max-width:100%}
+.hero-badge .ic{width:15px;height:15px;flex:none}
 .hero h1{margin-bottom:22px}
 .hero .sub{font-size:1.18rem;max-width:48ch;margin-bottom:14px}
 .rhythm{font-family:'Fraunces';font-style:italic;font-size:1.25rem;color:var(--ink);margin-bottom:30px}
@@ -612,7 +612,7 @@ footer.site:hover .foot-glow{opacity:1}
   .tst-grid{grid-template-columns:1fr}
 }
 @media(max-width:900px){
-  .nav-menu{display:none}.burger{display:grid}
+  .nav-menu{display:none}.nav-cta .btn{display:none}.burger{display:grid}
   .hero-grid,.split,.contact-grid,.compare{grid-template-columns:1fr;gap:40px}
   .grid-3,.ddd,.grid-2,.aud-grid{grid-template-columns:1fr}
   .stat-row{grid-template-columns:1fr 1fr}
@@ -645,6 +645,18 @@ footer.site:hover .foot-glow{opacity:1}
   .tl-step{grid-template-columns:52px 1fr;gap:16px}
   .tl-num{width:52px;height:52px;font-size:1.25rem}
   .timeline::before{left:25px}
+}
+/* Small-screen typography + spacing: keep big editorial headings from overflowing
+   the viewport; scale them fluidly instead of leaving them at the desktop floor. */
+@media(max-width:640px){
+  .display{ font-size:clamp(1.95rem,8vw,2.7rem); line-height:1.07; }
+  h2.title{ font-size:clamp(1.55rem,6.4vw,2.15rem); }
+  .hero{ padding:128px 0 68px; }
+  .hero .sub{ font-size:1.04rem; }
+  .lead{ font-size:1.02rem; }
+  .rhythm{ font-size:1.08rem; }
+  .sec-head{ margin-bottom:34px; }
+  .hero-actions .btn.lg{ padding:14px 24px; font-size:.94rem; }
 }
 /* Mobile / touch perf: drop expensive blur */
 @media(max-width:1024px),(hover:none){

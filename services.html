@@ -403,6 +403,7 @@
         ScrollTrigger.refresh();
       });
     }
+    addEventListener('load', function(){ ScrollTrigger.refresh(); });   // recompute after images (prod latency)
 
     /* card 01 starts centred; the rest wait just below the viewport */
     gsap.set(cards[0], { yPercent:0, scale:1, opacity:1 });
