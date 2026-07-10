@@ -135,8 +135,8 @@
 
   /* ================= Generic reveal helper (GPU transforms, replays, blur-to-sharp) ================= */
   const reveal = (els, opts) => els.forEach((el, i) => gsap.from(el, Object.assign({
-    scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' },
-    y: 38, opacity: 0, filter: 'blur(7px)', duration: 0.9, ease: 'power2.out', delay: (i % 4) * 0.05
+    scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+    y: 26, opacity: 0, duration: 0.7, ease: 'power3.out', delay: (i % 4) * 0.05
   }, opts)));
 
   // section headings + supporting blocks
@@ -188,22 +188,13 @@
       return tl;
     };
 
-    const whoMM = gsap.matchMedia();
-    // Desktop: pin + scrub (tight scrub so it tracks the smooth Lenis scroll exactly).
-    whoMM.add('(min-width:821px)', () => {
-      armWho();
-      const tl = buildWhoTL({
-        trigger: '.x-who', start: 'top top', end: '+=' + Math.round((N + 1) * 460),
-        pin: '.x-who-pin', invalidateOnRefresh: true, scrub: 0.5
-      });
-      return () => { if (tl.scrollTrigger) tl.scrollTrigger.kill(); tl.kill(); armWho(); };
-    });
-    // Mobile: no pin — a light paragraph reveal on enter; timeline shown complete.
-    whoMM.add('(max-width:820px)', () => {
-      showWho();
-      gsap.from(wps, { opacity: 0.18, y: 16, ease: 'none', stagger: 0.06, duration: 0.5,
-        scrollTrigger: { trigger: '#journey', start: 'top 82%' } });
-      return () => showWho();
+    // No pin, no scrub: the whole story is shown complete on every width; a single
+    // one-time entrance staggers the steps in when the section first enters the viewport.
+    showWho();
+    void armWho;   // (kept for reference; ghosted state no longer used)
+    gsap.from(wps, {
+      opacity: 0, y: 26, duration: 0.7, ease: 'power3.out', stagger: 0.08,
+      scrollTrigger: { trigger: '#journey', start: 'top 80%', once: true }
     });
   }
 
@@ -228,7 +219,7 @@
 
   /* ================= AUDIENCE PATHS — reveal + slide into place ================= */
   $$('.x-path').forEach((el, i) => gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' },
+    scrollTrigger: { trigger: el, start: 'top 90%', once: true },
     y: 44, opacity: 0, scale: 0.985, duration: 0.75, ease: 'power3.out', delay: i * 0.08
   }));
   // elegant mouse-follow spotlight on the path cards (no tilt — clean, premium)
@@ -262,38 +253,23 @@
       if (fsign) { gsap.set(fsign, { '--dl': 1 }); gsap.set(signKids, { opacity: 1, x: 0 }); }
     };
 
-    const founderMM = gsap.matchMedia();
-    // Desktop: pin + scrub. Ink-in the quote, glow the phrase, build the signature.
-    founderMM.add('(min-width:821px)', () => {
-      armFounder();
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: '.x-founder', start: 'top top', end: '+=1400', pin: true, invalidateOnRefresh: true, scrub: 0.5 }
-      });
-      tl.to(fwords, { opacity: 1, y: 0, ease: 'none', stagger: { amount: 0.5 }, duration: 0.12 }, 0.02)
-        .to(fqmark, { opacity: 1, ease: 'none', duration: 0.12 }, 0.02)
-        .to(fq, { '--eg': 1, ease: 'sine.inOut', duration: 0.14 }, 0.46);
-      if (fsign) {
-        tl.to(fsign, { '--dl': 1, ease: 'none', duration: 0.1 }, 0.66)
-          .to(signKids, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06, duration: 0.12 }, 0.72);
-      }
-      return () => { if (tl.scrollTrigger) tl.scrollTrigger.kill(); tl.kill(); armFounder(); };
-    });
-    // Mobile: no pin — light word reveal on enter; panel visible.
-    founderMM.add('(max-width:820px)', () => {
-      showFounder();
-      gsap.from(fwords, { opacity: 0.16, y: 6, ease: 'none', stagger: 0.012, duration: 0.5,
-        scrollTrigger: { trigger: '.x-founder', start: 'top 82%' } });
-      return () => showFounder();
+    // No pin, no scrub: the whole quote + signature are shown as a finished editorial
+    // layout; one gentle entrance fades the block in when the section enters, once.
+    showFounder();
+    void armFounder;
+    gsap.from(['.x-founder-quote', '.x-founder-sign'], {
+      opacity: 0, y: 26, duration: 0.75, ease: 'power3.out', stagger: 0.12,
+      scrollTrigger: { trigger: '.x-founder', start: 'top 78%', once: true }
     });
   }
 
   /* ================= FINAL CTA — cards animate into the climax ================= */
   $$('.x-finale-cards .fin-card').forEach((el, i) => gsap.from(el, {
-    scrollTrigger: { trigger: '.x-finale', start: 'top 72%', toggleActions: 'play none none reverse' },
+    scrollTrigger: { trigger: '.x-finale', start: 'top 72%', once: true },
     y: 30, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.1 + i * 0.1
   }));
   gsap.from('.x-finale .fin-blob', {
-    scrollTrigger: { trigger: '.x-finale', start: 'top 80%', toggleActions: 'play none none reverse' },
+    scrollTrigger: { trigger: '.x-finale', start: 'top 80%', once: true },
     opacity: 0, scale: 0.6, duration: 1.4, ease: 'power2.out', stagger: 0.15
   });
 

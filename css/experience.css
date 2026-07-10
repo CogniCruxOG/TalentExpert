@@ -106,7 +106,7 @@ html.lenis,html.lenis body{height:auto}
 .x-who-pin{padding:clamp(80px,10vh,120px) 0}
 /* pinned storytelling (desktop): content sits below the fixed navbar while the
    scroll scrubs the Discover/Develop/Sustain story, then releases */
-@media(min-width:821px){ .x-who-pin{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:clamp(110px,13vh,130px) 0 44px} }
+@media(min-width:821px){ .x-who-pin{padding:clamp(90px,11vh,124px) 0} }
 .x-who-head{max-width:840px;margin:0 auto 46px;text-align:center}
 /* editorial hierarchy — no dash: statement one (regular) then a stronger closer */
 .x-who-head .title{line-height:1.1}
@@ -116,7 +116,7 @@ html.lenis,html.lenis body{height:auto}
 .x-who-story{display:flex;flex-direction:column;gap:24px;padding-top:6px}
 /* paragraphs: ghosted placeholders (~18%); GSAP scrubs opacity/y continuously.
    .wp.on is only the reduced-motion / no-GSAP fallback (full state). */
-.x-who-story .wp{font-size:1.12rem;line-height:1.72;color:var(--ink2);max-width:56ch;opacity:.18;transform:translate3d(0,16px,0)}
+.x-who-story .wp{font-size:1.12rem;line-height:1.72;color:var(--ink2);max-width:56ch}
 .x-who-story .wp.on{opacity:1;transform:none}
 .x-who-ddd{position:relative;display:flex;flex-direction:column;gap:32px}
 /* Timeline is scrubbed continuously by GSAP: stage opacity, icon scale, the icon
@@ -261,7 +261,7 @@ html.lenis,html.lenis body{height:auto}
    ===================================================================== */
 .x-founder{position:relative;padding:140px 0;overflow:hidden;background:radial-gradient(900px 520px at 18% 24%,var(--orange-wash),transparent 60%)}
 /* pinned storytelling on desktop — content centred in the viewport */
-@media(min-width:821px){ .x-founder{min-height:100vh;display:flex;align-items:center;padding:80px 0} }
+@media(min-width:821px){ .x-founder{padding:110px 0} }
 .x-founder-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
 .x-founder-bg .qmark-bg{position:absolute;top:-70px;left:1%;font-family:'Fraunces';font-size:28rem;line-height:1;color:var(--orange);opacity:.06}
 .x-founder-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.55fr .85fr;gap:60px;align-items:center;width:100%}
@@ -421,3 +421,4 @@ html.lenis,html.lenis body{height:auto}
   .x-finale-grid{grid-template-columns:1fr;gap:36px}
   .x-do-left .title,.x-why-head .title{font-size:clamp(1.7rem,6vw,2.3rem)}
 }
+
