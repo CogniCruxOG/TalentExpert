@@ -142,7 +142,7 @@
   // section headings + supporting blocks
   reveal($$('.x-who-head'));
   reveal($$('.x-why-head'));
-  reveal($$('.x-do-left .eyebrow, .x-do-left .title, .x-do-left .lead'), { y: 24, delay: 0 });
+  reveal($$('.x-do-head .eyebrow, .x-do-head .title, .x-do-head .lead'), { y: 24, delay: 0 });
   reveal($$('.x-finale-copy > *'), { y: 26 });
 
   /* ================= WHO WE ARE — pinned scroll-driven story (desktop), reversible =================
@@ -207,70 +207,22 @@
     });
   }
 
-  /* ================= WHAT WE DO — scroll-through cards, focus the centered one (no pin) ================= */
+  /* ================= WHAT WE DO — all six services in a static grid; ONE-TIME entrance ================= */
   const doPanels = $$('#doStage .do-panel');
-  const doTrack = $$('#doTrack li');
   if (doPanels.length) {
-    let ticking = false;
-    const updateFocus = () => {
-      ticking = false;
-      const cy = innerHeight * 0.5;
-      let best = 0, bd = Infinity;
-      doPanels.forEach((p, i) => { const r = p.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - cy); if (d < bd) { bd = d; best = i; } });
-      doPanels.forEach((p, i) => p.classList.toggle('focus', i === best));
-      doTrack.forEach((li, i) => li.classList.toggle('on', i === best));
-    };
-    const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateFocus); } };
-    ScrollTrigger.create({ trigger: '#rail', start: 'top bottom', end: 'bottom top', onUpdate: request, onRefresh: updateFocus });
-    doTrack.forEach((li, i) => li.addEventListener('click', () => doPanels[i].scrollIntoView({ behavior: 'smooth', block: 'center' })));
-    updateFocus();
+    gsap.from(doPanels, {
+      scrollTrigger: { trigger: '#doStage', start: 'top 82%', once: true },
+      y: 34, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08
+    });
   }
 
-  /* ================= WHY CHOOSE US — guided presentation (progress-driven, NO pin) =================
-     As the section scrolls through, ONE card is the hero at a time while the rest
-     stay visible but muted. Past the last card, the whole grid completes. */
+  /* ================= WHY CHOOSE US — all six proof cards in a static grid; ONE-TIME entrance ================= */
   const whyStage = $('.x-why-stage');
   const proofs = whyStage ? $$('.proof', whyStage) : [];
   if (whyStage && proofs.length) {
-    const n = proofs.length;
-    const HOLD = 0.9;                    // by 90% of progress all six are revealed; tail = settled grid
-    let lastKey = -999;
-    const arm = () => { lastKey = -999; proofs.forEach((p) => { p.classList.add('pre'); p.classList.remove('active'); }); };
-    const disarm = () => proofs.forEach((p) => p.classList.remove('pre', 'active'));
-    // Fully bidirectional: the number of revealed cards follows scroll progress in
-    // BOTH directions (scrub). Scroll up → cards hide 6→1 in reverse.
-    const drive = (p) => {
-      const settle = p >= HOLD;
-      const revealed = settle ? n : Math.max(0, Math.min(n, Math.round((p / HOLD) * n)));
-      const active = settle ? -1 : (revealed >= 1 ? revealed - 1 : -1);   // newest is the hero
-      const key = revealed + (settle ? 1000 : 0);
-      if (key === lastKey) return; lastKey = key;
-      proofs.forEach((el, i) => {
-        el.classList.toggle('pre', i >= revealed);       // hidden until reached (reappears on scroll-up)
-        el.classList.toggle('active', i === active);     // hero flourish on the current front
-      });
-    };
-
-    const whyMM = gsap.matchMedia();
-    // Desktop: gently pin BELOW the navbar; scroll progress reveals/hides the six
-    // cards one by one (~520px each), perfectly reversible in both directions.
-    whyMM.add('(min-width:821px)', () => {
-      arm();
-      const st = ScrollTrigger.create({
-        trigger: '.x-why', start: 'top top', end: '+=' + Math.round(n * 520),
-        pin: '.x-why-pin', invalidateOnRefresh: true, scrub: 0.5,
-        onUpdate: (self) => drive(self.progress)
-      });
-      return () => { st.kill(); disarm(); };
-    });
-    // Mobile: no pin — same reversible progressive reveal as the section passes through.
-    whyMM.add('(max-width:820px)', () => {
-      arm();
-      const st = ScrollTrigger.create({
-        trigger: '.x-why', start: 'top 82%', end: 'bottom 64%',
-        onUpdate: (self) => drive(self.progress)
-      });
-      return () => { st.kill(); disarm(); };
+    gsap.from(proofs, {
+      scrollTrigger: { trigger: whyStage, start: 'top 82%', once: true },
+      y: 34, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08
     });
   }
 

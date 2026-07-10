@@ -144,39 +144,31 @@ html.lenis,html.lenis body{height:auto}
    ===================================================================== */
 .x-do{position:relative;background:transparent}
 .x-do-pin{padding:clamp(80px,10vh,120px) 0}
-.x-do-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:64px;align-items:start;width:100%}
-.x-do-left{position:sticky;top:118px;align-self:start}
-.x-do-left .title{margin-top:4px}
-.x-do-left .lead{margin:18px 0 30px;font-size:1rem}
-.x-do-track{display:flex;flex-direction:column;border-left:2px solid var(--hair)}
-.x-do-track li{display:flex;gap:14px;align-items:center;padding:13px 0 13px 22px;margin-left:-2px;border-left:2px solid transparent;color:var(--ink3);cursor:pointer;opacity:.5;transition:opacity .4s var(--ease),color .4s,border-color .4s,transform .4s var(--ease)}
-.x-do-track li .n{font-family:'Fraunces';font-style:italic;font-size:.86rem}
-.x-do-track li .t{font-weight:600;font-size:1rem}
-.x-do-track li:hover{opacity:.85}
-.x-do-track li.on{opacity:1;color:var(--ink);border-left-color:var(--orange);transform:translateX(2px)}
-.x-do-track li.on .n{color:var(--orange)}
-.x-do-stage{position:relative;display:flex;flex-direction:column;gap:clamp(48px,7vh,84px)}
-/* each level is a scroll-through card: dimmed by default, fully lit when centered */
-.do-panel{display:flex;flex-direction:column;justify-content:center;opacity:.32;
-  transform:translate3d(0,0,0);transition:opacity .5s var(--ease),transform .5s var(--ease);will-change:opacity,transform}
-.do-panel.focus{opacity:1;transform:translate3d(8px,0,0)}
-.do-ic{width:92px;height:92px;border-radius:26px;display:grid;place-items:center;font-size:44px;background:var(--orange-wash);color:var(--orange);box-shadow:var(--sh-s);margin-bottom:24px}
-.do-lvl{font-family:'Fraunces';font-style:italic;color:var(--orange);font-size:1rem;margin-bottom:6px}
-.do-panel h3{font-size:clamp(1.9rem,3.4vw,2.9rem);font-weight:500;margin-bottom:10px;line-height:1.04}
-.do-roles{color:var(--orange);font-weight:600;margin-bottom:16px}
-.do-who{font-size:1.16rem;color:var(--ink2);line-height:1.6;max-width:46ch;margin-bottom:24px}
-.do-ind{border-top:1px solid var(--hair);padding-top:18px;max-width:48ch}
-.do-ind .lbl{display:block;font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
-.do-ind p{color:var(--ink);font-size:1rem}
+/* centred heading, then all six services in one premium 3-col grid (benchmark: .proof) */
+.x-do-head{max-width:min(1040px,92vw);margin:0 auto 52px;text-align:center}
+.x-do-head .title{margin-top:4px}
+.x-do-head .lead{margin:18px auto 0;font-size:1.05rem;max-width:64ch}
+.x-do-stage{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1160px;margin:0 auto;width:100%;align-items:stretch}
+.do-panel{display:flex;flex-direction:column;opacity:1;transform:none;
+  padding:32px 30px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--hair);box-shadow:var(--sh-s);
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.do-panel:hover{transform:translate3d(0,-5px,0);box-shadow:var(--sh-m)}
+.do-ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:var(--orange-wash);color:var(--orange);box-shadow:var(--sh-s);margin-bottom:20px}
+.do-ic .ic{width:1em;height:1em}
+.do-lvl{font-family:'Fraunces';font-style:italic;color:var(--orange);font-size:.92rem;margin-bottom:4px}
+.do-panel h3{font-size:1.4rem;font-weight:500;margin-bottom:8px;line-height:1.12}
+.do-roles{color:var(--orange);font-weight:600;font-size:.98rem;margin-bottom:12px}
+.do-who{font-size:1rem;color:var(--ink2);line-height:1.58;margin-bottom:18px}
+.do-ind{border-top:1px solid var(--hair);padding-top:16px;margin-top:auto}
+.do-ind .lbl{display:block;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.do-ind p{color:var(--ink);font-size:.96rem;line-height:1.5}
 @media(max-width:900px){
   .x-do-pin{padding:70px 0}
-  .x-do-grid{grid-template-columns:1fr;gap:36px}
-  .x-do-left{position:static}
-  .x-do-track{display:none}
-  .x-do-stage{gap:40px}
-  .do-panel{opacity:1;transform:none}
-  .do-ic{width:72px;height:72px;font-size:34px;border-radius:20px;margin-bottom:16px}
+  .x-do-head{margin-bottom:36px}
+  .x-do-stage{grid-template-columns:1fr 1fr;gap:18px}
+  .do-ic{width:56px;height:56px;font-size:26px;border-radius:16px;margin-bottom:16px}
 }
+@media(max-width:600px){ .x-do-stage{grid-template-columns:1fr} }
 
 /* =====================================================================
    WHY CHOOSE US — scroll-driven proof-point spotlight
@@ -185,7 +177,7 @@ html.lenis,html.lenis body{height:auto}
 .x-why-pin{padding:clamp(80px,10vh,120px) 0}
 /* pinned: content is top-aligned and starts well below the fixed navbar so the
    WHY CHOOSE US label + heading + first row are never hidden during the reveal */
-@media(min-width:821px){ .x-why-pin{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;padding:clamp(104px,12vh,124px) 0 44px} }
+@media(min-width:821px){ .x-why-pin{padding:clamp(90px,11vh,124px) 0} }
 .x-why-head{max-width:min(1040px,92vw);margin:0 auto 52px;text-align:center}
 .x-why-head .title{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.12;text-wrap:balance}
 .x-why-head .title b{color:var(--ink)}
