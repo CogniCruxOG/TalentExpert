@@ -35,7 +35,11 @@
 body[data-portal="employer"]{--accent:var(--blue);--accent-t:var(--blue-t);--accent-t2:rgba(26,60,107,.18)}
 body[data-portal="seeker"]{--accent:var(--orange);--accent-t:var(--orange-t);--accent-t2:var(--orange-t2)}
 
-html{scroll-behavior:smooth;font-size:16px;
+/* scroll-behavior:auto (NOT smooth): a native smooth-scroll to a #hash animates the
+   browser THROUGH every pinned storytelling section (esp. on cross-page load before
+   Lenis initialises) = rapid animation playback. All anchor nav goes through main.js's
+   instant jump (Lenis immediate / instant window.scrollTo) instead. */
+html{scroll-behavior:auto;font-size:16px;
   /* one continuous warm canvas so sections blend instead of stacking as boxes */
   background:linear-gradient(180deg,#FFFFFF 0%,#FFF9F4 28%,#FDF3EC 52%,#FFF8F2 74%,#FFFFFF 100%)}
 body{font-family:'Manrope',sans-serif;color:var(--ink2);background:transparent;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
@@ -988,8 +992,17 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
     justify-content:center; overflow:hidden; position:relative; z-index:1;
   }
   .qb-live .founder-grid.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
-  .qb-live blockquote{ --rp: clamp(0, calc((var(--p,0) - .08) / .72), 1); }
-  .qb-live .founder-sig{ opacity: clamp(0, calc((var(--p,0) - .82) / .14), 1); }
+  /* ONE unified cinematic reveal: the message inks in top→bottom (--rp mask) and the
+     signature card fades + translates up IN STEP with it, over the same scroll window —
+     not as a separate late stage. Both complete by --p .94, just before the pin releases
+     (no dead scroll after). Scrubbed by --p only → buttery, reversible, no flicker. */
+  .qb-live blockquote{ --rp: clamp(0, calc((var(--p,0) - .04) / .90), 1); }
+  .qb-live .founder-sig{
+    --sr: clamp(0, calc((var(--p,0) - .07) / .87), 1);
+    opacity: var(--sr);
+    transform: translateY( calc((1 - var(--sr)) * 26px) );
+    will-change: opacity, transform;
+  }
 }
 
 /* ==========================================================================

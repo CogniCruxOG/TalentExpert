@@ -449,15 +449,16 @@
           onUpdate:function(self){ cv.style.setProperty('--p', self.progress.toFixed(4)); }
         });
       }
-      /* Founder's Message — pins at its natural size, centered in the viewport.
-         Quote mark → quote text (L2R) → citation, then a brief hold before unpin. */
+      /* Founder's Message — pins centered in the viewport, then ONE continuous reveal:
+         the message inks in top→bottom while the signature card fades + rises in step,
+         both finishing just before the pin releases (no extra scroll after). */
       var qb = document.querySelector('#founder');
       if(qb){
         qb.classList.add('qb-live');
         ScrollTrigger.create({
           trigger:'#founder',
           start:'top top',
-          end:'+=2400',
+          end:'+=2000',
           pin:true,
           scrub:2,
           invalidateOnRefresh:true,

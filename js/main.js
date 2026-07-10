@@ -62,12 +62,21 @@
     jumpTo(hash);
     try { history.pushState(null, '', hash); } catch (_) {}
   }, false);
-  /* Arriving with a hash (e.g. a cross-page CTA): jump cleanly once layout +
-     pins have settled, so the page doesn't animate through to the target. */
+  /* Arriving with a hash (cross-page CTA / mega-menu link): the browser would land at
+     the pre-pin position and — because the pins grow the page after JS runs — end up on
+     the wrong section, or smooth-scroll through them. Cancel that native landing, hold at
+     the top, then jump cleanly to the true position ONCE the ScrollTrigger pins/spacers
+     have been built — instantly, never animating through the storytelling. */
   if (location.hash && location.hash.length > 1) {
+    try { history.scrollRestoration = 'manual'; } catch (_) {}
+    const target = location.hash;
+    const settleJump = () => { try { if (document.querySelector(target)) jumpTo(target); } catch (_) {} };
+    window.scrollTo(0, 0);
+    addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
     addEventListener('load', () => {
-      const h = location.hash;
-      setTimeout(() => { try { if (document.querySelector(h)) jumpTo(h); } catch (_) {} }, 400);
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => setTimeout(settleJump, 300));  // after pins are created
+      setTimeout(settleJump, 850);                               // safety re-jump for slower inits
     });
   }
 
