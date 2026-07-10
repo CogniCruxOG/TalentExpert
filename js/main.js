@@ -61,7 +61,19 @@
         if (tp !== bp) { if (tp) best = st; }
         else if (st.start < best.start) best = st;
       });
-      if (best) return Math.round(best.start);
+      if (best) {
+        /* Optional per-section "navigation landing state": a section can expose
+           data-nav-progress="0..1" to land at that point of its pinned timeline when
+           reached via navigation, instead of progress 0. e.g. Core Values uses ~0.91 so
+           it arrives with all cards already assembled (readable) — while a natural scroll
+           from above still plays the full progressive reveal. Default 0 = initial state. */
+        var p = parseFloat(el.getAttribute && el.getAttribute('data-nav-progress'));
+        if (!isFinite(p)) p = 0;
+        p = Math.max(0, Math.min(1, p));
+        var start = best.start;
+        var end = (typeof best.end === 'number' && best.end > start) ? best.end : start;
+        return Math.round(start + (end - start) * p);
+      }
     }
     return Math.round(el.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0));
   };

@@ -992,17 +992,12 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
     justify-content:center; overflow:hidden; position:relative; z-index:1;
   }
   .qb-live .founder-grid.reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
-  /* ONE unified cinematic reveal: the message inks in top→bottom (--rp mask) and the
-     signature card fades + translates up IN STEP with it, over the same scroll window —
-     not as a separate late stage. Both complete by --p .94, just before the pin releases
-     (no dead scroll after). Scrubbed by --p only → buttery, reversible, no flicker. */
-  .qb-live blockquote{ --rp: clamp(0, calc((var(--p,0) - .04) / .90), 1); }
-  .qb-live .founder-sig{
-    --sr: clamp(0, calc((var(--p,0) - .07) / .87), 1);
-    opacity: var(--sr);
-    transform: translateY( calc((1 - var(--sr)) * 26px) );
-    will-change: opacity, transform;
-  }
+  /* Founder's Message reads as a FINISHED editorial layout: the entire message and the
+     signature card are fully visible the instant the section is entered/pinned — no
+     scroll-driven reveal, no line-by-line, no per-sentence animation. The pin simply
+     holds the section for a beat so the message can be read, then releases. */
+  .qb-live blockquote{ --rp: 1; }
+  .qb-live .founder-sig{ opacity: 1; transform: none; }
 }
 
 /* ==========================================================================
