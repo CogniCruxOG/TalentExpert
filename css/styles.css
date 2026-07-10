@@ -1157,11 +1157,14 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
 /* highlighter mark for a key phrase in a display heading (e.g. hero "#1 business problem") */
 /* Signature orange highlighter mark — on the manual .hl-mark span AND, site-wide,
    on the key phrase every major heading already emphasises (title <b>, display <em>). */
-.hl-mark, h2.title b, h2.title em, h1.display em, h1.display b{
-  /* slim editorial marker: a fixed em-height band (scales with the heading, so the
-     thickness stays proportional at every breakpoint) sitting behind the lower part
-     of the text. box-decoration-break:clone → each wrapped line keeps its own neat
-     band with identical padding. Background only — never touches the bold weight. */
+/* Signature orange highlighter — ONE continuous slim marker behind the WHOLE heading.
+   It lives on an inline .hl wrapper span, so box-decoration-break:clone draws a neat
+   band on every wrapped line at a fixed em-height (thickness stays proportional at every
+   breakpoint). Being pure CSS on the wrapper, the marker and the text paint together on
+   the first frame — no flash, no delayed styling. It sets background only, so the bold
+   <b>/<em> emphasis inside keeps its own weight/size/style completely untouched. */
+.hl-mark{
+  display:inline;
   background-image:linear-gradient(rgba(242,111,33,.24), rgba(242,111,33,.24));
   background-repeat:no-repeat;
   background-size:100% .30em;

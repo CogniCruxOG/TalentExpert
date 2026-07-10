@@ -74,7 +74,7 @@
 <section class="hero" id="top"><div class="wrap">
 <div class="crumb reveal"><a href="index.html">Home</a><span class="sep">/</span><span>Services</span></div>
 <div class="sec-head reveal" style="max-width:840px"><span class="eyebrow">Our Services</span>
-<h1 class="display">Complete <em>white-collar</em> hiring — at every level</h1>
+<h1 class="display"><span class="hl-mark">Complete <em>white-collar</em> hiring — at every level</span></h1>
 <p class="lead" style="margin-top:20px">Talent Expert is a white-collar recruitment firm serving SMEs and corporates across Tamil Nadu and India. We place professionals from high-potential graduates to CXO-level leaders — across 8 high-growth industries.</p>
 <div class="hero-actions" style="margin-top:26px"><a class="btn btn-blue lg" href="employers.html#contact" data-portal-choice="business">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a><a class="btn btn-ghost lg" href="process.html">See our process</a></div></div></div></section>
 <!-- ============ STACKED EDITORIAL SERVICE CARDS ============ -->
@@ -82,7 +82,7 @@
   <div class="svc-pin">
     <div class="sec-head svc-headline reveal">
       <span class="eyebrow">What we do</span>
-      <h2 class="title">Six services, <b>one partner</b></h2>
+      <h2 class="title"><span class="hl-mark">Six services, <b>one partner</b></span></h2>
     </div>
     <div class="svc-stage">
 
@@ -230,7 +230,7 @@
     </div>
     <div class="ov-center reveal">
       <span class="eyebrow">One partner, every level</span>
-      <h2 class="title">Six ways we build <b>your team</b></h2>
+      <h2 class="title"><span class="hl-mark">Six ways we build <b>your team</b></span></h2>
       <p class="lead">From high-potential graduates to CXO leaders — a complete white-collar hiring system for SMEs and corporates across Tamil&nbsp;Nadu.</p>
       <div class="hero-actions" style="justify-content:center"><a class="btn btn-blue lg" href="employers.html#contact" data-portal-choice="business">Get Talent Now <svg class="ic"><use href="assets/icons/sprite.svg#i-arrow"/></svg></a></div>
     </div>
@@ -434,15 +434,9 @@
 
   /* ===== section-heading word reveals + overview (assemble → brief pin → gentle float) ===== */
   mm.add('(min-width:901px) and (prefers-reduced-motion:no-preference)', function(){
-    if(typeof window.SplitType !== 'undefined'){
-      document.querySelectorAll('.svc-stack .sec-head .title, .svc-overview .title').forEach(function(el){
-        var split = new SplitType(el, { types:'words' });
-        /* fade the whole heading (highlight bg + text) as one unit → no empty-highlight flash */
-        gsap.timeline({ scrollTrigger:{ trigger:el, start:'top 88%', once:true } })
-          .from(el, { autoAlpha:0, duration:.5, ease:'power2.out' }, 0)
-          .from(split.words, { yPercent:60, duration:.7, ease:'power3.out', stagger:.05 }, 0);
-      });
-    }
+    /* Headings render fully styled (text + highlight) on first paint — no word-split
+       entrance that hides them after paint, so there's never a highlight-before-text
+       flash. Their .sec-head parents still fade in via the CSS .reveal system. */
 
     var ov = document.querySelector('.svc-overview');
     if(ov){
