@@ -143,18 +143,24 @@
      together with a subtle stagger — once, never scrubbed, never replayed. When opts.pin is
      set (desktop + motion), the section is held for a brief ~0.5s "reading pause" while the
      reveal completes, then the pin releases automatically. ---- */
+  const NAVH = 88;   // fixed navbar height — pin each chapter just below it
   const sectionIntro = (sel, headSel, itemSel, opts) => {
     opts = opts || {};
     const sec = $(sel); if (!sec) return;
     const head = headSel ? $(headSel, sec) : null;
+    const headKids = head ? $$(':scope > *', head) : [];
     const items = itemSel ? $$(itemSel, sec) : [];
-    const tl = gsap.timeline({ paused: true });
-    if (head) tl.from(head, { opacity: 0, y: 22, duration: 0.55, ease: 'power3.out' });
-    if (items.length) tl.from(items, { opacity: 0, y: 26, duration: 0.6, ease: 'power3.out', stagger: 0.1 }, head ? '-=0.18' : 0);
+    // one entrance timeline: label/heading/description fade up first, then the whole
+    // content group floats gently up + fades in together (small stagger, slight scale).
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+    if (headKids.length) tl.from(headKids, { opacity: 0, y: 18, duration: 0.5, stagger: 0.07 });
+    else if (head) tl.from(head, { opacity: 0, y: 18, duration: 0.5 });
+    if (items.length) tl.from(items, { opacity: 0, y: 30, scale: 0.99, duration: 0.6, stagger: 0.1 }, (head || headKids.length) ? '-=0.12' : 0);
     if (reduce) { tl.progress(1); return; }
-    if (opts.pin && matchMedia('(min-width:901px)').matches) {
+    if (opts.pin !== false && matchMedia('(min-width:901px)').matches) {
+      // brief pin: hold the chapter just below the navbar while the entrance plays, then release
       ScrollTrigger.create({
-        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * 0.5),
+        trigger: sec, start: 'top top+=' + NAVH, end: '+=' + Math.round(innerHeight * 0.45),
         pin: true, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
         onEnter: () => tl.play(), onEnterBack: () => tl.progress(1)
       });
