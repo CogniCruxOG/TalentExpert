@@ -174,9 +174,7 @@
     }
   };
 
-  // section headings + supporting blocks
-  reveal($$('.x-who-head'));
-  reveal($$('.x-finale-copy > *'), { y: 26 });
+  void reveal;   // section headings are now handled by each chapter's sectionIntro
 
   /* ================= WHO WE ARE — pinned scroll-driven story (desktop), reversible =================
      Stage 1: everything ghosted. Then as scroll scrubs, paragraph N resolves and
@@ -224,12 +222,10 @@
     // No pin, no scrub: the whole story is shown complete on every width; a single
     // one-time entrance staggers the steps in when the section first enters the viewport.
     showWho();
-    void armWho;   // (kept for reference; ghosted state no longer used)
-    gsap.from(wps, {
-      opacity: 0, y: 26, duration: 0.7, ease: 'power3.out', stagger: 0.08,
-      scrollTrigger: { trigger: '#journey', start: 'top 80%', once: true }
-    });
+    void armWho;
   }
+  /* WHO WE ARE chapter: pin + float the story paragraphs and the step diagram in once */
+  sectionIntro('.x-who', '.x-who-head', '.x-who-story .wp, .x-who .ddd-stage', { pin: true, pinTarget: '.x-who-pin', hold: 0.6 });
 
   /* ============ WHAT WE DO — static grid; coordinated heading->cards intro + brief pin ============ */
   sectionIntro('#rail', '.x-do-head', '#doStage .do-panel', { pin: true, pinTarget: '.x-do-pin', hold: 0.6 });
@@ -237,11 +233,8 @@
   /* ============ WHY CHOOSE US — static grid; coordinated heading->cards intro + brief pin ============ */
   sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof', { pin: true, pinTarget: '.x-why-pin', hold: 0.6 });
 
-  /* ================= AUDIENCE PATHS — reveal + slide into place ================= */
-  $$('.x-path').forEach((el, i) => gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-    y: 44, opacity: 0, scale: 0.985, duration: 0.75, ease: 'power3.out', delay: i * 0.08
-  }));
+  /* ================= AUDIENCE PATHS chapter: pin + float the two path cards in ================= */
+  sectionIntro('#paths', '.sec-head', '.x-path', { pin: true, hold: 0.6 });
   // elegant mouse-follow spotlight on the path cards (no tilt — clean, premium)
   if (hover) $$('[data-spotlight]').forEach((card) => {
     card.addEventListener('pointermove', (e) => {
@@ -277,17 +270,12 @@
     // layout; one gentle entrance fades the block in when the section enters, once.
     showFounder();
     void armFounder;
-    gsap.from(['.x-founder-quote', '.x-founder-sign'], {
-      opacity: 0, y: 26, duration: 0.75, ease: 'power3.out', stagger: 0.12,
-      scrollTrigger: { trigger: '.x-founder', start: 'top 78%', once: true }
-    });
   }
+  /* FOUNDER chapter: pin + float the quote + signature in once */
+  sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 0.6 });
 
-  /* ================= FINAL CTA — cards animate into the climax ================= */
-  $$('.x-finale-cards .fin-card').forEach((el, i) => gsap.from(el, {
-    scrollTrigger: { trigger: '.x-finale', start: 'top 72%', once: true },
-    y: 30, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.1 + i * 0.1
-  }));
+  /* ================= FINAL CTA chapter: pin + float heading then cards in once ================= */
+  sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { pin: true, hold: 0.6 });
   gsap.from('.x-finale .fin-blob', {
     scrollTrigger: { trigger: '.x-finale', start: 'top 80%', once: true },
     opacity: 0, scale: 0.6, duration: 1.4, ease: 'power2.out', stagger: 0.15

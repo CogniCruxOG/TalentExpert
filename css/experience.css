@@ -462,3 +462,12 @@ html.lenis,html.lenis body{height:auto}
 
 
 
+
+/* ============ HOME — remaining sections as one-viewport chapters (desktop) ============
+   Centred in the viewport below the navbar so the brief pin reveals each as a full chapter. */
+@media(min-width:901px){
+  .x-who .x-who-pin{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:96px 0 40px; box-sizing:border-box; }
+  #paths{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; }
+  .x-founder{ min-height:100vh; display:flex; align-items:center; padding:96px 0 44px; box-sizing:border-box; }
+  .x-finale{ min-height:100vh; display:flex; align-items:center; box-sizing:border-box; }
+}
