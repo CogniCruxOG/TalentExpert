@@ -1489,3 +1489,14 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
   /* FAQs: seven items, tighter question rows */
   body[data-page="job-seekers"] #faq .faq-q{ padding:15px 22px; font-size:.98rem; }
 }
+
+
+/* ============ BLOG — one-viewport pinned chapters (desktop) ============ */
+@media(min-width:901px){
+  body[data-page="blog"] #featured,
+  body[data-page="blog"] #insights{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    box-sizing:border-box; padding:96px 0 46px;
+  }
+  body[data-page="blog"] #insights .sec-head{ margin-bottom:24px; }
+}
