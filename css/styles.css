@@ -135,8 +135,11 @@ header.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1
 .nav-item>a .caret{width:13px;height:13px;transition:transform .3s}
 .nav-item:hover>a .caret{transform:rotate(180deg)}
 /* Mega panel */
-.mega{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(8px);min-width:520px;background:#fdfcfa;border:1px solid var(--hair);border-radius:var(--r-lg);box-shadow:var(--sh-m);padding:18px;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.nav-item:hover .mega,.nav-item:focus-within .mega{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.mega{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(8px);min-width:520px;background:#fdfcfa;border:1px solid var(--hair);border-radius:var(--r-lg);box-shadow:var(--sh-m);padding:18px;opacity:0;visibility:hidden;transition:opacity .25s var(--ease),transform .25s var(--ease),visibility 0s linear .25s;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* invisible hover bridge — fills the gap between the nav link and the panel so moving
+   the cursor down into the menu never breaks :hover (the panel stops vanishing mid-reach) */
+.mega::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px}
+.nav-item:hover .mega,.nav-item:focus-within .mega{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility 0s}
 .mega-link{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:16px;transition:background .25s}
 .mega-link:hover{background:var(--accent-t)}
 .mega-link .chip{width:40px;height:40px;font-size:20px;border-radius:12px}
