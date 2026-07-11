@@ -1446,30 +1446,41 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 #models .hm-kicker{ display:block; font-family:'Fraunces'; font-style:italic; font-size:.82rem; color:var(--accent); }
 #models .hm-head h3{ font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; line-height:1.08; margin:1px 0 2px; color:var(--ink); letter-spacing:-.01em; }
 #models .hm-tag{ font-size:.84rem; color:var(--ink3); }
-#models .hm-intro{ font-size:.88rem; color:var(--ink2); line-height:1.5; margin:0 0 14px; }
-#models .hm-feats{ list-style:none; margin:0 0 14px; padding:0; display:grid; gap:9px; }
+#models .hm-intro{ font-size:.88rem; color:var(--ink2); line-height:1.5; margin:0 0 16px; }
+/* feature list flexes to fill the card so both models (5 vs 7 features) stay the same
+   height with evenly-distributed rows — no lopsided empty gap in the shorter card */
+#models .hm-feats{ list-style:none; margin:0 0 16px; padding:0; display:flex; flex-direction:column; justify-content:space-between; gap:10px; flex:1 1 auto; }
 #models .hm-feats li{ display:grid; grid-template-columns:18px 1fr; gap:10px; align-items:start; }
 #models .hm-feats li .ic{ width:16px; height:16px; margin-top:3px; color:var(--accent); flex:none; }
 #models .hm-feats li span{ font-size:.85rem; line-height:1.4; color:var(--ink2); }
 #models .hm-feats li b{ color:var(--ink); font-weight:600; }
-#models .hm-card .hm-best{ margin-top:auto; font-family:'Manrope'; font-style:normal; font-size:.82rem; color:var(--ink2); line-height:1.45; background:var(--orange-wash); border-radius:12px; padding:10px 14px; }
+#models .hm-card .hm-best{ margin-top:0; font-family:'Manrope'; font-style:normal; font-size:.82rem; color:var(--ink2); line-height:1.45; background:var(--orange-wash); border-radius:12px; padding:11px 15px; }
 #models .hm-card .hm-best b{ color:var(--ink); font-weight:700; }
 
 /* Get Talent Now — file upload control */
 .fld-file{ margin-bottom:4px; }
 .file-cap{ display:block; font-size:.82rem; color:var(--ink2); margin-bottom:8px; font-weight:600; }
 .file-cap em{ font-style:normal; color:var(--ink3); font-weight:400; margin-left:6px; }
-.file-drop{ display:flex; width:100%; box-sizing:border-box; align-items:center; gap:10px; border:1.5px dashed var(--hair); border-radius:12px; padding:12px 16px; cursor:pointer; transition:border-color .3s var(--ease), background .3s var(--ease); }
+/* higher specificity than the generic ".fld label" floating-label rule so the upload
+   control isn't turned into a pointer-events:none absolute label (that made it unclickable) */
+.fld .file-drop{ position:relative; pointer-events:auto; top:auto; left:auto; }
+.file-drop{ display:flex; width:100%; box-sizing:border-box; align-items:center; gap:10px; border:1.5px dashed var(--hair); border-radius:12px; padding:14px 16px; cursor:pointer; transition:border-color .3s var(--ease), background .3s var(--ease); }
+.file-drop input[type=file]{ position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
 .file-drop:hover{ border-color:var(--accent); background:var(--accent-t); }
 .file-drop .ic{ width:18px; height:18px; color:var(--accent); transform:rotate(-90deg); flex:none; }
 .file-drop .file-name{ font-size:.9rem; color:var(--ink3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .file-drop.has-file .file-name{ color:var(--ink); font-weight:600; }
-.file-drop input[type=file]{ display:none; }
 
 @media(min-width:901px){
-  /* Hero: sized to its content (no big empty band under a short headline) */
-  body[data-page="employers"] .hero{ min-height:0; padding:132px 0 86px; }
+  /* Hero: fills most of the viewport and vertically centres its content; the strip left
+     at the bottom lets the next section's label + heading peek into view (see #problem
+     below), inviting the scroll before it pins. */
+  body[data-page="employers"] .hero{ min-height:80vh; padding:118px 0 40px; display:flex; align-items:center; }
   body[data-page="employers"] .hero>.wrap{ width:100%; }
+  /* Problem: heading sits near the top so it peeks under the hero, then the pin reveals
+     the cards. (This first chapter is top-anchored; the rest stay vertically centred.)
+     !important because the shared section rule below sets justify-content:center. */
+  body[data-page="employers"] #problem{ justify-content:flex-start !important; padding-top:100px !important; }
 
   /* Every section fills one viewport, content centred both axes */
   body[data-page="employers"] #problem,
@@ -1492,11 +1503,15 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
   body[data-page="employers"] #faq .sec-head,
   body[data-page="employers"] #contact .sec-head{ margin-bottom:22px; }
 
-  /* Problem — 2×3 grid of compact rows */
-  body[data-page="employers"] #problem .prob-list{ grid-template-columns:1fr 1fr; gap:14px; max-width:1020px; }
-  body[data-page="employers"] #problem .prob{ padding:15px 20px; }
-  body[data-page="employers"] #problem .prob .q{ font-size:.95rem; }
-  body[data-page="employers"] #problem .prob .a{ font-size:.82rem; }
+  /* Problem — 2×3 grid of compact cards, consistent internal formatting:
+     icon aligned to the first line, even padding, clear q→a rhythm, tag pinned top-right */
+  body[data-page="employers"] #problem .prob-list{ grid-template-columns:1fr 1fr; gap:16px; max-width:1020px; }
+  body[data-page="employers"] #problem .prob{ align-items:flex-start; gap:16px; padding:20px 22px; }
+  body[data-page="employers"] #problem .prob-state{ margin-top:1px; }
+  body[data-page="employers"] #problem .prob-txt{ align-self:center; }
+  body[data-page="employers"] #problem .prob .q{ font-size:.95rem; line-height:1.4; }
+  body[data-page="employers"] #problem .prob .a{ font-size:.82rem; line-height:1.45; margin-top:5px; }
+  body[data-page="employers"] #problem .prob .tag{ align-self:flex-start; margin-top:2px; }
 
   /* Why — 3×2 feature grid */
   body[data-page="employers"] #why .why-track{ gap:16px; }
@@ -1505,8 +1520,9 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
   body[data-page="employers"] #why .feat-card h3{ font-size:1.08rem; margin:8px 0 4px; }
   body[data-page="employers"] #why .feat-card p{ font-size:.86rem; line-height:1.38; }
 
-  /* Process — 7 steps as a compact 2-column grid (fits one screen, no tall timeline) */
-  body[data-page="employers"] #process .timeline{ max-width:1060px; display:grid; grid-template-columns:1fr 1fr; gap:8px 40px; }
+  /* Process — 7 steps as a compact 2-column grid, filled COLUMN-FIRST so the order is
+     1·2·3·4 down the left column, then 5·6·7 down the right (fits one screen, no tall timeline) */
+  body[data-page="employers"] #process .timeline{ max-width:1060px; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:repeat(4,auto); grid-auto-flow:column; gap:8px 40px; }
   body[data-page="employers"] #process .timeline::before{ display:none; }
   body[data-page="employers"] #process .tl-step{ grid-template-columns:44px 1fr; gap:16px; padding:9px 0; }
   body[data-page="employers"] #process .tl-num{ width:42px; height:42px; font-size:1rem; border-radius:12px; }
@@ -1541,44 +1557,43 @@ body[data-page="employers"] .eb-hero-aside{ border-left:2px solid var(--accent);
    in empty space. Height-gated so wide-but-short laptops (1366×768) keep the compact
    sizing and never overflow the pinned viewport. */
 @media(min-width:1360px) and (min-height:880px){
-  body[data-page="employers"] .sec-head .title{ font-size:clamp(2.3rem,3vw,3rem); }
-  body[data-page="employers"] .sec-head{ margin-bottom:34px !important; }
+  body[data-page="employers"] .sec-head .title{ font-size:clamp(2.15rem,2.5vw,2.7rem); }
+  body[data-page="employers"] .sec-head{ margin-bottom:28px !important; }
 
-  body[data-page="employers"] #problem .prob-list{ max-width:1280px; gap:22px; }
-  body[data-page="employers"] #problem .prob{ padding:24px 28px; }
-  body[data-page="employers"] #problem .prob .q{ font-size:1.06rem; }
-  body[data-page="employers"] #problem .prob .a{ font-size:.92rem; }
+  body[data-page="employers"] #problem .prob-list{ max-width:1280px; gap:20px; }
+  body[data-page="employers"] #problem .prob{ padding:22px 26px; }
+  body[data-page="employers"] #problem .prob .q{ font-size:1.04rem; }
+  body[data-page="employers"] #problem .prob .a{ font-size:.9rem; }
 
-  body[data-page="employers"] #why .why-track{ max-width:1280px; gap:24px; }
-  body[data-page="employers"] #why .why-track .feat-card{ padding:30px 28px; }
-  body[data-page="employers"] #why .feat-card h3{ font-size:1.26rem; }
-  body[data-page="employers"] #why .feat-card p{ font-size:.98rem; line-height:1.5; }
+  body[data-page="employers"] #why .why-track{ max-width:1280px; gap:22px; }
+  body[data-page="employers"] #why .why-track .feat-card{ padding:26px 26px; }
+  body[data-page="employers"] #why .feat-card h3{ font-size:1.2rem; }
+  body[data-page="employers"] #why .feat-card p{ font-size:.95rem; line-height:1.48; }
 
-  body[data-page="employers"] #process .timeline{ max-width:1300px; gap:24px 76px; }
-  body[data-page="employers"] #process .tl-step{ padding:16px 0; }
-  body[data-page="employers"] #process .tl-num{ width:54px; height:54px; font-size:1.22rem; border-radius:16px; }
-  body[data-page="employers"] #process .tl-body h3{ font-size:1.18rem; }
-  body[data-page="employers"] #process .tl-body p{ font-size:.97rem; line-height:1.5; }
+  body[data-page="employers"] #process .timeline{ max-width:1300px; gap:14px 76px; }
+  body[data-page="employers"] #process .tl-step{ padding:12px 0; }
+  body[data-page="employers"] #process .tl-num{ width:50px; height:50px; font-size:1.15rem; border-radius:15px; }
+  body[data-page="employers"] #process .tl-body h3{ font-size:1.14rem; }
+  body[data-page="employers"] #process .tl-body p{ font-size:.95rem; line-height:1.46; }
 
   body[data-page="employers"] #services .tbl-wrap{ max-width:1340px; margin-left:auto; margin-right:auto; }
   body[data-page="employers"] #services .data th,
-  body[data-page="employers"] #services .data td{ padding:18px 22px; font-size:1.02rem; }
+  body[data-page="employers"] #services .data td{ padding:14px 20px; font-size:.98rem; }
 
-  #models .hm-compare{ max-width:1300px; gap:32px; }
-  #models .hm-card{ padding:34px 36px; }
-  #models .hm-head h3{ font-size:1.52rem; }
+  #models .hm-compare{ max-width:1300px; gap:30px; }
+  #models .hm-card{ padding:30px 34px; }
+  #models .hm-head h3{ font-size:1.44rem; }
   #models .hm-tag{ font-size:.9rem; }
-  #models .hm-intro{ font-size:.98rem; margin-bottom:20px; }
-  #models .hm-feats{ gap:14px; margin-bottom:20px; }
-  #models .hm-feats li span{ font-size:.95rem; }
-  #models .hm-card .hm-best{ font-size:.92rem; padding:13px 17px; }
+  #models .hm-intro{ font-size:.96rem; margin-bottom:18px; }
+  #models .hm-feats li span{ font-size:.93rem; }
+  #models .hm-card .hm-best{ font-size:.9rem; padding:12px 16px; }
 
   body[data-page="employers"] #stories .tst-grid{ max-width:1300px; margin:0 auto; }
   body[data-page="employers"] #faq .faq{ max-width:1000px; }
 
-  body[data-page="employers"] #contact .form-card{ max-width:940px; padding:42px 48px; }
+  body[data-page="employers"] #contact .form-card{ max-width:920px; padding:38px 46px; }
   body[data-page="employers"] #contact .form-grid{ gap:6px 32px; }
-  body[data-page="employers"] #contact .fld{ margin-bottom:22px; }
+  body[data-page="employers"] #contact .fld{ margin-bottom:20px; }
 }
 
 
