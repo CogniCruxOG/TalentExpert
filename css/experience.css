@@ -177,20 +177,21 @@ html.lenis,html.lenis body{height:auto}
 .x-why-pin{padding:clamp(80px,10vh,120px) 0}
 /* pinned: content is top-aligned and starts well below the fixed navbar so the
    WHY CHOOSE US label + heading + first row are never hidden during the reveal */
+/* CHAPTER (desktop): fit the whole section (label + heading + all six cards) into ONE
+   viewport, centred below the navbar, so the brief pin reveals everything together
+   without hiding any card. Compact but still premium. Scoped to .x-why so these win
+   over the base .proof/.x-why-head rules that follow, regardless of source order. */
 @media(min-width:901px){
-  /* CHAPTER: fit the whole section (label + heading + all six cards) into ONE viewport,
-     centred below the navbar, so the brief pin reveals everything together without
-     hiding any card. Compact but still premium. */
-  .x-why-pin{ min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  .x-why .x-why-pin{ min-height:100vh; display:flex; flex-direction:column; justify-content:center;
     padding:84px 0 30px; box-sizing:border-box; }
-  .x-why-head{ margin:0 auto 26px; }
-  .x-why-head .title{ font-size:clamp(1.6rem,2.5vw,2.15rem); }
-  .x-why-stage{ gap:16px; }
-  .proof{ padding:22px 22px; gap:10px; }
-  .proof-ic{ width:52px; height:52px; font-size:24px; border-radius:16px; }
-  .proof-ic .ic{ width:24px; height:24px; }
-  .proof-body h3{ font-size:1.2rem; margin-bottom:6px; }
-  .proof-body p{ font-size:.9rem; line-height:1.5; }
+  .x-why .x-why-head{ margin:0 auto 26px; }
+  .x-why .x-why-head .title{ font-size:clamp(1.6rem,2.5vw,2.15rem); }
+  .x-why .x-why-stage{ gap:16px; }
+  .x-why .proof{ padding:22px 22px; gap:10px; }
+  .x-why .proof-ic{ width:52px; height:52px; font-size:24px; border-radius:16px; }
+  .x-why .proof-ic .ic{ width:24px; height:24px; }
+  .x-why .proof-body h3{ font-size:1.2rem; margin-bottom:6px; }
+  .x-why .proof-body p{ font-size:.9rem; line-height:1.5; }
 }
 .x-why-head{max-width:min(1040px,92vw);margin:0 auto 52px;text-align:center}
 .x-why-head .title{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.12;text-wrap:balance}
@@ -435,6 +436,7 @@ html.lenis,html.lenis body{height:auto}
   .x-finale-grid{grid-template-columns:1fr;gap:36px}
   .x-do-left .title,.x-why-head .title{font-size:clamp(1.7rem,6vw,2.3rem)}
 }
+
 
 
 
