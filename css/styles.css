@@ -1555,9 +1555,8 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 }
 
 /* Business Owners — hero two-column (title left · statement right) */
-body[data-page="employers"] .eb-hero-statement{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(1.5rem,2vw,2.05rem); line-height:1.22; color:var(--ink); margin:0 0 14px; letter-spacing:-.01em; }
+body[data-page="employers"] .eb-hero-statement{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(1.85rem,2.9vw,2.7rem); line-height:1.16; color:var(--ink); margin:0 0 16px; letter-spacing:-.015em; text-wrap:balance; }
 body[data-page="employers"] .eb-hero-statement b{ font-weight:600; }
-body[data-page="employers"] .eb-hero-statement em{ font-style:normal; color:var(--accent); }
 body[data-page="employers"] .eb-hero-sub{ font-size:1.05rem; color:var(--ink2); line-height:1.55; margin:0; max-width:42ch; }
 body[data-page="employers"] .eb-hero-grid{ display:grid; gap:26px; margin-top:14px; }
 body[data-page="employers"] .eb-hero-aside{ border-left:2px solid var(--accent); padding-left:20px; }
