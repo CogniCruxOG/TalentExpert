@@ -85,9 +85,11 @@ html.lenis,html.lenis body{height:auto}
 .section.alt{background:var(--paper2)}
 .eyebrow{font-family:'Manrope';font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:11px;margin-bottom:20px}
 .eyebrow::before{content:"";width:24px;height:1.5px;background:var(--accent);border-radius:2px}
-.display{font-size:clamp(2rem,6vw,4.7rem);font-weight:300;line-height:1.04;color:var(--ink);overflow-wrap:break-word}
-.display em{font-style:normal;font-weight:500;color:var(--ink)}
-h2.title{font-size:clamp(1.55rem,4.3vw,3.3rem);font-weight:300;overflow-wrap:break-word}
+/* Global heading scale — Business Owners hero is the master reference: confident Fraunces
+   (weight 400 base, 600 emphasis), editorial size (not oversized/thin), balanced wrapping. */
+.display{font-size:clamp(1.95rem,4.6vw,3.7rem);font-weight:400;line-height:1.06;color:var(--ink);overflow-wrap:break-word;text-wrap:balance}
+.display em{font-style:normal;font-weight:600;color:var(--ink)}
+h2.title{font-size:clamp(1.6rem,3.4vw,2.8rem);font-weight:400;line-height:1.1;overflow-wrap:break-word;text-wrap:balance}
 h2.title b{font-weight:600;color:var(--ink)}
 h2.title em{font-style:italic;font-weight:400;color:var(--ink)}
 .lead{font-size:clamp(1.02rem,1.4vw,1.18rem);color:var(--ink2);max-width:58ch}
@@ -1431,9 +1433,9 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
 /* ============ BUSINESS OWNERS — every section a one-viewport pinned chapter ============ */
 
 /* Hero — promoted headline, clear hierarchy */
-body[data-page="employers"] .eb-hero-title{ font-size:clamp(2.1rem,4.8vw,3.7rem); line-height:1.05; }
-body[data-page="employers"] .eb-hero-l1{ display:block; font-weight:300; color:var(--ink3); font-size:.62em; letter-spacing:-.005em; margin-bottom:4px; }
-body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:var(--ink); }
+.eb-hero-title{ font-size:clamp(2.1rem,4.8vw,3.7rem); line-height:1.05; }
+.eb-hero-l1{ display:block; font-weight:300; color:var(--ink3); font-size:.62em; letter-spacing:-.005em; margin-bottom:4px; }
+.eb-hero-l2{ display:block; font-weight:600; color:var(--ink); }
 
 /* ============ Hiring Models — editorial parallel timelines (no cards) ============
    Two flows branch from a single node under the heading; each benefit is a milestone on
@@ -1489,8 +1491,10 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
   /* Hero: fills most of the viewport and vertically centres its content; the strip left
      at the bottom lets the next section's label + heading peek into view (see #problem
      below), inviting the scroll before it pins. */
-  body[data-page="employers"] .hero{ min-height:80vh; padding:118px 0 40px; display:flex; align-items:center; }
-  body[data-page="employers"] .hero>.wrap{ width:100%; }
+  body[data-page="employers"] .hero,
+  body[data-page="job-seekers"] .hero{ min-height:80vh; padding:118px 0 40px; display:flex; align-items:center; }
+  body[data-page="employers"] .hero>.wrap,
+  body[data-page="job-seekers"] .hero>.wrap{ width:100%; }
   /* Problem: compact, vertically-centred editorial grid (see the dense card rules below). */
 
   /* Every section fills one viewport, content centred both axes */
@@ -1556,15 +1560,15 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 }
 
 /* Business Owners — hero two-column (title left · statement right) */
-body[data-page="employers"] .eb-hero-statement{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(1.85rem,2.9vw,2.7rem); line-height:1.16; color:var(--ink); margin:0 0 16px; letter-spacing:-.015em; text-wrap:balance; }
-body[data-page="employers"] .eb-hero-statement b{ font-weight:600; }
-body[data-page="employers"] .eb-hero-sub{ font-size:1.05rem; color:var(--ink2); line-height:1.55; margin:0; max-width:42ch; }
-body[data-page="employers"] .eb-hero-grid{ display:grid; gap:26px; margin-top:14px; }
-body[data-page="employers"] .eb-hero-aside{ border-left:2px solid var(--accent); padding-left:20px; }
+.eb-hero-statement{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(1.85rem,2.9vw,2.7rem); line-height:1.16; color:var(--ink); margin:0 0 16px; letter-spacing:-.015em; text-wrap:balance; }
+.eb-hero-statement b{ font-weight:600; }
+.eb-hero-sub{ font-size:1.05rem; color:var(--ink2); line-height:1.55; margin:0; max-width:42ch; }
+.eb-hero-grid{ display:grid; gap:26px; margin-top:14px; }
+.eb-hero-aside{ border-left:2px solid var(--accent); padding-left:20px; }
 @media(min-width:901px){
-  body[data-page="employers"] .eb-hero-grid{ grid-template-columns:1.12fr .88fr; gap:58px; align-items:center; margin-top:18px; }
-  body[data-page="employers"] .eb-hero-main .hero-actions{ margin-top:30px; }
-  body[data-page="employers"] .eb-hero-aside{ padding-left:30px; }
+  .eb-hero-grid{ grid-template-columns:1.12fr .88fr; gap:58px; align-items:center; margin-top:18px; }
+  .eb-hero-main .hero-actions{ margin-top:30px; }
+  .eb-hero-aside{ padding-left:30px; }
 }
 
 /* Large, tall screens only: fill the pinned chapters so centred content doesn't float
