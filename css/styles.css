@@ -1491,12 +1491,7 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
      below), inviting the scroll before it pins. */
   body[data-page="employers"] .hero{ min-height:80vh; padding:118px 0 40px; display:flex; align-items:center; }
   body[data-page="employers"] .hero>.wrap{ width:100%; }
-  /* Problem: heading sits near the top so it peeks under the hero, then the pin reveals
-     the cards. (This first chapter is top-anchored; the rest stay vertically centred.)
-     !important because the shared section rule below sets justify-content:center. */
-  body[data-page="employers"] #problem{ justify-content:flex-start !important; padding-top:100px !important; }
-  /* let the card grid fill the space below the (peeking) heading and spread its 3 rows */
-  body[data-page="employers"] #problem>.wrap{ display:flex; flex-direction:column; flex:1 1 auto; }
+  /* Problem: compact, vertically-centred editorial grid (see the dense card rules below). */
 
   /* Every section fills one viewport, content centred both axes */
   body[data-page="employers"] #problem,
@@ -1519,15 +1514,19 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
   body[data-page="employers"] #faq .sec-head,
   body[data-page="employers"] #contact .sec-head{ margin-bottom:22px; }
 
-  /* Problem — 2×3 grid of compact cards, consistent internal formatting:
-     icon aligned to the first line, even padding, clear q→a rhythm, tag pinned top-right */
-  body[data-page="employers"] #problem .prob-list{ grid-template-columns:1fr 1fr; gap:16px; max-width:1020px; flex:1 1 auto; align-content:space-between; }
-  body[data-page="employers"] #problem .prob{ align-items:flex-start; gap:16px; padding:20px 22px; }
-  body[data-page="employers"] #problem .prob-state{ margin-top:1px; }
+  /* Problem — compact 2×3 editorial grid: dense equal-height cards, vertically-centred
+     content, strong problem→solution hierarchy, small integrated SOLVED pill. */
+  body[data-page="employers"] #problem .sec-head{ margin-bottom:20px !important; }
+  body[data-page="employers"] #problem .prob-list{ grid-template-columns:1fr 1fr; grid-auto-rows:1fr; gap:12px 16px; max-width:1060px; margin:0 auto; }
+  body[data-page="employers"] #problem .prob{ display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:16px; padding:15px 20px; height:100%; box-sizing:border-box; }
+  body[data-page="employers"] #problem .prob-state{ width:36px; height:36px; margin:0; align-self:center; }
+  body[data-page="employers"] #problem .prob-state .ic{ width:18px; height:18px; }
   body[data-page="employers"] #problem .prob-txt{ align-self:center; }
-  body[data-page="employers"] #problem .prob .q{ font-size:.95rem; line-height:1.4; }
-  body[data-page="employers"] #problem .prob .a{ font-size:.82rem; line-height:1.45; margin-top:5px; }
-  body[data-page="employers"] #problem .prob .tag{ align-self:flex-start; margin-top:2px; }
+  body[data-page="employers"] #problem .prob .q{ font-size:.98rem; font-weight:600; line-height:1.34; color:var(--ink); }
+  body[data-page="employers"] #problem .prob .a{ font-size:.82rem; line-height:1.5; margin-top:3px; color:var(--ink3); }
+  body[data-page="employers"] #problem .prob .tag{ position:relative; align-self:center; margin:0 0 0 20px; font-size:.6rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--orange); background:var(--orange-t); padding:5px 11px; border-radius:100px; white-space:nowrap; }
+  /* subtle "problem ──► solved" connector into the pill */
+  body[data-page="employers"] #problem .prob .tag::before{ content:""; position:absolute; right:calc(100% + 7px); top:50%; width:14px; height:1.5px; border-radius:2px; background:var(--orange); opacity:.5; }
 
   /* Why — 3×2 feature grid */
   body[data-page="employers"] #why .why-track{ gap:16px; }
