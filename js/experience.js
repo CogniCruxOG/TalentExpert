@@ -143,34 +143,52 @@
      together with a subtle stagger — once, never scrubbed, never replayed. When opts.pin is
      set (desktop + motion), the section is held for a brief ~0.5s "reading pause" while the
      reveal completes, then the pin releases automatically. ---- */
-  const NAVH = 88;   // fixed navbar height — pin each chapter just below it
   const sectionIntro = (sel, headSel, itemSel, opts) => {
     opts = opts || {};
     const sec = $(sel); if (!sec) return;
     const head = headSel ? $(headSel, sec) : null;
     const headKids = head ? $$(':scope > *', head) : [];
     const items = itemSel ? $$(itemSel, sec) : [];
-    // one entrance timeline: label/heading/description fade up first, then the whole
-    // content group floats gently up + fades in together (small stagger, slight scale).
-    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
-    if (headKids.length) tl.from(headKids, { opacity: 0, y: 18, duration: 0.5, stagger: 0.07 });
-    else if (head) tl.from(head, { opacity: 0, y: 18, duration: 0.5 });
-    if (items.length) tl.from(items, { opacity: 0, y: 30, scale: 0.99, duration: 0.6, stagger: 0.1 }, (head || headKids.length) ? '-=0.12' : 0);
+    // Take full control of the managed elements: drop any .reveal class so main.js's
+    // IntersectionObserver can't fight this timeline, and kill their CSS transitions so
+    // only GSAP drives opacity/transform (a stray CSS transition would double-animate).
+    [head, ...headKids, ...items].forEach((el) => {
+      if (!el) return;
+      el.classList.remove('reveal');
+      el.style.transition = 'none';
+    });
+    // One entrance: label/heading/description rise FIRST, then the whole content group
+    // floats gently up + fades in together. fromTo with an explicit VISIBLE end state so
+    // nothing can be left hidden regardless of each element's base CSS (a plain .from()
+    // captures the element's current value as the end — if that is 0 it stays invisible).
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+    if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.08 });
+    else if (head) tl.fromTo(head, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55 });
+    if (items.length) tl.fromTo(items,
+      { opacity: 0, y: 30, scale: 0.985 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.72, stagger: 0.1 },
+      (head || headKids.length) ? '-=0.04' : 0);   // heading settles, then cards float in
     if (reduce) { tl.progress(1); return; }
-    // Choreography only — NO pin. (A pin traps content taller than one screen: the lower
-    // cards fall off-viewport while pinned, and stacked section-pins fight each other.)
-    // The heading + cards simply reveal ONCE as the section enters; nothing scrubs.
+    // Play exactly ONCE. Scrolling back up re-shows the finished state instantly (no replay).
+    let played = false;
+    const playOnce = () => { if (!played) { played = true; tl.play(); } };
+    const finish = () => { played = true; tl.progress(1); };
     if (opts.pin && matchMedia('(min-width:901px)').matches) {
-      // brief chapter pin: the section is a 100vh block (opts.pinTarget) that fits all its
-      // content; hold it while the entrance floats everything in once, then auto-release.
+      // Brief chapter pin: the section is a 100vh block (opts.pinTarget) sized to hold all
+      // its content. anticipatePin + preventOverlaps make the lock-in read as a smooth
+      // continuation of the scroll rather than a snap; it holds for a short reading pause,
+      // then releases gently. The entrance plays on enter so the pin never feels empty.
       const pinEl = opts.pinTarget ? $(opts.pinTarget, sec) : sec;
       ScrollTrigger.create({
-        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.6)),
+        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.75)),
         pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
-        onEnter: () => tl.play(), onEnterBack: () => tl.progress(1)
+        preventOverlaps: true, fastScrollEnd: true,
+        onEnter: playOnce, onEnterBack: finish,
+        // If the page loads already scrolled into/past this chapter, show it complete.
+        onRefresh: (self) => { if (!played && self.progress > 0.001) finish(); }
       });
     } else {
-      ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: () => tl.play() });
+      ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
     }
   };
 
