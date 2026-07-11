@@ -1438,15 +1438,15 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 /* ============ Hiring Models — editorial parallel timelines (no cards) ============
    Two flows branch from a single node under the heading; each benefit is a milestone on
    a vertical connector line; "Best for" is the final highlighted milestone. No boxes. */
-#models .hm-split{ position:relative; width:min(1060px,94vw); margin:0 auto; padding-top:30px; }
+#models .hm-split{ position:relative; width:min(1060px,94vw); margin:0 auto; padding-top:18px; }
 /* central stem + node dropping from the heading into the split */
 #models .hm-stem{ position:absolute; top:-4px; left:50%; transform:translateX(-50%); width:2px; height:26px; background:linear-gradient(var(--accent), rgba(242,111,33,.25)); }
 #models .hm-stem::after{ content:""; position:absolute; left:50%; bottom:-4px; transform:translateX(-50%); width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 5px var(--orange-wash); }
 #models .hm-flows{ display:grid; grid-template-columns:1fr 1fr; gap:58px; }
 #models .hm-flow{ position:relative; }
 /* flow header */
-#models .hm-fhead{ margin-bottom:22px; }
-#models .hm-ic{ width:46px; height:46px; border-radius:14px; display:grid; place-items:center; margin:0 0 13px; }
+#models .hm-fhead{ margin-bottom:16px; }
+#models .hm-ic{ width:46px; height:46px; border-radius:14px; display:grid; place-items:center; margin:0 0 10px; }
 #models .hm-ic .ic{ width:22px; height:22px; }
 #models .hm-kicker{ display:block; font-family:'Manrope'; font-weight:700; font-size:.66rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ink3); margin-bottom:5px; }
 #models .hm-fhead h3{ font-family:'Fraunces',serif; font-size:1.42rem; font-weight:600; line-height:1.1; margin:0 0 4px; color:var(--ink); letter-spacing:-.012em; }
@@ -1454,7 +1454,7 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 /* the vertical connector line + milestones */
 #models .hm-line{ list-style:none; margin:0; padding:0; position:relative; }
 #models .hm-line::before{ content:""; position:absolute; left:6px; top:6px; bottom:16px; width:2px; background:linear-gradient(var(--accent) 0%, rgba(242,111,33,.2) 100%); }
-#models .hm-line li{ position:relative; padding:0 0 17px 30px; }
+#models .hm-line li{ position:relative; padding:0 0 12px 30px; }
 #models .hm-line li:last-child{ padding-bottom:0; }
 #models .hm-mile{ position:absolute; left:0; top:3px; width:14px; height:14px; border-radius:50%; background:#fff; border:2px solid var(--accent); box-sizing:border-box; }
 #models .hm-mtext{ display:block; }
@@ -1598,7 +1598,7 @@ body[data-page="employers"] .eb-hero-aside{ border-left:2px solid var(--accent);
   #models .hm-flows{ gap:80px; }
   #models .hm-fhead h3{ font-size:1.5rem; }
   #models .hm-tag{ font-size:.9rem; }
-  #models .hm-line li{ padding-bottom:19px; }
+  #models .hm-line li{ padding-bottom:13px; }
   #models .hm-mtext b{ font-size:.95rem; }
   #models .hm-mtext em{ font-size:.85rem; }
   #models .hm-final .hm-mtext em{ font-size:.92rem; }
