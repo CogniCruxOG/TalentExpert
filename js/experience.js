@@ -232,7 +232,7 @@
   }
 
   /* ============ WHAT WE DO — static grid; coordinated heading->cards intro + brief pin ============ */
-  sectionIntro('#rail', '.x-do-head', '#doStage .do-panel');
+  sectionIntro('#rail', '.x-do-head', '#doStage .do-panel', { pin: true, pinTarget: '.x-do-pin', hold: 0.6 });
 
   /* ============ WHY CHOOSE US — static grid; coordinated heading->cards intro + brief pin ============ */
   sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof', { pin: true, pinTarget: '.x-why-pin', hold: 0.6 });
