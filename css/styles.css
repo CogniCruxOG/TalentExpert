@@ -1428,31 +1428,100 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
 }
 
 
-/* ============ BUSINESS OWNERS — one-viewport pinned chapters (desktop) ============
-   Pinned (fit one screen): Why · Services table · Success Stories · FAQs.
-   Problem / Process / Hiring Models are list-heavy, so they get the same float-up
-   entrance but scroll naturally (pin:false) — never clipped. */
+/* ============ BUSINESS OWNERS — every section a one-viewport pinned chapter ============ */
+
+/* Hero — promoted headline, clear hierarchy */
+body[data-page="employers"] .eb-hero-title{ font-size:clamp(2.1rem,4.8vw,3.7rem); line-height:1.05; }
+body[data-page="employers"] .eb-hero-l1{ display:block; font-weight:300; color:var(--ink3); font-size:.62em; letter-spacing:-.005em; margin-bottom:4px; }
+body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:var(--ink); }
+
+/* Hiring Models — redesigned premium cards (employers page uses .hm-card; the
+   standalone hiring-models page keeps its own .hm-col styling untouched) */
+#models .hm-compare{ display:grid; grid-template-columns:1fr 1fr; gap:22px; width:min(1080px,94vw); margin:0 auto; align-items:stretch; }
+#models .hm-card{ display:flex; flex-direction:column; background:#fff; border:1px solid var(--hair); border-radius:22px; padding:24px 26px; box-shadow:var(--sh-s); }
+#models .hm-card.hm-b{ background:linear-gradient(180deg,#fff,#fbf9f7); }
+#models .hm-top{ display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+#models .hm-ic{ width:50px; height:50px; border-radius:15px; display:grid; place-items:center; flex:none; margin:0; }
+#models .hm-ic .ic{ width:24px; height:24px; }
+#models .hm-kicker{ display:block; font-family:'Fraunces'; font-style:italic; font-size:.82rem; color:var(--accent); }
+#models .hm-head h3{ font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; line-height:1.08; margin:1px 0 2px; color:var(--ink); letter-spacing:-.01em; }
+#models .hm-tag{ font-size:.84rem; color:var(--ink3); }
+#models .hm-intro{ font-size:.88rem; color:var(--ink2); line-height:1.5; margin:0 0 14px; }
+#models .hm-feats{ list-style:none; margin:0 0 14px; padding:0; display:grid; gap:9px; }
+#models .hm-feats li{ display:grid; grid-template-columns:18px 1fr; gap:10px; align-items:start; }
+#models .hm-feats li .ic{ width:16px; height:16px; margin-top:3px; color:var(--accent); flex:none; }
+#models .hm-feats li span{ font-size:.85rem; line-height:1.4; color:var(--ink2); }
+#models .hm-feats li b{ color:var(--ink); font-weight:600; }
+#models .hm-card .hm-best{ margin-top:auto; font-family:'Manrope'; font-style:normal; font-size:.82rem; color:var(--ink2); line-height:1.45; background:var(--orange-wash); border-radius:12px; padding:10px 14px; }
+#models .hm-card .hm-best b{ color:var(--ink); font-weight:700; }
+
+/* Get Talent Now — file upload control */
+.fld-file{ margin-bottom:4px; }
+.file-cap{ display:block; font-size:.82rem; color:var(--ink2); margin-bottom:8px; font-weight:600; }
+.file-cap em{ font-style:normal; color:var(--ink3); font-weight:400; margin-left:6px; }
+.file-drop{ display:flex; width:100%; box-sizing:border-box; align-items:center; gap:10px; border:1.5px dashed var(--hair); border-radius:12px; padding:12px 16px; cursor:pointer; transition:border-color .3s var(--ease), background .3s var(--ease); }
+.file-drop:hover{ border-color:var(--accent); background:var(--accent-t); }
+.file-drop .ic{ width:18px; height:18px; color:var(--accent); transform:rotate(-90deg); flex:none; }
+.file-drop .file-name{ font-size:.9rem; color:var(--ink3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.file-drop.has-file .file-name{ color:var(--ink); font-weight:600; }
+.file-drop input[type=file]{ display:none; }
+
 @media(min-width:901px){
+  /* Hero: balanced, vertically centred (no top-heavy empty space) */
+  body[data-page="employers"] .hero{ min-height:88vh; padding:116px 0 56px; display:flex; align-items:center; }
+  body[data-page="employers"] .hero>.wrap{ width:100%; }
+
+  /* Every section fills one viewport, content centred both axes */
+  body[data-page="employers"] #problem,
   body[data-page="employers"] #why,
+  body[data-page="employers"] #process,
   body[data-page="employers"] #services,
+  body[data-page="employers"] #models,
   body[data-page="employers"] #stories,
-  body[data-page="employers"] #faq{
+  body[data-page="employers"] #faq,
+  body[data-page="employers"] #contact{
     min-height:100vh; display:flex; flex-direction:column; justify-content:center;
     box-sizing:border-box; padding:94px 0 46px;
   }
+  body[data-page="employers"] #problem .sec-head,
   body[data-page="employers"] #why .sec-head,
+  body[data-page="employers"] #process .sec-head,
   body[data-page="employers"] #services .sec-head,
+  body[data-page="employers"] #models .sec-head,
   body[data-page="employers"] #stories .sec-head,
-  body[data-page="employers"] #faq .sec-head{ margin-bottom:22px; }
-  /* Why: six feature cards as a tidy 3×2 grid that fits one screen */
+  body[data-page="employers"] #faq .sec-head,
+  body[data-page="employers"] #contact .sec-head{ margin-bottom:22px; }
+
+  /* Problem — 2×3 grid of compact rows */
+  body[data-page="employers"] #problem .prob-list{ grid-template-columns:1fr 1fr; gap:14px; max-width:1020px; }
+  body[data-page="employers"] #problem .prob{ padding:15px 20px; }
+  body[data-page="employers"] #problem .prob .q{ font-size:.95rem; }
+  body[data-page="employers"] #problem .prob .a{ font-size:.82rem; }
+
+  /* Why — 3×2 feature grid */
   body[data-page="employers"] #why .why-track{ gap:16px; }
   body[data-page="employers"] #why .why-track .feat-card{ padding:18px 20px; min-height:0; }
   body[data-page="employers"] #why .feat-card .num{ margin-bottom:5px; }
   body[data-page="employers"] #why .feat-card h3{ font-size:1.08rem; margin:8px 0 4px; }
   body[data-page="employers"] #why .feat-card p{ font-size:.86rem; line-height:1.38; }
-  /* Services comparison table: tighter rows to fit one screen */
+
+  /* Process — 7 steps as a compact 2-column grid (fits one screen, no tall timeline) */
+  body[data-page="employers"] #process .timeline{ max-width:1060px; display:grid; grid-template-columns:1fr 1fr; gap:8px 40px; }
+  body[data-page="employers"] #process .timeline::before{ display:none; }
+  body[data-page="employers"] #process .tl-step{ grid-template-columns:44px 1fr; gap:16px; padding:9px 0; }
+  body[data-page="employers"] #process .tl-num{ width:42px; height:42px; font-size:1rem; border-radius:12px; }
+  body[data-page="employers"] #process .tl-body h3{ font-size:1.02rem; margin:0 0 2px; }
+  body[data-page="employers"] #process .tl-body p{ font-size:.85rem; line-height:1.36; }
+  body[data-page="employers"] #process .eb-cta{ margin-top:16px !important; }
+
+  /* Services table */
   body[data-page="employers"] #services .data th,
   body[data-page="employers"] #services .data td{ padding:11px 14px; font-size:.9rem; }
+
+  /* Get Talent Now form — compact, centred */
+  body[data-page="employers"] #contact .form-card{ max-width:760px; padding:28px 34px; }
+  body[data-page="employers"] #contact .form-grid{ gap:2px 24px; }
+  body[data-page="employers"] #contact .fld{ margin-bottom:15px; }
 }
 
 
