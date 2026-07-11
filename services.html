@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=5">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","serviceType":"Recruitment and staffing","provider":{"@type":"Organization","name":"Talent Expert"},"areaServed":"Tamil Nadu, India"}</script>
 </head>
 <body data-page="services">
@@ -339,7 +339,7 @@
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
 <script src="js/vendor/split-type.min.js"></script>
-<script src="js/main.js"></script>
+<script src="js/main.js?v=5"></script>
 <script>
 /* Services scroll engine — GSAP ScrollTrigger + Lenis.
    Story: each service card slides up from below, PINS CENTERED in the viewport, holds for a
@@ -372,17 +372,16 @@
       onUpdate:function(self){ spBar.style.setProperty('--sp', self.progress.toFixed(4)); } });
   }
 
-  /* Editorial/static: no pins, no scrub. The six service cards show in the base
-     .svc-stage vertical deck (all visible); the overview icons show in place. Each
-     reveals ONCE on enter (fade + rise), never scrubbed / never replayed. */
-  gsap.from('.svc-stage > .svc-card', {
-    opacity:0, y:28, duration:0.7, ease:'power3.out', stagger:0.1,
-    scrollTrigger:{ trigger:'.svc-stage', start:'top 85%', once:true }
-  });
-  var ov = document.querySelector('.svc-overview');
-  if(ov){
-    gsap.from('.svc-overview .ov-icon', { opacity:0, y:20, duration:.6, ease:'power2.out', stagger:.07,
-      scrollTrigger:{ trigger:ov, start:'top 80%', once:true } });
+  /* Editorial chapters (shared engine in main.js). The six-service deck is taller
+     than one screen, so it gets the chapter ENTRANCE only (heading fades up first,
+     then the cards float up in sequence) and scrolls naturally — no pin. The overview
+     fits one viewport, so it rises and PINS briefly below the navbar, plays its
+     entrance once, then releases. No scrub, no replay. */
+  if(typeof window.TEChapter === 'function'){
+    window.TEChapter([
+      { sec:'#services', head:'.svc-headline', items:'.svc-stage > .svc-card', pin:false },
+      { sec:'#svc-overview', head:'.ov-center', items:'.ov-col', pin:true, hold:0.6 }
+    ]);
   }
 })();
 </script>
