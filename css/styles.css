@@ -1467,8 +1467,8 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 .file-drop input[type=file]{ display:none; }
 
 @media(min-width:901px){
-  /* Hero: balanced, vertically centred (no top-heavy empty space) */
-  body[data-page="employers"] .hero{ min-height:88vh; padding:116px 0 56px; display:flex; align-items:center; }
+  /* Hero: sized to its content (no big empty band under a short headline) */
+  body[data-page="employers"] .hero{ min-height:0; padding:132px 0 86px; }
   body[data-page="employers"] .hero>.wrap{ width:100%; }
 
   /* Every section fills one viewport, content centred both axes */
@@ -1522,6 +1522,63 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
   body[data-page="employers"] #contact .form-card{ max-width:760px; padding:28px 34px; }
   body[data-page="employers"] #contact .form-grid{ gap:2px 24px; }
   body[data-page="employers"] #contact .fld{ margin-bottom:15px; }
+}
+
+/* Business Owners — hero two-column (title left · statement right) */
+body[data-page="employers"] .eb-hero-statement{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(1.5rem,2vw,2.05rem); line-height:1.22; color:var(--ink); margin:0 0 14px; letter-spacing:-.01em; }
+body[data-page="employers"] .eb-hero-statement b{ font-weight:600; }
+body[data-page="employers"] .eb-hero-statement em{ font-style:normal; color:var(--accent); }
+body[data-page="employers"] .eb-hero-sub{ font-size:1.05rem; color:var(--ink2); line-height:1.55; margin:0; max-width:42ch; }
+body[data-page="employers"] .eb-hero-grid{ display:grid; gap:26px; margin-top:14px; }
+body[data-page="employers"] .eb-hero-aside{ border-left:2px solid var(--accent); padding-left:20px; }
+@media(min-width:901px){
+  body[data-page="employers"] .eb-hero-grid{ grid-template-columns:1.12fr .88fr; gap:58px; align-items:center; margin-top:18px; }
+  body[data-page="employers"] .eb-hero-main .hero-actions{ margin-top:30px; }
+  body[data-page="employers"] .eb-hero-aside{ padding-left:30px; }
+}
+
+/* Large, tall screens only: fill the pinned chapters so centred content doesn't float
+   in empty space. Height-gated so wide-but-short laptops (1366×768) keep the compact
+   sizing and never overflow the pinned viewport. */
+@media(min-width:1360px) and (min-height:880px){
+  body[data-page="employers"] .sec-head .title{ font-size:clamp(2.3rem,3vw,3rem); }
+  body[data-page="employers"] .sec-head{ margin-bottom:34px !important; }
+
+  body[data-page="employers"] #problem .prob-list{ max-width:1280px; gap:22px; }
+  body[data-page="employers"] #problem .prob{ padding:24px 28px; }
+  body[data-page="employers"] #problem .prob .q{ font-size:1.06rem; }
+  body[data-page="employers"] #problem .prob .a{ font-size:.92rem; }
+
+  body[data-page="employers"] #why .why-track{ max-width:1280px; gap:24px; }
+  body[data-page="employers"] #why .why-track .feat-card{ padding:30px 28px; }
+  body[data-page="employers"] #why .feat-card h3{ font-size:1.26rem; }
+  body[data-page="employers"] #why .feat-card p{ font-size:.98rem; line-height:1.5; }
+
+  body[data-page="employers"] #process .timeline{ max-width:1300px; gap:24px 76px; }
+  body[data-page="employers"] #process .tl-step{ padding:16px 0; }
+  body[data-page="employers"] #process .tl-num{ width:54px; height:54px; font-size:1.22rem; border-radius:16px; }
+  body[data-page="employers"] #process .tl-body h3{ font-size:1.18rem; }
+  body[data-page="employers"] #process .tl-body p{ font-size:.97rem; line-height:1.5; }
+
+  body[data-page="employers"] #services .tbl-wrap{ max-width:1340px; margin-left:auto; margin-right:auto; }
+  body[data-page="employers"] #services .data th,
+  body[data-page="employers"] #services .data td{ padding:18px 22px; font-size:1.02rem; }
+
+  #models .hm-compare{ max-width:1300px; gap:32px; }
+  #models .hm-card{ padding:34px 36px; }
+  #models .hm-head h3{ font-size:1.52rem; }
+  #models .hm-tag{ font-size:.9rem; }
+  #models .hm-intro{ font-size:.98rem; margin-bottom:20px; }
+  #models .hm-feats{ gap:14px; margin-bottom:20px; }
+  #models .hm-feats li span{ font-size:.95rem; }
+  #models .hm-card .hm-best{ font-size:.92rem; padding:13px 17px; }
+
+  body[data-page="employers"] #stories .tst-grid{ max-width:1300px; margin:0 auto; }
+  body[data-page="employers"] #faq .faq{ max-width:1000px; }
+
+  body[data-page="employers"] #contact .form-card{ max-width:940px; padding:42px 48px; }
+  body[data-page="employers"] #contact .form-grid{ gap:6px 32px; }
+  body[data-page="employers"] #contact .fld{ margin-bottom:22px; }
 }
 
 
