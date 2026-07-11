@@ -161,9 +161,12 @@
     // cards fall off-viewport while pinned, and stacked section-pins fight each other.)
     // The heading + cards simply reveal ONCE as the section enters; nothing scrubs.
     if (opts.pin && matchMedia('(min-width:901px)').matches) {
+      // brief chapter pin: the section is a 100vh block (opts.pinTarget) that fits all its
+      // content; hold it while the entrance floats everything in once, then auto-release.
+      const pinEl = opts.pinTarget ? $(opts.pinTarget, sec) : sec;
       ScrollTrigger.create({
-        trigger: sec, start: 'top top+=' + NAVH, end: '+=' + Math.round(innerHeight * 0.45),
-        pin: true, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
+        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.6)),
+        pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
         onEnter: () => tl.play(), onEnterBack: () => tl.progress(1)
       });
     } else {
@@ -232,7 +235,7 @@
   sectionIntro('#rail', '.x-do-head', '#doStage .do-panel');
 
   /* ============ WHY CHOOSE US — static grid; coordinated heading->cards intro + brief pin ============ */
-  sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof');
+  sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof', { pin: true, pinTarget: '.x-why-pin', hold: 0.6 });
 
   /* ================= AUDIENCE PATHS — reveal + slide into place ================= */
   $$('.x-path').forEach((el, i) => gsap.from(el, {
