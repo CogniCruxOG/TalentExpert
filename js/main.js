@@ -7,6 +7,15 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
+  /* ---- Heading highlight: only draw the marker once the web font has rendered, so the
+     text and its highlight always appear together (never highlight-first). ---- */
+  (function () {
+    const ready = () => document.documentElement.classList.add('fonts-ready');
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(ready);
+    setTimeout(ready, 1400);            // fallback if fonts.ready never resolves
+    addEventListener('load', ready);
+  })();
+
   /* ---- Sticky nav shadow ---- */
   const nav = $('#nav');
   if (nav) addEventListener('scroll', () => {

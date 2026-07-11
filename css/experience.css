@@ -58,19 +58,19 @@ html.lenis,html.lenis body{height:auto}
 .x-hero-content{position:relative;z-index:3;max-width:1000px;margin:0 auto;text-align:center;width:100%}
 .x-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);background:#fff;border:1px solid var(--hair);padding:8px 16px;border-radius:100px;margin-bottom:22px}
 .x-eyebrow .ic{width:15px;height:15px}
-.x-title{font-family:'Lora',serif;font-weight:300;font-size:clamp(2.6rem,6vw,4.8rem);line-height:1.03;color:var(--ink);letter-spacing:-.015em;margin-bottom:18px}
+.x-title{font-family:'Source Serif 4',serif;font-weight:300;font-size:clamp(2.6rem,6vw,4.8rem);line-height:1.03;color:var(--ink);letter-spacing:-.015em;margin-bottom:18px}
 .x-title em{font-style:normal;font-weight:500;color:var(--orange)}
 .x-title .grow{position:relative;white-space:nowrap;font-weight:600;color:var(--ink)}
 .x-title .grow::after{content:"";position:absolute;left:0;bottom:-6px;width:100%;height:10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 12' preserveAspectRatio='none'%3E%3Cpath d='M3 8c60-7 234-7 294-2' fill='none' stroke='%23F26F21' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat;background-size:100% 100%;transform:scaleX(0);transform-origin:0;opacity:0}
 .x-title .grow.drawn::after{transform:scaleX(1);opacity:1;transition:transform .9s var(--ease),opacity .4s}
 .x-sub{font-size:1.16rem;color:var(--ink2);max-width:52ch;margin:0 auto 10px}
-.x-rhythm{font-family:'Lora';font-style:italic;font-size:1.22rem;color:var(--ink);margin-bottom:26px}
+.x-rhythm{font-family:'Source Serif 4';font-style:italic;font-size:1.22rem;color:var(--ink);margin-bottom:26px}
 .x-rhythm span{color:var(--orange)}
 .x-hero .hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:54px}
 
 /* ---- Trust band: floating glass statistics (no boxed container) ---- */
 .x-trust-band{position:relative;z-index:3;width:100%;max-width:940px;margin:0 auto}
-.x-trust-quote{font-family:'Lora';font-style:italic;font-weight:400;font-size:clamp(1.02rem,1.5vw,1.3rem);color:var(--ink2);margin-bottom:24px;letter-spacing:.01em}
+.x-trust-quote{font-family:'Source Serif 4';font-style:italic;font-weight:400;font-size:clamp(1.02rem,1.5vw,1.3rem);color:var(--ink2);margin-bottom:24px;letter-spacing:.01em}
 .x-stats{display:flex;gap:clamp(12px,1.5vw,20px);justify-content:center;flex-wrap:wrap}
 .x-stat{position:relative;flex:1 1 190px;max-width:236px;padding:22px 24px;border-radius:20px;text-align:left;overflow:hidden;
   background:rgba(255,255,255,.58);backdrop-filter:blur(16px) saturate(1.1);-webkit-backdrop-filter:blur(16px) saturate(1.1);
@@ -78,7 +78,7 @@ html.lenis,html.lenis body{height:auto}
   will-change:transform,opacity;transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .x-stat:hover{transform:translate3d(0,-5px,0);box-shadow:0 32px 66px -30px rgba(242,111,33,.42)}
 .x-stat::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--orange),var(--orange-soft))}
-.x-stat .n{font-family:'Lora';font-weight:500;font-size:clamp(1.8rem,2.6vw,2.55rem);color:var(--ink);line-height:1;letter-spacing:-.015em;display:flex;align-items:baseline}
+.x-stat .n{font-family:'Source Serif 4';font-weight:500;font-size:clamp(1.8rem,2.6vw,2.55rem);color:var(--ink);line-height:1;letter-spacing:-.015em;display:flex;align-items:baseline}
 /* shake-proof counter: a hidden ghost reserves the final width; the animating
    number is absolutely overlaid so counting NEVER changes layout */
 .x-stat .numw{position:relative;display:inline-block}
@@ -131,7 +131,7 @@ html.lenis,html.lenis body{height:auto}
 /* soft orange glow behind the icon — opacity scrubbed via --ig */
 .ddd-icon::after{content:"";position:absolute;inset:-32%;border-radius:50%;background:radial-gradient(circle,rgba(242,111,33,.42),transparent 70%);opacity:var(--ig,0);z-index:-1}
 .ddd-txt{padding-top:4px}
-.ddd-stage .k{font-family:'Lora';font-style:italic;color:var(--orange);font-size:.82rem;display:block;margin-bottom:2px}
+.ddd-stage .k{font-family:'Source Serif 4';font-style:italic;color:var(--orange);font-size:.82rem;display:block;margin-bottom:2px}
 .ddd-stage h3{font-size:1.32rem;font-weight:500;margin-bottom:6px}
 .ddd-stage p{font-size:.96rem;color:var(--ink2);line-height:1.55}
 @media(max-width:900px){
@@ -155,7 +155,7 @@ html.lenis,html.lenis body{height:auto}
 .do-panel:hover{transform:translate3d(0,-5px,0);box-shadow:var(--sh-m)}
 .do-ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:var(--orange-wash);color:var(--orange);box-shadow:var(--sh-s);margin-bottom:20px}
 .do-ic .ic{width:1em;height:1em}
-.do-lvl{font-family:'Lora';font-style:italic;color:var(--orange);font-size:.92rem;margin-bottom:4px}
+.do-lvl{font-family:'Source Serif 4';font-style:italic;color:var(--orange);font-size:.92rem;margin-bottom:4px}
 .do-panel h3{font-size:1.4rem;font-weight:500;margin-bottom:8px;line-height:1.12}
 .do-roles{color:var(--orange);font-weight:600;font-size:.98rem;margin-bottom:12px}
 .do-who{font-size:1rem;color:var(--ink2);line-height:1.58;margin-bottom:18px}
@@ -238,7 +238,7 @@ html.lenis,html.lenis body{height:auto}
 @media(prefers-reduced-motion:reduce){ .proof.pre{opacity:1;filter:none;transform:none} }
 .proof-ic{width:72px;height:72px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:var(--orange-wash);color:var(--orange);box-shadow:var(--sh-s)}
 .proof-ic .ic{width:32px;height:32px}
-.proof-n{font-family:'Lora';font-style:italic;color:var(--orange);font-size:.92rem;display:block;margin-bottom:4px}
+.proof-n{font-family:'Source Serif 4';font-style:italic;color:var(--orange);font-size:.92rem;display:block;margin-bottom:4px}
 .proof-body h3{font-size:1.4rem;font-weight:500;margin-bottom:10px;line-height:1.1}
 .proof-body p{font-size:1rem;color:var(--ink2);line-height:1.58}
 .x-why-nodes{display:none}
@@ -297,10 +297,10 @@ html.lenis,html.lenis body{height:auto}
 /* pinned storytelling on desktop — content centred in the viewport */
 @media(min-width:821px){ .x-founder{padding:110px 0} }
 .x-founder-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
-.x-founder-bg .qmark-bg{position:absolute;top:-70px;left:1%;font-family:'Lora';font-size:28rem;line-height:1;color:var(--orange);opacity:.06}
+.x-founder-bg .qmark-bg{position:absolute;top:-70px;left:1%;font-family:'Source Serif 4';font-size:28rem;line-height:1;color:var(--orange);opacity:.06}
 .x-founder-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.55fr .85fr;gap:60px;align-items:center;width:100%}
-.x-founder-quote .qmark{font-family:'Lora';font-size:5rem;color:var(--orange);line-height:.2;display:block;margin-bottom:18px}
-.x-founder-quote blockquote{font-family:'Lora';font-weight:300;font-size:clamp(1.5rem,2.9vw,2.35rem);line-height:1.42;color:var(--ink);letter-spacing:-.01em;text-wrap:balance}
+.x-founder-quote .qmark{font-family:'Source Serif 4';font-size:5rem;color:var(--orange);line-height:.2;display:block;margin-bottom:18px}
+.x-founder-quote blockquote{font-family:'Source Serif 4';font-weight:300;font-size:clamp(1.5rem,2.9vw,2.35rem);line-height:1.42;color:var(--ink);letter-spacing:-.01em;text-wrap:balance}
 /* italic phrase gets a gentle scroll-driven emphasis (--eg 0→1): brighter + soft glow, no scale */
 .x-founder-quote blockquote em{font-style:italic;color:var(--orange);font-weight:400;
   text-shadow:0 0 calc(var(--eg,0) * 20px) rgba(242,111,33,calc(var(--eg,0) * .45));
@@ -308,7 +308,7 @@ html.lenis,html.lenis body{height:auto}
 /* signature divider grows vertically (--dl 0→1) */
 .x-founder-sign{position:relative;padding-left:28px}
 .x-founder-sign::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--orange);transform:scaleY(var(--dl,1));transform-origin:top}
-.x-founder-sign .sig-role{font-family:'Lora';font-size:1.5rem;color:var(--ink);display:block;line-height:1}
+.x-founder-sign .sig-role{font-family:'Source Serif 4';font-size:1.5rem;color:var(--ink);display:block;line-height:1}
 .x-founder-sign .sig-org{font-family:'Manrope';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);font-size:.82rem;display:block;margin-top:8px}
 .x-founder-sign .sig-det{display:block;margin-top:16px;color:var(--ink2);font-size:.96rem;line-height:1.55}
 
@@ -370,11 +370,11 @@ html.lenis,html.lenis body{height:auto}
   radial-gradient(560px 560px at 86% 72%,rgba(249,165,106,.10),transparent 70%)}
 .x-gap .inner{position:relative;z-index:2;text-align:center;max-width:1120px;margin:0 auto}
 .x-gap .k{color:var(--orange);letter-spacing:.24em;text-transform:uppercase;font-size:.78rem;font-weight:700;margin-bottom:24px}
-.x-gap h2{color:var(--ink);font-family:'Lora';font-weight:300;font-size:clamp(2.1rem,5.4vw,4.2rem);line-height:1.08;letter-spacing:-.01em}
+.x-gap h2{color:var(--ink);font-family:'Source Serif 4';font-weight:300;font-size:clamp(2.1rem,5.4vw,4.2rem);line-height:1.08;letter-spacing:-.01em}
 .x-gap h2 em{font-style:italic;color:var(--orange)}
 .x-gap .sides{display:grid;grid-template-columns:1fr 130px 1fr;align-items:center;gap:24px;margin:60px 0 48px}
 .x-gap .pillar{padding:22px}
-.x-gap .pillar .big{font-family:'Lora';font-weight:500;font-size:clamp(2.4rem,4.8vw,3.8rem);line-height:1;color:var(--ink)}
+.x-gap .pillar .big{font-family:'Source Serif 4';font-weight:500;font-size:clamp(2.4rem,4.8vw,3.8rem);line-height:1;color:var(--ink)}
 .x-gap .pillar .cap{color:var(--ink2);font-size:1rem;margin-top:12px;max-width:26ch;margin-inline:auto}
 .x-gap .pillar.l .big{color:var(--charcoal-soft)}
 .x-gap .pillar.r .big{color:var(--orange)}
@@ -382,7 +382,7 @@ html.lenis,html.lenis body{height:auto}
 .x-gap .link svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .x-gap .link path{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 .x-gap .link .spark{fill:var(--orange)}
-.x-gap .close{font-family:'Lora';font-style:italic;font-size:clamp(1.3rem,2.5vw,2rem);color:var(--ink);max-width:640px;margin:0 auto;line-height:1.55;text-wrap:balance}
+.x-gap .close{font-family:'Source Serif 4';font-style:italic;font-size:clamp(1.3rem,2.5vw,2rem);color:var(--ink);max-width:640px;margin:0 auto;line-height:1.55;text-wrap:balance}
 .x-gap .close b{display:inline-block;max-width:34ch}
 .x-gap .close b{color:var(--orange);font-weight:500;font-style:normal}
 
@@ -404,7 +404,7 @@ html.lenis,html.lenis body{height:auto}
 .x-vs .new li{color:rgba(255,255,255,.94)}
 .x-vs .new li .ic{color:var(--orange-soft)}
 .x-vs .mid{display:grid;place-items:center;background:#e2dfd9;position:relative;z-index:3}
-.x-vs .mid span{width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-family:'Lora';font-style:italic;font-weight:500;font-size:1.1rem;box-shadow:0 12px 26px -10px rgba(232,119,34,.7)}
+.x-vs .mid span{width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-family:'Source Serif 4';font-style:italic;font-weight:500;font-size:1.1rem;box-shadow:0 12px 26px -10px rgba(232,119,34,.7)}
 
 /* =====================================================================
    VOICES — transformation testimonials
@@ -413,11 +413,11 @@ html.lenis,html.lenis body{height:auto}
 .x-voices-pin{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:90px 0}
 .x-voice-stage{max-width:980px;margin:0 auto;text-align:center;position:relative;min-height:380px}
 .x-voice{position:absolute;inset:0;opacity:0}
-.x-voice .mk{font-family:'Lora';font-size:4rem;line-height:.2;color:var(--orange);display:block;margin-bottom:26px}
-.x-voice blockquote{font-family:'Lora';font-weight:300;font-size:clamp(1.4rem,2.9vw,2.15rem);line-height:1.42;color:var(--ink);margin-bottom:28px;max-width:20ch;margin-inline:auto;text-wrap:balance;max-width:26ch}
+.x-voice .mk{font-family:'Source Serif 4';font-size:4rem;line-height:.2;color:var(--orange);display:block;margin-bottom:26px}
+.x-voice blockquote{font-family:'Source Serif 4';font-weight:300;font-size:clamp(1.4rem,2.9vw,2.15rem);line-height:1.42;color:var(--ink);margin-bottom:28px;max-width:20ch;margin-inline:auto;text-wrap:balance;max-width:26ch}
 .x-voice blockquote em{font-style:italic;color:var(--orange);font-weight:400}
 .x-voice .who{display:inline-flex;align-items:center;gap:14px}
-.x-voice .who .av{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-family:'Lora';font-weight:500;color:#fff;font-size:1.1rem;background:var(--orange)}
+.x-voice .who .av{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-family:'Source Serif 4';font-weight:500;color:#fff;font-size:1.1rem;background:var(--orange)}
 .x-voice .who .nm{text-align:left}
 .x-voice .who .nm b{display:block;color:var(--ink);font-family:'Manrope'}
 .x-voice .who .nm span{font-size:.86rem;color:var(--ink3)}
