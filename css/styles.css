@@ -1437,7 +1437,9 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 
 /* Hiring Models — redesigned premium cards (employers page uses .hm-card; the
    standalone hiring-models page keeps its own .hm-col styling untouched) */
-#models .hm-compare{ display:grid; grid-template-columns:1fr 1fr; gap:22px; width:min(1080px,94vw); margin:0 auto; align-items:stretch; }
+/* cards sized to their own content (Card A is simply a little shorter than Card B) and
+   top-aligned — even feature spacing with no stretched-out blank gaps */
+#models .hm-compare{ display:grid; grid-template-columns:1fr 1fr; gap:22px; width:min(1080px,94vw); margin:0 auto; align-items:start; }
 #models .hm-card{ display:flex; flex-direction:column; background:#fff; border:1px solid var(--hair); border-radius:22px; padding:24px 28px; box-shadow:var(--sh-s); }
 #models .hm-card.hm-b{ background:linear-gradient(180deg,#fff,#fbf9f7); }
 #models .hm-top{ display:flex; align-items:center; gap:14px; margin-bottom:13px; }
@@ -1448,9 +1450,9 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 #models .hm-head h3{ font-family:'Fraunces',serif; font-size:1.4rem; font-weight:600; line-height:1.08; margin:0 0 4px; color:var(--ink); letter-spacing:-.012em; }
 #models .hm-tag{ font-family:'Manrope'; font-weight:500; font-size:.82rem; color:var(--ink3); line-height:1.35; }
 #models .hm-intro{ font-size:.89rem; color:var(--ink2); line-height:1.65; max-width:44ch; margin:0 0 16px; opacity:.9; }
-/* feature list flexes to fill the card so both models (5 vs 7 features) stay the same
-   height with evenly-distributed rows — no lopsided empty gap in the shorter card */
-#models .hm-feats{ list-style:none; margin:0 0 14px; padding:0; display:flex; flex-direction:column; justify-content:space-between; gap:11px; flex:1 1 auto; }
+/* even, consistent spacing between features (no flex-grow / space-between, so the shorter
+   card never spreads its rows apart with blank gaps) */
+#models .hm-feats{ list-style:none; margin:0 0 16px; padding:0; display:flex; flex-direction:column; gap:15px; }
 #models .hm-feats li{ display:grid; grid-template-columns:18px 1fr; column-gap:13px; align-items:start; }
 #models .hm-feats li .ic{ width:15px; height:15px; margin-top:3px; color:var(--accent); flex:none; }
 /* feature: bold keyword + lighter description. Single-line on compact/short screens so
@@ -1461,7 +1463,7 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 #models .hm-feat em{ font-style:normal; }
 #models .hm-feat em::before{ content:" — "; }
 /* Best For — highlighted takeaway, not another paragraph */
-#models .hm-card .hm-best{ margin-top:12px; background:var(--orange-wash); border-radius:18px; padding:13px 17px; font-family:'Manrope'; font-style:normal; }
+#models .hm-card .hm-best{ margin-top:18px; background:var(--orange-wash); border-radius:18px; padding:13px 17px; font-family:'Manrope'; font-style:normal; }
 #models .hm-best b{ display:block; font-family:'Manrope'; font-weight:700; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); margin-bottom:4px; }
 #models .hm-best span{ display:block; font-size:.85rem; color:var(--ink2); line-height:1.48; opacity:.82; }
 
