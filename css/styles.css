@@ -1495,6 +1495,8 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
      the cards. (This first chapter is top-anchored; the rest stay vertically centred.)
      !important because the shared section rule below sets justify-content:center. */
   body[data-page="employers"] #problem{ justify-content:flex-start !important; padding-top:100px !important; }
+  /* let the card grid fill the space below the (peeking) heading and spread its 3 rows */
+  body[data-page="employers"] #problem>.wrap{ display:flex; flex-direction:column; flex:1 1 auto; }
 
   /* Every section fills one viewport, content centred both axes */
   body[data-page="employers"] #problem,
@@ -1519,7 +1521,7 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 
   /* Problem — 2×3 grid of compact cards, consistent internal formatting:
      icon aligned to the first line, even padding, clear q→a rhythm, tag pinned top-right */
-  body[data-page="employers"] #problem .prob-list{ grid-template-columns:1fr 1fr; gap:16px; max-width:1020px; }
+  body[data-page="employers"] #problem .prob-list{ grid-template-columns:1fr 1fr; gap:16px; max-width:1020px; flex:1 1 auto; align-content:space-between; }
   body[data-page="employers"] #problem .prob{ align-items:flex-start; gap:16px; padding:20px 22px; }
   body[data-page="employers"] #problem .prob-state{ margin-top:1px; }
   body[data-page="employers"] #problem .prob-txt{ align-self:center; }
