@@ -1438,24 +1438,32 @@ body[data-page="employers"] .eb-hero-l2{ display:block; font-weight:600; color:v
 /* Hiring Models — redesigned premium cards (employers page uses .hm-card; the
    standalone hiring-models page keeps its own .hm-col styling untouched) */
 #models .hm-compare{ display:grid; grid-template-columns:1fr 1fr; gap:22px; width:min(1080px,94vw); margin:0 auto; align-items:stretch; }
-#models .hm-card{ display:flex; flex-direction:column; background:#fff; border:1px solid var(--hair); border-radius:22px; padding:24px 26px; box-shadow:var(--sh-s); }
+#models .hm-card{ display:flex; flex-direction:column; background:#fff; border:1px solid var(--hair); border-radius:22px; padding:24px 28px; box-shadow:var(--sh-s); }
 #models .hm-card.hm-b{ background:linear-gradient(180deg,#fff,#fbf9f7); }
-#models .hm-top{ display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+#models .hm-top{ display:flex; align-items:center; gap:14px; margin-bottom:13px; }
 #models .hm-ic{ width:50px; height:50px; border-radius:15px; display:grid; place-items:center; flex:none; margin:0; }
 #models .hm-ic .ic{ width:24px; height:24px; }
-#models .hm-kicker{ display:block; font-family:'Fraunces'; font-style:italic; font-size:.82rem; color:var(--accent); }
-#models .hm-head h3{ font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; line-height:1.08; margin:1px 0 2px; color:var(--ink); letter-spacing:-.01em; }
-#models .hm-tag{ font-size:.84rem; color:var(--ink3); }
-#models .hm-intro{ font-size:.88rem; color:var(--ink2); line-height:1.5; margin:0 0 16px; }
+/* Editorial hierarchy: tiny muted kicker → strong Fraunces title → light sans subtitle */
+#models .hm-kicker{ display:block; font-family:'Manrope'; font-style:normal; font-size:.66rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--ink3); margin-bottom:4px; }
+#models .hm-head h3{ font-family:'Fraunces',serif; font-size:1.4rem; font-weight:600; line-height:1.08; margin:0 0 4px; color:var(--ink); letter-spacing:-.012em; }
+#models .hm-tag{ font-family:'Manrope'; font-weight:500; font-size:.82rem; color:var(--ink3); line-height:1.35; }
+#models .hm-intro{ font-size:.89rem; color:var(--ink2); line-height:1.65; max-width:44ch; margin:0 0 16px; opacity:.9; }
 /* feature list flexes to fill the card so both models (5 vs 7 features) stay the same
    height with evenly-distributed rows — no lopsided empty gap in the shorter card */
-#models .hm-feats{ list-style:none; margin:0 0 16px; padding:0; display:flex; flex-direction:column; justify-content:space-between; gap:10px; flex:1 1 auto; }
-#models .hm-feats li{ display:grid; grid-template-columns:18px 1fr; gap:10px; align-items:start; }
-#models .hm-feats li .ic{ width:16px; height:16px; margin-top:3px; color:var(--accent); flex:none; }
-#models .hm-feats li span{ font-size:.85rem; line-height:1.4; color:var(--ink2); }
-#models .hm-feats li b{ color:var(--ink); font-weight:600; }
-#models .hm-card .hm-best{ margin-top:0; font-family:'Manrope'; font-style:normal; font-size:.82rem; color:var(--ink2); line-height:1.45; background:var(--orange-wash); border-radius:12px; padding:11px 15px; }
-#models .hm-card .hm-best b{ color:var(--ink); font-weight:700; }
+#models .hm-feats{ list-style:none; margin:0 0 14px; padding:0; display:flex; flex-direction:column; justify-content:space-between; gap:11px; flex:1 1 auto; }
+#models .hm-feats li{ display:grid; grid-template-columns:18px 1fr; column-gap:13px; align-items:start; }
+#models .hm-feats li .ic{ width:15px; height:15px; margin-top:3px; color:var(--accent); flex:none; }
+/* feature: bold keyword + lighter description. Single-line on compact/short screens so
+   the 7-feature card never overflows a short viewport; promoted to a two-line editorial
+   stack on large, tall screens (see the min-height:940 block below). */
+#models .hm-feat{ display:block; font-family:'Manrope'; font-size:.85rem; line-height:1.5; color:var(--ink3); }
+#models .hm-feat b{ font-weight:600; color:var(--ink); }
+#models .hm-feat em{ font-style:normal; }
+#models .hm-feat em::before{ content:" — "; }
+/* Best For — highlighted takeaway, not another paragraph */
+#models .hm-card .hm-best{ margin-top:12px; background:var(--orange-wash); border-radius:18px; padding:13px 17px; font-family:'Manrope'; font-style:normal; }
+#models .hm-best b{ display:block; font-family:'Manrope'; font-weight:700; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); margin-bottom:4px; }
+#models .hm-best span{ display:block; font-size:.85rem; color:var(--ink2); line-height:1.48; opacity:.82; }
 
 /* Get Talent Now — file upload control */
 .fld-file{ margin-bottom:4px; }
@@ -1581,12 +1589,15 @@ body[data-page="employers"] .eb-hero-aside{ border-left:2px solid var(--accent);
   body[data-page="employers"] #services .data td{ padding:14px 20px; font-size:.98rem; }
 
   #models .hm-compare{ max-width:1300px; gap:30px; }
-  #models .hm-card{ padding:30px 34px; }
-  #models .hm-head h3{ font-size:1.44rem; }
-  #models .hm-tag{ font-size:.9rem; }
-  #models .hm-intro{ font-size:.96rem; margin-bottom:18px; }
-  #models .hm-feats li span{ font-size:.93rem; }
-  #models .hm-card .hm-best{ font-size:.9rem; padding:12px 16px; }
+  #models .hm-card{ padding:22px 32px; }
+  #models .hm-head h3{ font-size:1.46rem; }
+  #models .hm-tag{ font-size:.88rem; }
+  #models .hm-intro{ font-size:.94rem; line-height:1.65; margin-bottom:13px; }
+  #models .hm-feats{ gap:12px; }
+  #models .hm-feat b{ font-size:.93rem; }
+  #models .hm-feat em{ font-size:.83rem; line-height:1.42; }
+  #models .hm-card .hm-best{ padding:12px 18px; }
+  #models .hm-best span{ font-size:.88rem; }
 
   body[data-page="employers"] #stories .tst-grid{ max-width:1300px; margin:0 auto; }
   body[data-page="employers"] #faq .faq{ max-width:1000px; }
@@ -1594,6 +1605,17 @@ body[data-page="employers"] .eb-hero-aside{ border-left:2px solid var(--accent);
   body[data-page="employers"] #contact .form-card{ max-width:920px; padding:38px 46px; }
   body[data-page="employers"] #contact .form-grid{ gap:6px 32px; }
   body[data-page="employers"] #contact .fld{ margin-bottom:20px; }
+}
+
+/* Large, tall screens: promote Hiring Models features to a two-line editorial stack —
+   bold keyword title over a lighter description — with generous rhythm. Height-gated at
+   940 so it only applies where the 7-feature card comfortably fits without clipping. */
+@media(min-width:1360px) and (min-height:940px){
+  #models .hm-feats{ gap:10px; }
+  #models .hm-feats li{ column-gap:14px; }
+  #models .hm-feat b{ display:block; font-size:.93rem; line-height:1.3; margin-bottom:2px; }
+  #models .hm-feat em{ display:block; font-size:.83rem; line-height:1.42; }
+  #models .hm-feat em::before{ content:none; }
 }
 
 

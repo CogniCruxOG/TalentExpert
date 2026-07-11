@@ -166,11 +166,14 @@
       let played = false;
       const playOnce = () => { if (!played) { played = true; tl.play(); } };
       const finish = () => { played = true; tl.progress(1); };
-      if (desktop && c.pin !== false) {
+      const pinEl = (desktop && c.pin !== false) ? (c.pinTarget ? sec.querySelector(c.pinTarget) : sec) : null;
+      // Never pin a chapter taller than the viewport — pinning would clip its lower content.
+      // On short screens such a section simply scrolls with its entrance instead of pinning.
+      const fitsViewport = pinEl && pinEl.scrollHeight <= innerHeight + 4;
+      if (pinEl && fitsViewport) {
         // Brief chapter pin. anticipatePin + preventOverlaps make the lock-in read as a
         // smooth continuation of the scroll rather than a snap; it holds for a short reading
         // pause, then releases gently. The entrance plays on enter so the pin never feels empty.
-        const pinEl = c.pinTarget ? sec.querySelector(c.pinTarget) : sec;
         ScrollTrigger.create({
           trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.75)),
           pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
