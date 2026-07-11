@@ -1421,3 +1421,31 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
 @media(min-width:901px){
   body[data-page="services"] #svc-overview{ min-height:100vh; margin-top:0; display:flex; align-items:center; box-sizing:border-box; padding:96px 0 44px; }
 }
+
+
+/* ============ BUSINESS OWNERS — one-viewport pinned chapters (desktop) ============
+   Pinned (fit one screen): Why · Services table · Success Stories · FAQs.
+   Problem / Process / Hiring Models are list-heavy, so they get the same float-up
+   entrance but scroll naturally (pin:false) — never clipped. */
+@media(min-width:901px){
+  body[data-page="employers"] #why,
+  body[data-page="employers"] #services,
+  body[data-page="employers"] #stories,
+  body[data-page="employers"] #faq{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    box-sizing:border-box; padding:94px 0 46px;
+  }
+  body[data-page="employers"] #why .sec-head,
+  body[data-page="employers"] #services .sec-head,
+  body[data-page="employers"] #stories .sec-head,
+  body[data-page="employers"] #faq .sec-head{ margin-bottom:22px; }
+  /* Why: six feature cards as a tidy 3×2 grid that fits one screen */
+  body[data-page="employers"] #why .why-track{ gap:16px; }
+  body[data-page="employers"] #why .why-track .feat-card{ padding:18px 20px; min-height:0; }
+  body[data-page="employers"] #why .feat-card .num{ margin-bottom:5px; }
+  body[data-page="employers"] #why .feat-card h3{ font-size:1.08rem; margin:8px 0 4px; }
+  body[data-page="employers"] #why .feat-card p{ font-size:.86rem; line-height:1.38; }
+  /* Services comparison table: tighter rows to fit one screen */
+  body[data-page="employers"] #services .data th,
+  body[data-page="employers"] #services .data td{ padding:11px 14px; font-size:.9rem; }
+}

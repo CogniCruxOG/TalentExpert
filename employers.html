@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=5">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How quickly can you close a position?", "acceptedAnswer": {"@type": "Answer", "text": "We typically share relevant candidate profiles within 2\u20135 working days, depending on the role. Most positions are closed within 1\u20133 weeks."}}, {"@type": "Question", "name": "What type of candidates do you provide?", "acceptedAnswer": {"@type": "Answer", "text": "We provide carefully screened candidates aligned with your job requirements, company culture, and long-term goals \u2014 ensuring the right fit, not just quick hiring."}}, {"@type": "Question", "name": "Do you offer a replacement guarantee?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We offer a 30-day replacement guarantee. If the candidate doesn't meet your expectations, we will provide a suitable replacement within this period."}}, {"@type": "Question", "name": "What industries and roles do you specialise in?", "acceptedAnswer": {"@type": "Answer", "text": "We support hiring across multiple industries including manufacturing, accounts & finance, operations, and entry to mid-level roles \u2014 tailored to your business needs."}}, {"@type": "Question", "name": "How do you ensure candidate quality?", "acceptedAnswer": {"@type": "Answer", "text": "Our process goes beyond basic screening \u2014 we evaluate candidates for communication, attitude, and role alignment to ensure they are job-ready and a strong fit."}}, {"@type": "Question", "name": "What is your pricing model?", "acceptedAnswer": {"@type": "Answer", "text": "Our pricing is simple and transparent, based on successful placements. We focus on delivering value through quality hiring outcomes."}}]}</script>
 </head>
 <body data-portal="employer" data-page="employers">
@@ -244,7 +244,7 @@
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
 <script src="js/vendor/split-type.min.js"></script>
-<script src="js/main.js"></script>
+<script src="js/main.js?v=5"></script>
 <script>
 /* ============ Business Owners — pinned editorial scroll engine ============
    Each section pins, its heading stays fixed, and its content animates
@@ -269,10 +269,23 @@
   }
   var cssv = function(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); };
 
-  /* Editorial/static: no pins, no scrub. Every section shows its COMPLETE content from
-     the base CSS; items carrying the .reveal class fade in ONCE on enter via the main.js
-     IntersectionObserver (reliable, never leaves content hidden). Problem rows render in
-     their SOLVED state (see #problem static CSS). */
+  /* Editorial chapters (shared engine in main.js). Each major section rises and plays
+     ONE entrance — heading fades up first, then its cards/rows float up together. The
+     sections that comfortably fit one screen PIN briefly below the navbar, then release;
+     the list-heavy sections (six-row Problem, seven-step Process, two-column Hiring
+     Models) keep the same entrance but scroll naturally so nothing is ever clipped.
+     No scrub, no replay. */
+  if(typeof window.TEChapter === 'function'){
+    window.TEChapter([
+      { sec:'#problem',  head:'.sec-head', items:'.prob',                 pin:false },
+      { sec:'#why',      head:'.sec-head', items:'.why-track .feat-card', pin:true, hold:0.6 },
+      { sec:'#process',  head:'.sec-head', items:'.tl-step',              pin:false },
+      { sec:'#services', head:'.sec-head', items:'.tbl-wrap',             pin:true, hold:0.6 },
+      { sec:'#models',   head:'.sec-head', items:'.hm-col',               pin:false },
+      { sec:'#stories',  head:'.sec-head', items:'.tst-card',             pin:true, hold:0.6 },
+      { sec:'#faq',      head:'.sec-head', items:'.faq-item',             pin:true, hold:0.6 }
+    ]);
+  }
 
   /* Recompute after fonts/images settle. */
   ScrollTrigger.refresh();
