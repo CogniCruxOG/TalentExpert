@@ -147,24 +147,40 @@
       const headKids = head ? [...head.children] : [];
       const items = c.items ? [...sec.querySelectorAll(c.items)] : [];
       // hand these to the chapter timeline: drop .reveal so the observer above and the
-      // .reveal opacity:0 base don't fight the inline animation (and content stays visible
-      // if JS ever fails, since the base is no longer hidden).
+      // .reveal opacity:0 base don't fight the inline animation, and kill each element's
+      // CSS transition so only GSAP drives it (a stray transition double-animates / can
+      // leave content stuck). Base is no longer hidden, so content survives even if JS fails.
       [head, ...headKids, ...items].forEach((el) => { if (el) { el.classList.remove('reveal', 'in'); el.style.transition = 'none'; } });
-      // fromTo (explicit target opacity:1) so items whose CSS base is opacity:0 still reveal.
-      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
-      if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.07 });
-      else if (head) tl.fromTo(head, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5 });
-      if (items.length) tl.fromTo(items, { opacity: 0, y: 30, scale: 0.99 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1 }, (head || headKids.length) ? '-=0.12' : 0);
+      // One entrance: heading/label/description rise FIRST, then the whole content group
+      // floats gently up + fades in together. fromTo with an explicit VISIBLE end state so
+      // nothing can be left hidden regardless of each element's base CSS.
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.08 });
+      else if (head) tl.fromTo(head, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55 });
+      if (items.length) tl.fromTo(items,
+        { opacity: 0, y: 30, scale: 0.985 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.72, stagger: 0.1 },
+        (head || headKids.length) ? '-=0.04' : 0);   // heading settles, then cards float in
       if (reduceM) { tl.progress(1); return; }
+      // Play exactly ONCE. Scrolling back up re-shows the finished state instantly (no replay).
+      let played = false;
+      const playOnce = () => { if (!played) { played = true; tl.play(); } };
+      const finish = () => { played = true; tl.progress(1); };
       if (desktop && c.pin !== false) {
+        // Brief chapter pin. anticipatePin + preventOverlaps make the lock-in read as a
+        // smooth continuation of the scroll rather than a snap; it holds for a short reading
+        // pause, then releases gently. The entrance plays on enter so the pin never feels empty.
         const pinEl = c.pinTarget ? sec.querySelector(c.pinTarget) : sec;
         ScrollTrigger.create({
-          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.6)),
+          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.75)),
           pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
-          onEnter: () => tl.play(), onEnterBack: () => tl.progress(1)
+          preventOverlaps: true, fastScrollEnd: true,
+          onEnter: playOnce, onEnterBack: finish,
+          // If the page loads already scrolled into/past this chapter, show it complete.
+          onRefresh: (self) => { if (!played && self.progress > 0.001) finish(); }
         });
       } else {
-        ScrollTrigger.create({ trigger: sec, start: 'top 82%', once: true, onEnter: () => tl.play() });
+        ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
       }
     });
     try { ScrollTrigger.refresh(); } catch (_) {}
