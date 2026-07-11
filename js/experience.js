@@ -157,15 +157,17 @@
     else if (head) tl.from(head, { opacity: 0, y: 18, duration: 0.5 });
     if (items.length) tl.from(items, { opacity: 0, y: 30, scale: 0.99, duration: 0.6, stagger: 0.1 }, (head || headKids.length) ? '-=0.12' : 0);
     if (reduce) { tl.progress(1); return; }
-    if (opts.pin !== false && matchMedia('(min-width:901px)').matches) {
-      // brief pin: hold the chapter just below the navbar while the entrance plays, then release
+    // Choreography only — NO pin. (A pin traps content taller than one screen: the lower
+    // cards fall off-viewport while pinned, and stacked section-pins fight each other.)
+    // The heading + cards simply reveal ONCE as the section enters; nothing scrubs.
+    if (opts.pin && matchMedia('(min-width:901px)').matches) {
       ScrollTrigger.create({
         trigger: sec, start: 'top top+=' + NAVH, end: '+=' + Math.round(innerHeight * 0.45),
         pin: true, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
         onEnter: () => tl.play(), onEnterBack: () => tl.progress(1)
       });
     } else {
-      ScrollTrigger.create({ trigger: sec, start: 'top 82%', once: true, onEnter: () => tl.play() });
+      ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: () => tl.play() });
     }
   };
 
