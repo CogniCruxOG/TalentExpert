@@ -1398,3 +1398,20 @@ body[data-page="employers"] #problem .prob-state .v{ opacity:1 !important; trans
 body[data-page="employers"] #problem .prob .a{ max-height:none !important; overflow:visible !important; opacity:1 !important; margin-top:4px; }
 
 
+
+/* ============ ABOUT — one-viewport chapters (desktop, editorial pin refactor) ============ */
+@media(min-width:901px){
+  body[data-page="about"] #story,
+  body[data-page="about"] #vision,
+  body[data-page="about"] #founder{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:96px 0 44px; }
+  /* Core Values: seven cards in a compact 4+3 grid that fits one screen */
+  body[data-page="about"] #values{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:92px 0 36px; }
+  body[data-page="about"] #values .sec-head{ margin-bottom:20px; }
+  body[data-page="about"] #values .cv-stage{ grid-template-columns:repeat(4,1fr); gap:14px; max-width:1260px; }
+  body[data-page="about"] #values .cv-card:last-child{ grid-column:auto; justify-self:auto; width:auto; }
+  body[data-page="about"] #values .cv-face{ padding:18px 18px; }
+  body[data-page="about"] #values .cv-num{ font-size:.9rem; }
+  body[data-page="about"] #values .cv-title{ font-size:1.12rem; margin-top:4px; }
+  body[data-page="about"] #values .cv-accent{ margin:8px 0 10px; }
+  body[data-page="about"] #values .cv-desc{ font-size:.84rem; line-height:1.4; }
+}

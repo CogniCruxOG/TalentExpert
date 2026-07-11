@@ -130,6 +130,46 @@
   }, { threshold: 0.14 });
   $$('.reveal').forEach(el => revO.observe(el));
 
+  /* ---- Shared "chapter" section intro (inner pages) ----
+     Each configured section pins briefly below the navbar and floats its heading FIRST,
+     then its content group, in ONCE (gentle rise + fade + slight scale, small stagger).
+     No scrub, no replay. Desktop + motion only; mobile / reduced-motion show everything
+     statically. Call from a page's inline script (after its Lenis is set up):
+       window.TEChapter([{ sec:'#values', head:'.sec-head', items:'.cv-card', pinTarget:'.cv-pin' }, ...]) */
+  window.TEChapter = function (cfg) {
+    if (typeof window.gsap === 'undefined' || typeof window.ScrollTrigger === 'undefined') return;
+    try { gsap.registerPlugin(ScrollTrigger); } catch (_) {}
+    const reduceM = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const desktop = matchMedia('(min-width:901px)').matches;
+    (cfg || []).forEach((c) => {
+      const sec = document.querySelector(c.sec); if (!sec) return;
+      const head = c.head ? sec.querySelector(c.head) : null;
+      const headKids = head ? [...head.children] : [];
+      const items = c.items ? [...sec.querySelectorAll(c.items)] : [];
+      // hand these to the chapter timeline: drop .reveal so the observer above and the
+      // .reveal opacity:0 base don't fight the inline animation (and content stays visible
+      // if JS ever fails, since the base is no longer hidden).
+      [head, ...headKids, ...items].forEach((el) => { if (el) { el.classList.remove('reveal', 'in'); el.style.transition = 'none'; } });
+      // fromTo (explicit target opacity:1) so items whose CSS base is opacity:0 still reveal.
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+      if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.07 });
+      else if (head) tl.fromTo(head, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5 });
+      if (items.length) tl.fromTo(items, { opacity: 0, y: 30, scale: 0.99 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1 }, (head || headKids.length) ? '-=0.12' : 0);
+      if (reduceM) { tl.progress(1); return; }
+      if (desktop && c.pin !== false) {
+        const pinEl = c.pinTarget ? sec.querySelector(c.pinTarget) : sec;
+        ScrollTrigger.create({
+          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.6)),
+          pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
+          onEnter: () => tl.play(), onEnterBack: () => tl.progress(1)
+        });
+      } else {
+        ScrollTrigger.create({ trigger: sec, start: 'top 82%', once: true, onEnter: () => tl.play() });
+      }
+    });
+    try { ScrollTrigger.refresh(); } catch (_) {}
+  };
+
   /* ---- Animated counters ---- */
   function animCount(el) {
     const target = +el.dataset.count, suf = el.dataset.suffix || '', comma = el.dataset.comma;

@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body data-page="about">
 
@@ -332,7 +332,7 @@
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
 <script src="js/vendor/split-type.min.js"></script>
-<script src="js/main.js"></script>
+<script src="js/main.js?v=4"></script>
 <script>
 /* About-page scroll engine:
    Lenis (eased smooth scroll, desktop) + GSAP ScrollTrigger (pin/scrub/toggle-on-enter)
@@ -374,7 +374,8 @@
     });
   }, { threshold:0.2, rootMargin:'0px 0px -8% 0px' });
 
-  targets.forEach(function(el){ io.observe(el); });
+  void io;   // Vision & Mission + Core Values are now revealed by TEChapter; show their
+  targets.forEach(function(el){ el.classList.add('in-view'); });   // CSS base as visible
 
   /* ---- PINNED SCRUBBED REVEALS: Our Story → Vision & Mission
      Sequential pinning with natural document spacing (default pinSpacing:true).
@@ -404,20 +405,19 @@
       });
     }
 
-    /* Editorial/static: no pins, no scrub. Vision & Mission and Core Values reveal ONCE
-       via the IntersectionObserver above. Story and Founder (previously --p-driven) get
-       the .static classes so CSS shows them complete, plus one gentle one-time entrance. */
+    /* Editorial CHAPTERS: each section pins briefly and floats its content in once (heading
+       first, then the cards/text). The .static classes keep Story/Founder content visible
+       (mask off, founder grid shown); TEChapter (main.js) drives the pin + reveal. */
     (function(){
       var story = document.querySelector('.story-scene'); if(story) story.classList.add('story-static');
       var qb = document.querySelector('#founder'); if(qb) qb.classList.add('qb-static');
-      var enter = function(sel, trig){
-        var els = document.querySelectorAll(sel); if(!els.length) return;
-        gsap.from(els, { opacity:0, y:26, duration:0.7, ease:'power3.out', stagger:0.09,
-          scrollTrigger:{ trigger:trig || els[0], start:'top 82%', once:true } });
-      };
-      enter('#story .story-p', '#story');
-      enter('#founder .founder-msg, #founder .founder-sig', '#founder');
     })();
+    if (window.TEChapter) window.TEChapter([
+      { sec:'#story',   head:'.sec-head', items:'.story-p' },
+      { sec:'#vision',  head:'.sec-head', items:'.vm-card' },
+      { sec:'#values',  head:'.sec-head', items:'.cv-card' },
+      { sec:'#founder', head:null,        items:'.founder-msg, .founder-sig' }
+    ]);
 
     /* Headings render fully styled (text + highlight) on the first paint — no JS split,
        no entrance that hides the heading after paint, so there is never a highlight-before-
