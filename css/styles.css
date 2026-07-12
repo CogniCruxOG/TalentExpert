@@ -781,10 +781,10 @@ body[data-page="about"] #vision .feat-card{
   font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; padding-bottom:16px;
   border-bottom:1px solid rgba(26,26,26,.08); margin-bottom:30px; }
 .vm-label::before{ content:""; width:20px; height:1.5px; background:var(--orange); border-radius:2px; flex-shrink:0; }
-/* Vision & Mission statements: bold handwritten script (Caveat) with orange highlights */
-.vm-quote-body{ position:relative; font-family:'Caveat',cursive; font-style:normal; font-weight:700; color:var(--ink);
-  font-size:2.85rem; line-height:1.18; letter-spacing:.002em; margin-top:8px; padding-top:.42em; }
-.vm-quote-body .vm-hl{ color:var(--orange); }
+/* Vision & Mission statements: bold, clean brand type (Plus Jakarta Sans) with orange highlights */
+.vm-quote-body{ position:relative; font-family:'Plus Jakarta Sans',sans-serif; font-style:normal; font-weight:700; color:var(--ink);
+  font-size:2rem; line-height:1.32; letter-spacing:-.017em; margin-top:8px; padding-top:.5em; }
+.vm-quote-body .vm-hl{ color:var(--orange); font-weight:800; }
 /* Opening quotation mark: a clean decorative accent that sits ABOVE the first line
    (not behind the text), identically placed on both Vision and Mission cards. */
 .vm-quote-body::before{ content:'\201C'; position:absolute; top:-.06em; left:-.02em; z-index:0;
@@ -803,7 +803,7 @@ body[data-page="about"] #vision .feat-card{
   .vm-stage{ flex-direction:column; gap:20px; width:100%; }
   .vm-card{ flex:none; }
   .vm-face{ padding:42px 34px 46px; background:rgba(255,253,251,.95); }
-  .vm-quote-body{ font-size:2.15rem; line-height:1.2; padding-top:.4em; }
+  .vm-quote-body{ font-size:1.6rem; line-height:1.4; padding-top:.45em; }
   .vm-quote-body::before{ font-size:2.6rem; top:-.04em; }
   .vm-label{ font-size:.7rem; padding-bottom:14px; margin-bottom:24px; }
 }
