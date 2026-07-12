@@ -242,6 +242,9 @@
     showWho();
     void armWho;
   }
+  /* BRAND CREDIBILITY chapter: heading fades first, then KPIs stagger + temple rises, once */
+  sectionIntro('#brand', '.x-brand-head', '.x-kpi-row, .x-brand-art', { pin: true, hold: 0.65 });
+
   /* WHO WE ARE chapter: pin + float the story paragraphs and the step diagram in once */
   sectionIntro('.x-who', '.x-who-head', '.x-who-story .wp, .x-who .ddd-stage', { pin: true, pinTarget: '.x-who-pin', hold: 0.6 });
 
