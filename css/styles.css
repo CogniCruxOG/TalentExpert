@@ -1241,14 +1241,15 @@ html.fonts-ready .hl-mark{ background-size:100% .30em; }
 .why-track .feat-card{ margin:0; }
 @media (max-width:900px){ .why-track{ grid-template-columns:1fr; width:min(460px,92vw); } }
 @media (min-width:901px){
-  #why.eb-sec{ min-height:100vh; box-sizing:border-box; padding:100px 0 40px;
-    display:flex; flex-direction:column; overflow:hidden; }
+  #why.eb-sec{ min-height:100vh; box-sizing:border-box; padding:86px 0 28px;
+    display:flex; flex-direction:column; justify-content:center; }
   #why.eb-sec .wrap{ flex:none; }
-  #why.eb-sec .sec-head{ margin-bottom:22px; }
-  #why.eb-sec .why-track{ flex:1; width:auto; max-width:none; margin:0; display:flex;
-    align-items:center; gap:40px; padding:0 calc(50vw - 235px); will-change:transform; }
-  #why.eb-sec .why-track .feat-card{ flex:0 0 470px; max-width:470px; min-height:360px;
-    display:flex; flex-direction:column; justify-content:center; will-change:transform,opacity; }
+  #why.eb-sec .sec-head{ margin-bottom:16px; }
+  /* All six cards in a compact 3×2 grid (NOT a horizontal coverflow track — that needed a
+     scrub engine that isn't wired up and clipped the section to 2 cards). */
+  #why.eb-sec .why-track{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+    width:min(1180px,94vw); margin:0 auto; }
+  #why.eb-sec .why-track .feat-card{ min-height:0; display:flex; flex-direction:column; }
 }
 
 /* ---- Section 3: Hiring Process — pinned, heading fixed at top, 7 steps compacted to fit ---- */
