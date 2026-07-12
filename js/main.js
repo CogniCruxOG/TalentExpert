@@ -145,11 +145,44 @@
      No scrub, no replay. Desktop + motion only; mobile / reduced-motion show everything
      statically. Call from a page's inline script (after its Lenis is set up):
        window.TEChapter([{ sec:'#values', head:'.sec-head', items:'.cv-card', pinTarget:'.cv-pin' }, ...]) */
+  /* ---- Auto-fit a full-screen chapter to ANY viewport --------------------------
+     A "pin & pause" chapter can only lock if it fits within the screen height. Screens
+     vary hugely (resolution, OS display-scaling, browser chrome), so a section that fits
+     one laptop overflows another and won't pin there. This measures the section's content
+     and, if it's taller than the available height, scales it down just enough to fit —
+     using an OUTER wrapper sized to the scaled height (a bare transform:scale doesn't shrink
+     layout height, so the section would still read as "too tall"). Written in ES5 style for
+     broad browser support. Idempotent + re-runs on every ScrollTrigger refresh (resize). */
+  function fitSection(sec) {
+    if (!sec) return;
+    var outer = sec.firstElementChild;
+    if (!outer || !outer.classList || !outer.classList.contains('te-fit-outer')) {
+      outer = document.createElement('div'); outer.className = 'te-fit-outer';
+      var inner0 = document.createElement('div'); inner0.className = 'te-fit';
+      while (sec.firstChild) inner0.appendChild(sec.firstChild);
+      outer.appendChild(inner0);
+      sec.appendChild(outer);
+    }
+    var inner = outer.firstElementChild;
+    inner.style.transform = ''; outer.style.height = '';     // reset before measuring
+    var cs = window.getComputedStyle(sec);
+    var reserve = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+    var avail = window.innerHeight - reserve - 6;
+    var natural = inner.getBoundingClientRect().height;
+    if (natural > avail && avail > 0) {
+      var s = avail / natural; if (s < 0.5) s = 0.5;
+      inner.style.transform = 'scale(' + s.toFixed(4) + ')';
+      outer.style.height = Math.ceil(natural * s) + 'px';
+    }
+  }
+  window.TEFitSection = fitSection;   // exposed so the home engine (experience.js) can reuse it
+
   window.TEChapter = function (cfg) {
     if (typeof window.gsap === 'undefined' || typeof window.ScrollTrigger === 'undefined') return;
     try { gsap.registerPlugin(ScrollTrigger); } catch (_) {}
     const reduceM = matchMedia('(prefers-reduced-motion:reduce)').matches;
     const desktop = matchMedia('(min-width:901px)').matches;
+    const managed = [];
     (cfg || []).forEach((c) => {
       const sec = document.querySelector(c.sec); if (!sec) return;
       const head = c.head ? sec.querySelector(c.head) : null;
@@ -175,10 +208,15 @@
       let played = false;
       const playOnce = () => { if (!played) { played = true; tl.play(); } };
       const finish = () => { played = true; tl.progress(1); };
-      const pinEl = (desktop && c.pin !== false) ? (c.pinTarget ? sec.querySelector(c.pinTarget) : sec) : null;
-      // Pin only when the chapter actually fits the viewport — this is the single correct test:
-      // it pins on any screen where the content fits (so the pause works), and skips pinning
-      // (plain scroll) when the content is taller than the screen, so nothing clips or overlaps.
+      const doPin = desktop && c.pin !== false;
+      const pinTargetEl = c.pinTarget ? sec.querySelector(c.pinTarget) : null;
+      // Auto-fit the whole-section chapters so they ALWAYS fit the screen (any device / scaling)
+      // and can therefore pin. Sections that pin a specific inner target are left to the normal
+      // fits-test (they manage their own height).
+      if (doPin && !pinTargetEl) { fitSection(sec); managed.push(sec); }
+      const pinEl = doPin ? (pinTargetEl || sec) : null;
+      // After auto-fit, whole-section chapters fit by construction; the test still guards the
+      // pinTarget case and any section too short to bother.
       const fitsViewport = pinEl && pinEl.scrollHeight <= innerHeight + 4;
       if (pinEl && fitsViewport) {
         // Brief chapter pin. anticipatePin makes the lock-in read as a smooth continuation of
@@ -196,6 +234,11 @@
         ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
       }
     });
+    // Re-fit every managed chapter whenever ScrollTrigger recomputes (window resize, zoom,
+    // orientation change) BEFORE it re-measures pin positions — so the fit stays correct.
+    if (managed.length) {
+      try { ScrollTrigger.addEventListener('refreshInit', function () { for (var i = 0; i < managed.length; i++) fitSection(managed[i]); }); } catch (_) {}
+    }
     try { ScrollTrigger.refresh(); } catch (_) {}
   };
 

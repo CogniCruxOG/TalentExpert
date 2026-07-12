@@ -43,6 +43,11 @@ html{scroll-behavior:auto;font-size:16px;
   /* one continuous warm canvas so sections blend instead of stacking as boxes */
   background:linear-gradient(180deg,#FFFFFF 0%,#FFF9F4 28%,#FDF3EC 52%,#FFF8F2 74%,#FFFFFF 100%)}
 body{font-family:'Inter',sans-serif;color:var(--ink2);background:transparent;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+/* Auto-fit wrappers (JS injects them into pinned chapters): the outer holds the scaled
+   layout height, the inner is scaled from its top so a full-screen chapter fits any screen. */
+.te-fit-outer{ width:100%; }
+.te-fit{ width:100%; transform-origin:top center; }
+
 /* Anti-FOUT: hold the page hidden until the web fonts have rendered, then fade the fully
    styled page in — so a hard refresh never shows the fallback font first (an inline <head>
    script toggles html.fonts-loading and removes it on document.fonts.ready, with a timeout

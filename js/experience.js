@@ -175,10 +175,11 @@
     const finish = () => { played = true; tl.progress(1); };
     const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
       ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
-    // Pin only when the chapter content actually fits within one screen. On a shorter or
-    // higher-DPI-scaled laptop (or with browser zoom) the content is taller than the viewport,
-    // so pinning would clip/overlap — there we fall back to a plain scroll-in reveal. This is
-    // the single correct test: pins wherever it fits, flows where it doesn't.
+    // Auto-fit whole-section chapters (no custom pinTarget) so they shrink to fit ANY screen
+    // and can pin everywhere — same helper the inner pages use (shared via window.TEFitSection).
+    if (pinEl && !opts.pinTarget && typeof window.TEFitSection === 'function') window.TEFitSection(sec);
+    // Pin only when the chapter content actually fits within one screen. After auto-fit the
+    // whole-section chapters fit by construction; this still guards the pinTarget scenes.
     const canPin = pinEl && pinEl.scrollHeight <= innerHeight + 4;
     if (canPin) {
       // Brief chapter pin: anticipatePin makes the lock-in read as a smooth continuation of the
@@ -337,6 +338,16 @@
   }
 
   /* ---- keep ScrollTrigger in sync after fonts/images load ---- */
+  // Re-fit every auto-fitted chapter whenever ScrollTrigger recomputes (resize / zoom /
+  // orientation) BEFORE it re-measures pins, so the fit stays correct on any screen change.
+  try {
+    ScrollTrigger.addEventListener('refreshInit', function () {
+      if (typeof window.TEFitSection !== 'function') return;
+      var outers = document.querySelectorAll('.te-fit-outer');
+      for (var i = 0; i < outers.length; i++) window.TEFitSection(outers[i].parentNode);
+    });
+  } catch (_) {}
+
   addEventListener('load', () => ScrollTrigger.refresh());
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();
