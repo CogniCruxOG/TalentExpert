@@ -781,8 +781,10 @@ body[data-page="about"] #vision .feat-card{
   font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; padding-bottom:16px;
   border-bottom:1px solid rgba(26,26,26,.08); margin-bottom:30px; }
 .vm-label::before{ content:""; width:20px; height:1.5px; background:var(--orange); border-radius:2px; flex-shrink:0; }
-.vm-quote-body{ position:relative; font-family:'Plus Jakarta Sans',sans-serif; font-style:italic; font-weight:340; color:var(--ink);
-  font-size:1.98rem; line-height:1.46; letter-spacing:-.005em; margin-top:8px; padding-top:.62em; }
+/* Vision & Mission statements: bold handwritten script (Caveat) with orange highlights */
+.vm-quote-body{ position:relative; font-family:'Caveat',cursive; font-style:normal; font-weight:700; color:var(--ink);
+  font-size:2.85rem; line-height:1.18; letter-spacing:.002em; margin-top:8px; padding-top:.42em; }
+.vm-quote-body .vm-hl{ color:var(--orange); }
 /* Opening quotation mark: a clean decorative accent that sits ABOVE the first line
    (not behind the text), identically placed on both Vision and Mission cards. */
 .vm-quote-body::before{ content:'\201C'; position:absolute; top:-.06em; left:-.02em; z-index:0;
@@ -801,7 +803,7 @@ body[data-page="about"] #vision .feat-card{
   .vm-stage{ flex-direction:column; gap:20px; width:100%; }
   .vm-card{ flex:none; }
   .vm-face{ padding:42px 34px 46px; background:rgba(255,253,251,.95); }
-  .vm-quote-body{ font-size:1.58rem; line-height:1.5; padding-top:.5em; }
+  .vm-quote-body{ font-size:2.15rem; line-height:1.2; padding-top:.4em; }
   .vm-quote-body::before{ font-size:2.6rem; top:-.04em; }
   .vm-label{ font-size:.7rem; padding-bottom:14px; margin-bottom:24px; }
 }
@@ -1435,28 +1437,31 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
 /* ============ ABOUT — one-viewport chapters (desktop, editorial pin refactor) ============ */
 @media(min-width:901px){
   body[data-page="about"] #story,
-  body[data-page="about"] #vision,
-  body[data-page="about"] #founder{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:96px 0 44px; }
+  body[data-page="about"] #vision{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:96px 0 44px; }
+  /* Founder's Message: heavier top padding offsets the fixed navbar so the pinned quote
+     lands at the OPTICAL centre of the visible viewport (not tucked under the nav). */
+  body[data-page="about"] #founder{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:140px 0 60px; }
 
-  /* Core Values: a balanced 4-over-3 grid (12-col: top cards span 3, bottom span 4) so both
-     rows fill the full width — no empty cell — with generous card sizing and padding. */
-  body[data-page="about"] #values{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:104px 0 48px; }
-  body[data-page="about"] #values .sec-head{ margin-bottom:30px; }
-  body[data-page="about"] #values .cv-stage{ grid-template-columns:repeat(12,1fr); gap:20px; width:min(1320px,94vw); max-width:1320px; margin-top:0; }
+  /* Core Values: a balanced 4-over-3 grid (12-col: top cards span 3, bottom span 4) sized
+     to fit within ONE viewport so the section pins & pauses (content must be ≤ screen height,
+     else the pin engine skips pinning to avoid clipping the lower cards). */
+  body[data-page="about"] #values{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:72px 0 32px; }
+  body[data-page="about"] #values .sec-head{ margin-bottom:16px; }
+  body[data-page="about"] #values .cv-stage{ grid-template-columns:repeat(12,1fr); gap:16px; width:min(1320px,94vw); max-width:1320px; margin-top:0; }
   body[data-page="about"] #values .cv-card{ grid-column:span 3; }              /* top row → 4 cards */
   body[data-page="about"] #values .cv-card:nth-child(n+5){ grid-column:span 4; } /* bottom row → 3 cards */
   body[data-page="about"] #values .cv-card:last-child{ grid-column:span 4; justify-self:auto; width:auto; }
-  body[data-page="about"] #values .cv-face{ padding:30px 32px; display:flex; flex-direction:column; }
-  body[data-page="about"] #values .cv-num{ font-size:1rem; }
-  body[data-page="about"] #values .cv-title{ font-size:1.42rem; margin-top:8px; line-height:1.14; }
-  body[data-page="about"] #values .cv-accent{ margin:12px 0 14px; }
-  body[data-page="about"] #values .cv-desc{ font-size:1.02rem; line-height:1.5; }
+  body[data-page="about"] #values .cv-face{ padding:20px 24px; display:flex; flex-direction:column; }
+  body[data-page="about"] #values .cv-num{ font-size:.9rem; }
+  body[data-page="about"] #values .cv-title{ font-size:1.28rem; margin-top:6px; line-height:1.12; }
+  body[data-page="about"] #values .cv-accent{ margin:8px 0 10px; }
+  body[data-page="about"] #values .cv-desc{ font-size:.94rem; line-height:1.42; }
 }
-/* Wider screens can afford even more breathing room inside each value card */
-@media(min-width:1360px) and (min-height:840px){
-  body[data-page="about"] #values .cv-face{ padding:36px 38px; }
-  body[data-page="about"] #values .cv-title{ font-size:1.5rem; }
-  body[data-page="about"] #values .cv-desc{ font-size:1.08rem; line-height:1.55; }
+/* Only on genuinely tall screens (room to spare) enlarge the value cards a little */
+@media(min-width:1360px) and (min-height:1000px){
+  body[data-page="about"] #values .cv-face{ padding:28px 30px; }
+  body[data-page="about"] #values .cv-title{ font-size:1.4rem; }
+  body[data-page="about"] #values .cv-desc{ font-size:1rem; line-height:1.5; }
 }
 
 
