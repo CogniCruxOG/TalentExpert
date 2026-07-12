@@ -181,12 +181,13 @@
     // the single correct test: pins wherever it fits, flows where it doesn't.
     const canPin = pinEl && pinEl.scrollHeight <= innerHeight + 4;
     if (canPin) {
-      // Brief chapter pin: anticipatePin + preventOverlaps make the lock-in read as a smooth
-      // continuation of the scroll; it holds for a short reading pause, then releases gently.
+      // Brief chapter pin: anticipatePin makes the lock-in read as a smooth continuation of the
+      // scroll; it holds for a short reading pause, then releases gently.
+      // NB: NO fastScrollEnd — it makes the pin jump to its end on fast scroll, so a mouse wheel
+      // (big fast jumps) would skip the pause while a trackpad works. Removing it = pins on both.
       ScrollTrigger.create({
         trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.75)),
         pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
-        preventOverlaps: true, fastScrollEnd: true,
         onEnter: playOnce, onEnterBack: finish,
         // If the page loads already scrolled into/past this chapter, show it complete.
         onRefresh: (self) => { if (!played && self.progress > 0.001) finish(); }

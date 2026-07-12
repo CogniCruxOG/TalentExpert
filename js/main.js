@@ -181,13 +181,13 @@
       // (plain scroll) when the content is taller than the screen, so nothing clips or overlaps.
       const fitsViewport = pinEl && pinEl.scrollHeight <= innerHeight + 4;
       if (pinEl && fitsViewport) {
-        // Brief chapter pin. anticipatePin + preventOverlaps make the lock-in read as a
-        // smooth continuation of the scroll rather than a snap; it holds for a short reading
-        // pause, then releases gently. The entrance plays on enter so the pin never feels empty.
+        // Brief chapter pin. anticipatePin makes the lock-in read as a smooth continuation of
+        // the scroll rather than a snap; it holds for a short reading pause, then releases.
+        // NB: NO fastScrollEnd — that makes the pin jump straight to its end on fast scroll, so
+        // a mouse wheel (big, fast jumps) would skip the pause entirely while a trackpad works.
         ScrollTrigger.create({
           trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.75)),
           pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
-          preventOverlaps: true, fastScrollEnd: true,
           onEnter: playOnce, onEnterBack: finish,
           // If the page loads already scrolled into/past this chapter, show it complete.
           onRefresh: (self) => { if (!played && self.progress > 0.001) finish(); }
