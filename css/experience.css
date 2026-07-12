@@ -345,10 +345,9 @@ html.lenis,html.lenis body{height:auto}
 .x-founder-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.55fr .85fr;gap:60px;align-items:center;width:100%}
 .x-founder-quote .qmark{font-family:'Plus Jakarta Sans';font-size:4.6rem;color:var(--orange);line-height:.2;display:block;margin-bottom:18px}
 .x-founder-quote blockquote{font-family:'Plus Jakarta Sans';font-weight:300;font-size:clamp(1.7rem,2.9vw,2.5rem);line-height:1.28;color:var(--ink);letter-spacing:-.01em;text-wrap:balance}
-/* italic phrase gets a gentle scroll-driven emphasis (--eg 0→1): brighter + soft glow, no scale */
-.x-founder-quote blockquote em{font-style:italic;color:var(--orange);font-weight:400;
-  text-shadow:0 0 calc(var(--eg,0) * 20px) rgba(242,111,33,calc(var(--eg,0) * .45));
-  filter:brightness(calc(1 + var(--eg,0) * .1))}
+/* italic phrase emphasis — colour only. NB: no filter/will-change here — applying a
+   filter to an inline element inflates its line box and opens a blank gap in the para. */
+.x-founder-quote blockquote em{font-style:italic;color:var(--orange);font-weight:400}
 /* signature divider grows vertically (--dl 0→1) */
 .x-founder-sign{position:relative;padding-left:28px}
 .x-founder-sign::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--orange);transform:scaleY(var(--dl,1));transform-origin:top}
