@@ -403,15 +403,19 @@ table.data td strong{color:var(--ink)}
 .founder-grid{ display:grid; grid-template-columns:1.9fr 1fr; gap:60px; align-items:center;
   max-width:1200px; margin:0 auto; text-align:left; }
 .founder-msg{ position:relative; }
-.founder-msg .quote-mark{ font-size:4.4rem; color:var(--orange); opacity:.85; line-height:.5; margin-bottom:10px; }
 .founder-title{ font-family:'Inter',sans-serif; font-size:.78rem; font-weight:700; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--ink3); margin:0 0 22px; display:flex; align-items:center; gap:12px; }
+  text-transform:uppercase; color:var(--ink3); margin:0 0 6px; display:flex; align-items:center; gap:12px; }
 .founder-title::before{ content:""; width:26px; height:1.5px; background:var(--orange); border-radius:2px; }
+/* Large decorative opening quote, sitting just below the eyebrow as an editorial lead-in */
+.founder-msg .quote-mark{ display:block; font-family:'Plus Jakarta Sans',sans-serif; font-size:3.6rem;
+  color:var(--orange); opacity:.32; line-height:.4; margin:8px 0 4px; }
 /* natural left-aligned editorial measure (~62ch) — text wraps by itself, no manual line breaks,
    no justification, so it stays correct at any font width */
 .founder-msg blockquote{ font-family:'Plus Jakarta Sans',sans-serif; font-style:italic; font-weight:340;
-  font-size:1.42rem; line-height:1.62; letter-spacing:-.005em; color:var(--ink); margin:0;
-  max-width:62ch; text-align:left; text-wrap:pretty; }
+  font-size:1.38rem; line-height:1.66; letter-spacing:-.005em; color:var(--ink); margin:0;
+  max-width:60ch; text-align:left; text-wrap:pretty; }
+.founder-msg blockquote p{ margin:0; }
+.founder-msg blockquote p + p{ margin-top:1.05em; }
 .founder-msg blockquote em{ font-style:italic; color:var(--orange); }
 /* signature panel — stacked hierarchy, thin dividers, subtle orange accents */
 .founder-sig{ text-align:center; padding:34px 28px; border:1px solid var(--hair); border-radius:18px;
@@ -552,7 +556,9 @@ footer.site:hover .foot-glow{opacity:1}
 .foot-card:hover .fc-ic{background:var(--orange);color:#fff;box-shadow:0 8px 20px -6px rgba(242,111,33,.6)}
 .foot-card .fc-ic .ic{width:19px;height:19px}
 .foot-card .fc-t{display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:2px}
-.foot-card .fc-v{display:block;font-size:.92rem;color:var(--ink);font-weight:600;line-height:1.35}
+.foot-card .fc-v{display:block;font-size:.92rem;color:var(--ink);font-weight:600;line-height:1.4;text-wrap:pretty}
+/* keep multi-word address fragments (e.g. the street name) from breaking mid-phrase */
+.foot-card .fc-v .nb{white-space:nowrap}
 /* social */
 .foot-social{display:flex;gap:12px}
 .foot-social a{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
@@ -763,9 +769,11 @@ body[data-page="about"] #vision .feat-card{
   border-bottom:1px solid rgba(26,26,26,.08); margin-bottom:30px; }
 .vm-label::before{ content:""; width:20px; height:1.5px; background:var(--orange); border-radius:2px; flex-shrink:0; }
 .vm-quote-body{ position:relative; font-family:'Plus Jakarta Sans',sans-serif; font-style:italic; font-weight:340; color:var(--ink);
-  font-size:1.98rem; line-height:1.46; letter-spacing:-.005em; margin-top:14px; }
-.vm-quote-body::before{ content:'\201C'; position:absolute; top:-.28em; left:-.03em; z-index:0;
-  font-size:3.4rem; line-height:1; font-style:normal; color:var(--orange); opacity:.34; pointer-events:none; }
+  font-size:1.98rem; line-height:1.46; letter-spacing:-.005em; margin-top:8px; padding-top:.62em; }
+/* Opening quotation mark: a clean decorative accent that sits ABOVE the first line
+   (not behind the text), identically placed on both Vision and Mission cards. */
+.vm-quote-body::before{ content:'\201C'; position:absolute; top:-.06em; left:-.02em; z-index:0;
+  font-size:3.1rem; line-height:1; font-style:normal; color:var(--orange); opacity:.32; pointer-events:none; }
 .vm-quote-body .l{ display:block; position:relative; }
 .vm-quote-body .l + .l{ margin-top:.68em; }
 /* Vision & Mission: .sline elements display inline for natural editorial text flow */
@@ -780,8 +788,8 @@ body[data-page="about"] #vision .feat-card{
   .vm-stage{ flex-direction:column; gap:20px; width:100%; }
   .vm-card{ flex:none; }
   .vm-face{ padding:42px 34px 46px; background:rgba(255,253,251,.95); }
-  .vm-quote-body{ font-size:1.58rem; line-height:1.5; }
-  .vm-quote-body::before{ font-size:2.8rem; top:-.7em; }
+  .vm-quote-body{ font-size:1.58rem; line-height:1.5; padding-top:.5em; }
+  .vm-quote-body::before{ font-size:2.6rem; top:-.04em; }
   .vm-label{ font-size:.7rem; padding-bottom:14px; margin-bottom:24px; }
 }
 
@@ -1414,18 +1422,30 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
 /* ============ ABOUT — one-viewport chapters (desktop, editorial pin refactor) ============ */
 @media(min-width:901px){
   body[data-page="about"] #story,
-  body[data-page="about"] #vision,
-  body[data-page="about"] #founder{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:96px 0 44px; }
-  /* Core Values: seven cards in a compact 4+3 grid that fits one screen */
-  body[data-page="about"] #values{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:92px 0 36px; }
-  body[data-page="about"] #values .sec-head{ margin-bottom:20px; }
-  body[data-page="about"] #values .cv-stage{ grid-template-columns:repeat(4,1fr); gap:14px; max-width:1260px; }
-  body[data-page="about"] #values .cv-card:last-child{ grid-column:auto; justify-self:auto; width:auto; }
-  body[data-page="about"] #values .cv-face{ padding:18px 18px; }
-  body[data-page="about"] #values .cv-num{ font-size:.9rem; }
-  body[data-page="about"] #values .cv-title{ font-size:1.12rem; margin-top:4px; }
-  body[data-page="about"] #values .cv-accent{ margin:8px 0 10px; }
-  body[data-page="about"] #values .cv-desc{ font-size:.84rem; line-height:1.4; }
+  body[data-page="about"] #vision{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:96px 0 44px; }
+  /* Founder's Message: extra top padding offsets the fixed navbar so the pinned content
+     sits optically centred in the visible viewport (not high under the nav). */
+  body[data-page="about"] #founder{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:124px 0 56px; }
+
+  /* Core Values: a balanced 4-over-3 grid (12-col: top cards span 3, bottom span 4) so both
+     rows fill the full width — no empty cell — with generous card sizing and padding. */
+  body[data-page="about"] #values{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:104px 0 48px; }
+  body[data-page="about"] #values .sec-head{ margin-bottom:30px; }
+  body[data-page="about"] #values .cv-stage{ grid-template-columns:repeat(12,1fr); gap:20px; width:min(1320px,94vw); max-width:1320px; margin-top:0; }
+  body[data-page="about"] #values .cv-card{ grid-column:span 3; }              /* top row → 4 cards */
+  body[data-page="about"] #values .cv-card:nth-child(n+5){ grid-column:span 4; } /* bottom row → 3 cards */
+  body[data-page="about"] #values .cv-card:last-child{ grid-column:span 4; justify-self:auto; width:auto; }
+  body[data-page="about"] #values .cv-face{ padding:30px 32px; display:flex; flex-direction:column; }
+  body[data-page="about"] #values .cv-num{ font-size:1rem; }
+  body[data-page="about"] #values .cv-title{ font-size:1.42rem; margin-top:8px; line-height:1.14; }
+  body[data-page="about"] #values .cv-accent{ margin:12px 0 14px; }
+  body[data-page="about"] #values .cv-desc{ font-size:1.02rem; line-height:1.5; }
+}
+/* Wider screens can afford even more breathing room inside each value card */
+@media(min-width:1360px) and (min-height:840px){
+  body[data-page="about"] #values .cv-face{ padding:36px 38px; }
+  body[data-page="about"] #values .cv-title{ font-size:1.5rem; }
+  body[data-page="about"] #values .cv-desc{ font-size:1.08rem; line-height:1.55; }
 }
 
 
