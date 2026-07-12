@@ -175,12 +175,10 @@
       let played = false;
       const playOnce = () => { if (!played) { played = true; tl.play(); } };
       const finish = () => { played = true; tl.progress(1); };
-      // Only consider pinning on a viewport tall enough for a full-screen chapter. On a shorter
-      // or higher-DPI-scaled laptop (or with browser zoom) we skip pinning entirely so nothing
-      // clips or overlaps — the section just scrolls with its entrance.
-      const tallEnough = innerHeight >= 800;
-      const pinEl = (desktop && tallEnough && c.pin !== false) ? (c.pinTarget ? sec.querySelector(c.pinTarget) : sec) : null;
-      // Never pin a chapter taller than the viewport — pinning would clip its lower content.
+      const pinEl = (desktop && c.pin !== false) ? (c.pinTarget ? sec.querySelector(c.pinTarget) : sec) : null;
+      // Pin only when the chapter actually fits the viewport — this is the single correct test:
+      // it pins on any screen where the content fits (so the pause works), and skips pinning
+      // (plain scroll) when the content is taller than the screen, so nothing clips or overlaps.
       const fitsViewport = pinEl && pinEl.scrollHeight <= innerHeight + 4;
       if (pinEl && fitsViewport) {
         // Brief chapter pin. anticipatePin + preventOverlaps make the lock-in read as a

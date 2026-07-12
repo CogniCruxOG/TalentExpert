@@ -1464,27 +1464,6 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
   body[data-page="about"] #values .cv-desc{ font-size:1rem; line-height:1.5; }
 }
 
-/* ============ CROSS-DEVICE SAFETY — short viewports ============
-   The full-screen "chapter" layout (min-height:100vh + pinned pause) only works when the
-   screen is tall enough to hold a section. On a shorter or higher-DPI-scaled laptop, or with
-   browser zoom, forcing 100vh makes sections overflow, clip and overlap. Below this height we
-   drop the 100vh lock so every section flows at its NATURAL height and simply scrolls — the
-   pin engines (main.js / experience.js) also self-disable under 800px. Result: no overlap and
-   correct sizing on any screen, from small laptops to large monitors. */
-@media (min-width:901px) and (max-height:799px){
-  body[data-page="home"] section,
-  body[data-page="about"] section,
-  body[data-page="employers"] section,
-  body[data-page="job-seekers"] section,
-  body[data-page="services"] section,
-  body[data-page="blog"] section,
-  body[data-page="career-tips"] section,
-  body[data-page="process"] section,
-  body[data-page="hiring-models"] section,
-  body[data-page="industries"] section{ min-height:0 !important; }
-}
-
-
 /* ============ SERVICES — overview as a one-viewport pinned chapter ============ */
 @media(min-width:901px){
   body[data-page="services"] #svc-overview{ min-height:100vh; margin-top:0; display:flex; align-items:center; box-sizing:border-box; padding:96px 0 44px; }

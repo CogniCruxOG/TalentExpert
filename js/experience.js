@@ -175,11 +175,11 @@
     const finish = () => { played = true; tl.progress(1); };
     const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
       ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
-    // Pin ONLY when the viewport is tall enough AND the chapter content actually fits within
-    // one screen. On a shorter or higher-DPI-scaled laptop (or with browser zoom) the content
-    // would be taller than the viewport, so pinning it would clip/overlap — there we fall back
-    // to a plain scroll-in reveal so every section flows and stays readable.
-    const canPin = pinEl && innerHeight >= 800 && pinEl.scrollHeight <= innerHeight + 4;
+    // Pin only when the chapter content actually fits within one screen. On a shorter or
+    // higher-DPI-scaled laptop (or with browser zoom) the content is taller than the viewport,
+    // so pinning would clip/overlap — there we fall back to a plain scroll-in reveal. This is
+    // the single correct test: pins wherever it fits, flows where it doesn't.
+    const canPin = pinEl && pinEl.scrollHeight <= innerHeight + 4;
     if (canPin) {
       // Brief chapter pin: anticipatePin + preventOverlaps make the lock-in read as a smooth
       // continuation of the scroll; it holds for a short reading pause, then releases gently.
