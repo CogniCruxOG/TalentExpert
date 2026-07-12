@@ -126,7 +126,18 @@ h2.title em{font-style:italic;font-weight:400;color:var(--ink)}
 .btn.lg{padding:16px 30px;font-size:1rem}
 
 /* ============ NAV + MEGA MENU ============ */
-header.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 34px);max-width:var(--maxw);transition:top .4s var(--ease)}
+/* Full-width frosted "veil" pinned flush to the very top of the viewport, sitting just
+   BEHIND the floating pill (z:99 < nav z:100). It seals the open band above/around the
+   pill so page content fades out as it approaches the top instead of blinking through the
+   gap. Masked to fade to nothing at its lower edge (no hard seam). Pure CSS → every page. */
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:96px;z-index:99;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(252,251,249,.82) 0%,rgba(252,251,249,.58) 44%,rgba(252,251,249,0) 100%);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 54%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 54%,transparent 100%)}
+/* Centred on the pixel grid via auto margins (NOT translateX(-50%), whose half-width offset
+   lands on a fractional pixel and makes the pill's backdrop-filter bleed/flicker on scroll). */
+header.nav{position:fixed;top:16px;left:0;right:0;margin-left:auto;margin-right:auto;z-index:100;width:calc(100% - 34px);max-width:var(--maxw);transition:top .4s var(--ease)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 20px;border-radius:100px;background:var(--glass);backdrop-filter:blur(18px) saturate(1.4);border:1px solid rgba(255,255,255,.6);box-shadow:var(--sh-s)}
 .nav.scrolled .nav-inner{background:var(--glass2)}
 .nav-logo img{height:40px;width:auto}
