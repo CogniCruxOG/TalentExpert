@@ -173,12 +173,16 @@
     let played = false;
     const playOnce = () => { if (!played) { played = true; tl.play(); } };
     const finish = () => { played = true; tl.progress(1); };
-    if (opts.pin && matchMedia('(min-width:901px)').matches) {
-      // Brief chapter pin: the section is a 100vh block (opts.pinTarget) sized to hold all
-      // its content. anticipatePin + preventOverlaps make the lock-in read as a smooth
-      // continuation of the scroll rather than a snap; it holds for a short reading pause,
-      // then releases gently. The entrance plays on enter so the pin never feels empty.
-      const pinEl = opts.pinTarget ? $(opts.pinTarget, sec) : sec;
+    const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
+      ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
+    // Pin ONLY when the viewport is tall enough AND the chapter content actually fits within
+    // one screen. On a shorter or higher-DPI-scaled laptop (or with browser zoom) the content
+    // would be taller than the viewport, so pinning it would clip/overlap — there we fall back
+    // to a plain scroll-in reveal so every section flows and stays readable.
+    const canPin = pinEl && innerHeight >= 800 && pinEl.scrollHeight <= innerHeight + 4;
+    if (canPin) {
+      // Brief chapter pin: anticipatePin + preventOverlaps make the lock-in read as a smooth
+      // continuation of the scroll; it holds for a short reading pause, then releases gently.
       ScrollTrigger.create({
         trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.75)),
         pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
