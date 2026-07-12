@@ -244,6 +244,27 @@
   }
   /* BRAND CREDIBILITY chapter: heading fades first, then KPIs stagger + temple rises, once */
   sectionIntro('#brand', '.x-brand-head', '.x-kpi-row, .x-brand-art', { pin: true, hold: 0.65 });
+  /* KPI counters — count 0 → target ONCE as the section settles; the "+" appears with the
+     final number; smooth ease-out ~1.8s; never replays. Reduced-motion shows finals. */
+  (function () {
+    const brand = $('#brand'); if (!brand) return;
+    const nums = $$('.x-kpi-n', brand);
+    const jobs = nums.map((el) => ({ el, to: +el.textContent.replace(/,/g, ''), comma: el.textContent.indexOf(',') > -1 }));
+    if (reduce) return;                                  // static finals under reduced motion
+    nums.forEach((el) => (el.textContent = '0'));
+    gsap.set('.x-kpi-s', { opacity: 0, x: -5 });         // '+' hidden until the count lands
+    ScrollTrigger.create({
+      trigger: brand, start: 'top top', once: true,
+      onEnter: () => {
+        jobs.forEach((j) => {
+          const o = { v: 0 };
+          gsap.to(o, { v: j.to, duration: 1.8, ease: 'power2.out',
+            onUpdate() { const v = Math.round(o.v); j.el.textContent = j.comma ? v.toLocaleString('en-IN') : v; } });
+        });
+        gsap.to('.x-kpi-s', { opacity: 1, x: 0, duration: 0.5, delay: 1.45, ease: 'power2.out' });
+      }
+    });
+  })();
 
   /* WHO WE ARE chapter: pin + float the story paragraphs and the step diagram in once */
   sectionIntro('.x-who', '.x-who-head', '.x-who-story .wp, .x-who .ddd-stage', { pin: true, pinTarget: '.x-who-pin', hold: 0.6 });
