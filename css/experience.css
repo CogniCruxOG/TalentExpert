@@ -70,9 +70,16 @@ html.lenis,html.lenis body{height:auto}
 .x-sub{font-size:clamp(1.12rem,1.5vw,1.32rem);font-weight:500;color:var(--ink);max-width:54ch;margin:0 auto 12px;letter-spacing:.004em}
 .x-rhythm{font-family:'Bitter';font-style:italic;font-weight:500;font-size:clamp(1.18rem,1.6vw,1.4rem);color:var(--ink);margin-bottom:32px;letter-spacing:.01em}
 .x-rhythm span{color:var(--orange)}
-.x-hero .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:44px}
+.x-hero .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:40px}
 
-/* ---- Trust band: floating glass statistics (no boxed container) ---- */
+/* ---- Hero brand signature — editorial rule + ornament, a memorable sign-off ---- */
+.x-signature{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:clamp(16px,2vw,26px);width:min(640px,90vw);margin:0 auto}
+.x-sig-rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--hair) 65%)}
+.x-sig-rule:last-child{background:linear-gradient(90deg,var(--hair) 35%,transparent)}
+.x-sig-text{display:inline-flex;align-items:center;gap:clamp(11px,1.4vw,17px);font-family:'Bitter',serif;font-style:italic;font-weight:500;font-size:clamp(1.02rem,1.4vw,1.28rem);letter-spacing:.03em;color:var(--ink);white-space:nowrap;margin:0}
+.x-sig-star{font-style:normal;color:var(--orange);font-size:.8em;transform:translateY(-1px)}
+
+/* ---- Trust band (legacy hero stats — now unused; kept for the KPI section utilities) ---- */
 .x-trust-band{position:relative;z-index:3;width:100%;max-width:940px;margin:0 auto}
 .x-trust-quote{font-family:'Bitter';font-style:italic;font-weight:500;font-size:clamp(1.08rem,1.6vw,1.4rem);color:var(--ink);margin-bottom:26px;letter-spacing:.01em}
 .x-stats{display:flex;gap:clamp(12px,1.5vw,20px);justify-content:center;flex-wrap:wrap}
@@ -95,18 +102,19 @@ html.lenis,html.lenis body{height:auto}
 /* ============ BRAND CREDIBILITY — editorial KPIs + temple illustration ============ */
 .x-brand{position:relative}
 .x-brand-pin{width:100%;padding:clamp(70px,9vh,110px) 0}
-.x-brand-grid{display:grid;grid-template-columns:43% 57%;gap:clamp(40px,5vw,72px);align-items:center;width:min(1240px,92vw);margin:0 auto}
-.x-brand-copy{max-width:540px}
+.x-brand-grid{display:grid;grid-template-columns:42% 58%;gap:clamp(48px,6vw,96px);align-items:center;width:min(1260px,92vw);margin:0 auto}
+.x-brand-copy{max-width:520px}
 .x-brand-head .eyebrow{display:inline-flex}
-.x-brand-title{margin:8px 0 16px;line-height:1.14}
-.x-brand-lead{font-size:1.02rem;color:var(--ink2);line-height:1.62;margin:0 0 30px;max-width:44ch}
-/* vertical editorial KPI stats — thin dividers, big numerals, uppercase labels, no cards */
-.x-kpi{margin:0}
-.x-kpi-row{display:flex;align-items:baseline;gap:20px;padding:16px 2px;border-top:1px solid var(--hair)}
+.x-brand-title{margin:10px 0 18px;line-height:1.18;font-size:clamp(1.7rem,2.2vw,2.2rem)}
+.x-brand-lead{font-size:1.04rem;color:var(--ink2);line-height:1.65;margin:0 0 8px;max-width:42ch}
+/* vertical editorial KPI stats — thin dividers, big numerals, uppercase labels, no cards.
+   number + label vertically centred, generous row height for a calm, executive rhythm */
+.x-kpi{margin:14px 0 0}
+.x-kpi-row{display:flex;align-items:center;gap:24px;padding:22px 2px;border-top:1px solid var(--hair)}
 .x-kpi-row:last-child{border-bottom:1px solid var(--hair)}
-.x-kpi-row dt{flex:none;min-width:132px;display:flex;align-items:baseline;font-family:'Bitter',serif;font-weight:600;font-size:clamp(1.9rem,2.9vw,2.7rem);line-height:1;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.x-kpi-row dt{flex:none;min-width:150px;display:flex;align-items:baseline;font-family:'Bitter',serif;font-weight:600;font-size:clamp(2.1rem,3.1vw,2.95rem);line-height:1;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
 .x-kpi-s{color:var(--orange);margin-left:1px}
-.x-kpi-row dd{margin:0;font-family:'Manrope';font-weight:600;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink3);line-height:1.4}
+.x-kpi-row dd{margin:0;font-family:'Manrope';font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);line-height:1.45}
 /* temple art — prominent but blended; the rectangular boundary feathers away */
 .x-brand-art{position:relative;display:flex;justify-content:center}
 .x-brand-temple{width:100%;max-width:640px;height:auto;display:block;opacity:.78;

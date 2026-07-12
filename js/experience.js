@@ -87,7 +87,7 @@
     if (grow) gsap.delayedCall(0.12 + split.chars.length * 0.018 + 0.2, () => grow.classList.add('drawn'));
   }
   // supporting hero content
-  gsap.from('.x-eyebrow, .x-sub, .x-rhythm, .x-hero .hero-actions', {
+  gsap.from('.x-eyebrow, .x-sub, .x-rhythm, .x-hero .hero-actions, .x-signature', {
     y: 22, opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.08, delay: 0.42
   });
   // temple backdrop: gentle fade-in + ambient warm-up, then anchored parallax
