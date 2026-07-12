@@ -289,30 +289,9 @@
   /* ================= FOUNDER — pinned, scroll-driven quote reveal (reversible) =================
      Quote "inks in" word-by-word with scroll; the italic phrase gains a gentle glow;
      then the signature panel builds sequentially (divider grows, lines appear). */
-  const fq = $('.x-founder blockquote');
-  const fsign = $('.x-founder-sign');
-  if (fq && typeof SplitType !== 'undefined') {
-    const fwords = new SplitType(fq, { types: 'words' }).words;
-    const fqmark = $('.x-founder-quote .qmark');
-    const signKids = fsign ? [...fsign.children] : [];
-    const armFounder = () => {
-      gsap.set(fwords, { opacity: 0.16, y: 6 });
-      if (fqmark) gsap.set(fqmark, { opacity: 0.45 });
-      gsap.set(fq, { '--eg': 0 });
-      if (fsign) { gsap.set(fsign, { '--dl': 0 }); gsap.set(signKids, { opacity: 0.16, x: 14 }); }
-    };
-    const showFounder = () => {
-      gsap.set(fwords, { opacity: 1, y: 0 });
-      if (fqmark) gsap.set(fqmark, { opacity: 1 });
-      gsap.set(fq, { '--eg': 1 });
-      if (fsign) { gsap.set(fsign, { '--dl': 1 }); gsap.set(signKids, { opacity: 1, x: 0 }); }
-    };
-
-    // No pin, no scrub: the whole quote + signature are shown as a finished editorial
-    // layout; one gentle entrance fades the block in when the section enters, once.
-    showFounder();
-    void armFounder;
-  }
+  /* The quote is a plain flowing paragraph (NO SplitType word-splitting — wrapping each
+     word in an inline-block broke the line spacing around the italic phrase and opened a
+     blank gap). The block-level entrance below reveals it as a finished editorial layout. */
   /* FOUNDER chapter: pin + float the quote + signature in once */
   sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 0.6 });
 
