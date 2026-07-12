@@ -428,16 +428,13 @@ table.data td strong{color:var(--ink)}
 .founder-msg blockquote p{ margin:0; }
 .founder-msg blockquote p + p{ margin-top:1.05em; }
 .founder-msg blockquote em{ font-style:italic; color:var(--orange); }
-/* signature panel — stacked hierarchy, thin dividers, subtle orange accents */
-.founder-sig{ text-align:center; padding:34px 28px; border:1px solid var(--hair); border-radius:18px;
-  background:var(--glass); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); box-shadow:var(--sh-s); }
-.sig-name{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.55rem; font-weight:400; color:var(--ink); line-height:1.1; }
+/* signature — borderless editorial credit with a thin orange rule on the left */
+.founder-sig{ text-align:left; padding:6px 0 6px 28px; border:none; border-left:2px solid var(--orange);
+  border-radius:0; background:none; -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:none; }
+.sig-name{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.55rem; font-weight:500; color:var(--ink); line-height:1.1; }
 .sig-org{ font-family:'Inter',sans-serif; font-size:.82rem; font-weight:700; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--orange); margin-top:7px; }
-.sig-div{ width:44px; height:1px; background:var(--hair); margin:20px auto; }
-.sig-roles{ display:flex; flex-direction:column; gap:9px; }
-.sig-roles span{ font-family:'Inter',sans-serif; font-size:1rem; color:var(--ink2); letter-spacing:.01em; }
-.sig-exp{ font-family:'Plus Jakarta Sans',sans-serif; font-style:italic; font-size:1.08rem; color:var(--ink); }
+  text-transform:uppercase; color:var(--orange); margin-top:6px; }
+.sig-exp{ font-family:'Inter',sans-serif; font-size:.95rem; font-weight:500; color:var(--ink2); line-height:1.5; margin-top:18px; }
 @media(max-width:900px){
   .founder-grid{ grid-template-columns:1fr; gap:32px; }
   .founder-msg blockquote{ font-size:1.24rem; }

@@ -76,7 +76,7 @@ html.lenis,html.lenis body{height:auto}
 .x-signature{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:clamp(16px,2vw,26px);width:min(640px,90vw);margin:0 auto}
 .x-sig-rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--hair) 65%)}
 .x-sig-rule:last-child{background:linear-gradient(90deg,var(--hair) 35%,transparent)}
-.x-sig-text{display:inline-flex;align-items:center;gap:clamp(14px,1.7vw,22px);font-family:'Plus Jakarta Sans',sans-serif;font-style:normal;font-weight:600;font-size:clamp(.82rem,1.05vw,.98rem);letter-spacing:.22em;text-transform:uppercase;color:var(--ink);white-space:nowrap;margin:0}
+.x-sig-text{display:inline-flex;align-items:center;gap:clamp(14px,1.7vw,22px);font-family:'Plus Jakarta Sans',sans-serif;font-style:normal;font-weight:800;font-size:clamp(1.05rem,1.8vw,1.5rem);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);white-space:nowrap;margin:0}
 .x-sig-star{font-style:normal;color:var(--orange);font-size:.8em;transform:translateY(-1px)}
 
 /* ---- Trust band (legacy hero stats — now unused; kept for the KPI section utilities) ---- */
