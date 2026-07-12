@@ -1215,24 +1215,24 @@ body[data-page="about"] .cv-live{ padding:0 !important; }
   -webkit-box-decoration-break:clone; box-decoration-break:clone; }
 html.fonts-ready .hl-mark{ background-size:100% .30em; }
 /* ---- Section 1: The Problem We Solve ----
-   When JS pins the section (.eb-on), the heading sits at the top and all six
+   When JS pins the section (.eb-sec), the heading sits at the top and all six
    rows fit in the one viewport; the engine drives the sequential reveal so CSS
    transitions/hover are disabled here. */
 @media (min-width:901px){
-  #problem.eb-on{ min-height:100vh; box-sizing:border-box; padding-top:104px; padding-bottom:34px;
+  #problem.eb-sec{ min-height:100vh; box-sizing:border-box; padding-top:104px; padding-bottom:34px;
     display:flex; flex-direction:column; justify-content:flex-start; }
-  #problem.eb-on .wrap{ width:100%; }
-  #problem.eb-on .sec-head{ margin-bottom:20px; }
-  #problem.eb-on .prob-list{ gap:9px; max-width:920px; }
-  #problem.eb-on .prob{ padding:13px 22px; transition:none; cursor:default; }
-  #problem.eb-on .prob:hover{ transform:none; }               /* scroll controls it, not hover */
-  #problem.eb-on .prob .q{ font-size:.98rem; }
-  #problem.eb-on .prob .a{ max-height:none; overflow:visible; margin-top:2px; font-size:.85rem;
+  #problem.eb-sec .wrap{ width:100%; }
+  #problem.eb-sec .sec-head{ margin-bottom:20px; }
+  #problem.eb-sec .prob-list{ gap:9px; max-width:920px; }
+  #problem.eb-sec .prob{ padding:13px 22px; transition:none; cursor:default; }
+  #problem.eb-sec .prob:hover{ transform:none; }               /* scroll controls it, not hover */
+  #problem.eb-sec .prob .q{ font-size:.98rem; }
+  #problem.eb-sec .prob .a{ max-height:none; overflow:visible; margin-top:2px; font-size:.85rem;
     line-height:1.42; }                                        /* reserve space → fade only, no shift */
 }
 
 /* ---- Section 2: Why Choose — horizontal centre-focus carousel ----
-   Base (mobile / no-JS): a plain readable 3-col grid. When JS pins it (.eb-on)
+   Base (mobile / no-JS): a plain readable 3-col grid. When JS pins it (.eb-sec)
    the track becomes a full-width flex row that slides each card through the
    viewport centre; the engine sets each card's scale/opacity by its distance
    from centre (coverflow). */
@@ -1241,37 +1241,37 @@ html.fonts-ready .hl-mark{ background-size:100% .30em; }
 .why-track .feat-card{ margin:0; }
 @media (max-width:900px){ .why-track{ grid-template-columns:1fr; width:min(460px,92vw); } }
 @media (min-width:901px){
-  #why.eb-on{ min-height:100vh; box-sizing:border-box; padding:100px 0 40px;
+  #why.eb-sec{ min-height:100vh; box-sizing:border-box; padding:100px 0 40px;
     display:flex; flex-direction:column; overflow:hidden; }
-  #why.eb-on .wrap{ flex:none; }
-  #why.eb-on .sec-head{ margin-bottom:22px; }
-  #why.eb-on .why-track{ flex:1; width:auto; max-width:none; margin:0; display:flex;
+  #why.eb-sec .wrap{ flex:none; }
+  #why.eb-sec .sec-head{ margin-bottom:22px; }
+  #why.eb-sec .why-track{ flex:1; width:auto; max-width:none; margin:0; display:flex;
     align-items:center; gap:40px; padding:0 calc(50vw - 235px); will-change:transform; }
-  #why.eb-on .why-track .feat-card{ flex:0 0 470px; max-width:470px; min-height:360px;
+  #why.eb-sec .why-track .feat-card{ flex:0 0 470px; max-width:470px; min-height:360px;
     display:flex; flex-direction:column; justify-content:center; will-change:transform,opacity; }
 }
 
 /* ---- Section 3: Hiring Process — pinned, heading fixed at top, 7 steps compacted to fit ---- */
 @media (min-width:901px){
-  #process.eb-on{ min-height:100vh; box-sizing:border-box; padding:94px 0 32px;
+  #process.eb-sec{ min-height:100vh; box-sizing:border-box; padding:94px 0 32px;
     display:flex; flex-direction:column; justify-content:flex-start; }
-  #process.eb-on .wrap{ width:100%; }
-  #process.eb-on .sec-head{ margin-bottom:16px; }
-  #process.eb-on .timeline{ margin:0 auto; }
-  #process.eb-on .tl-step{ padding:7px 0; grid-template-columns:50px 1fr; gap:20px; }
-  #process.eb-on .tl-num{ width:50px; height:50px; font-size:1.15rem; border-radius:15px; }
-  #process.eb-on .timeline::before{ left:24px; top:14px; bottom:14px; }
-  #process.eb-on .tl-body h3{ font-size:1.04rem; margin-bottom:1px; }
-  #process.eb-on .tl-body p{ font-size:.88rem; line-height:1.38; }
+  #process.eb-sec .wrap{ width:100%; }
+  #process.eb-sec .sec-head{ margin-bottom:16px; }
+  #process.eb-sec .timeline{ margin:0 auto; }
+  #process.eb-sec .tl-step{ padding:7px 0; grid-template-columns:50px 1fr; gap:20px; }
+  #process.eb-sec .tl-num{ width:50px; height:50px; font-size:1.15rem; border-radius:15px; }
+  #process.eb-sec .timeline::before{ left:24px; top:14px; bottom:14px; }
+  #process.eb-sec .tl-body h3{ font-size:1.04rem; margin-bottom:1px; }
+  #process.eb-sec .tl-body p{ font-size:.88rem; line-height:1.38; }
 }
 /* ---- Sections 4 / 6 / 7: pinned, heading held, content revealed ---- */
 @media (min-width:901px){
-  #services.eb-on, #stories.eb-on, #faq.eb-on{ min-height:100vh; box-sizing:border-box;
+  #services.eb-sec, #stories.eb-sec, #faq.eb-sec{ min-height:100vh; box-sizing:border-box;
     padding:100px 0 40px; display:flex; flex-direction:column; justify-content:center; }
-  #services.eb-on .wrap, #stories.eb-on .wrap, #faq.eb-on .wrap{ width:100%; }
-  #services.eb-on .sec-head{ margin-bottom:22px; }
-  #stories.eb-on .sec-head{ margin-bottom:28px; }
-  #faq.eb-on .sec-head{ margin-bottom:24px; }
+  #services.eb-sec .wrap, #stories.eb-sec .wrap, #faq.eb-sec .wrap{ width:100%; }
+  #services.eb-sec .sec-head{ margin-bottom:22px; }
+  #stories.eb-sec .sec-head{ margin-bottom:28px; }
+  #faq.eb-sec .sec-head{ margin-bottom:24px; }
 }
 
 /* ---- Section 5: Hiring Models — side-by-side editorial comparison (replaces the tabs) ---- */
@@ -1301,15 +1301,15 @@ html.fonts-ready .hl-mark{ background-size:100% .30em; }
   font-family:'Plus Jakarta Sans'; font-style:italic; color:var(--ink2); font-size:.86rem; line-height:1.44; }
 @media (max-width:900px){ .hm-compare{ grid-template-columns:1fr; width:min(560px,92vw); } }
 @media (min-width:901px){
-  #models.eb-on{ min-height:100vh; box-sizing:border-box; padding:74px 0 30px;
+  #models.eb-sec{ min-height:100vh; box-sizing:border-box; padding:74px 0 30px;
     display:flex; flex-direction:column; justify-content:center; }
-  #models.eb-on .wrap{ width:100%; }
+  #models.eb-sec .wrap{ width:100%; }
   /* Compact the heading in the pinned state so the roomier cards get the vertical
      space; the editorial hierarchy now lives inside the cards. */
-  #models.eb-on .sec-head{ margin-bottom:8px; }
-  #models.eb-on .sec-head .title{ font-size:clamp(1.7rem,2.7vw,2.15rem); }
-  #models.eb-on .sec-head .lead{ font-size:.88rem; margin-top:3px; }
-  #models.eb-on .hm-compare{ margin-top:6px; }
+  #models.eb-sec .sec-head{ margin-bottom:8px; }
+  #models.eb-sec .sec-head .title{ font-size:clamp(1.7rem,2.7vw,2.15rem); }
+  #models.eb-sec .sec-head .lead{ font-size:.88rem; margin-top:3px; }
+  #models.eb-sec .hm-compare{ margin-top:6px; }
 }
 
 /* ---- Job Seekers — Who Can Apply: editorial eligibility comparison ----
@@ -1346,41 +1346,41 @@ html.fonts-ready .hl-mark{ background-size:100% .30em; }
 /* ---- Job Seekers pinned sections (mirror the employers #process / #services) ---- */
 @media (min-width:901px){
   /* How It Works — pin, heading fixed, 7 steps compacted to one viewport */
-  #how.eb-on{ min-height:100vh; box-sizing:border-box; padding:94px 0 32px;
+  #how.eb-sec{ min-height:100vh; box-sizing:border-box; padding:94px 0 32px;
     display:flex; flex-direction:column; justify-content:flex-start; }
-  #how.eb-on .wrap{ width:100%; }
-  #how.eb-on .sec-head{ margin-bottom:16px; }
-  #how.eb-on .timeline{ margin:0 auto; }
-  #how.eb-on .tl-step{ padding:7px 0; grid-template-columns:50px 1fr; gap:20px; }
-  #how.eb-on .tl-num{ width:50px; height:50px; font-size:1.15rem; border-radius:15px; }
-  #how.eb-on .timeline::before{ left:24px; top:14px; bottom:14px; }
-  #how.eb-on .tl-body h3{ font-size:1.04rem; margin-bottom:1px; }
-  #how.eb-on .tl-body p{ font-size:.88rem; line-height:1.38; }
+  #how.eb-sec .wrap{ width:100%; }
+  #how.eb-sec .sec-head{ margin-bottom:16px; }
+  #how.eb-sec .timeline{ margin:0 auto; }
+  #how.eb-sec .tl-step{ padding:7px 0; grid-template-columns:50px 1fr; gap:20px; }
+  #how.eb-sec .tl-num{ width:50px; height:50px; font-size:1.15rem; border-radius:15px; }
+  #how.eb-sec .timeline::before{ left:24px; top:14px; bottom:14px; }
+  #how.eb-sec .tl-body h3{ font-size:1.04rem; margin-bottom:1px; }
+  #how.eb-sec .tl-body p{ font-size:.88rem; line-height:1.38; }
   /* Job Categories — pin, heading fixed, reveal 8 rows (compacted to fit) */
-  #categories.eb-on{ min-height:100vh; box-sizing:border-box; padding:86px 0 34px;
+  #categories.eb-sec{ min-height:100vh; box-sizing:border-box; padding:86px 0 34px;
     display:flex; flex-direction:column; justify-content:center; }
-  #categories.eb-on .wrap{ width:100%; }
-  #categories.eb-on .sec-head{ margin-bottom:18px; }
-  #categories.eb-on .sec-head .lead{ margin-top:8px; }
-  #categories.eb-on table.data th{ padding:12px 20px; }
-  #categories.eb-on table.data td{ padding:10px 20px; font-size:.88rem; }
+  #categories.eb-sec .wrap{ width:100%; }
+  #categories.eb-sec .sec-head{ margin-bottom:18px; }
+  #categories.eb-sec .sec-head .lead{ margin-top:8px; }
+  #categories.eb-sec table.data th{ padding:12px 20px; }
+  #categories.eb-sec table.data td{ padding:10px 20px; font-size:.88rem; }
   /* Who Can Apply — pinned spotlight: centre the heading + 3 cards, compact the
      cards so all three fit one viewport (JS handles the sequential emphasis). */
-  #eligibility.eb-on{ min-height:100vh; box-sizing:border-box; padding:82px 0 32px;
+  #eligibility.eb-sec{ min-height:100vh; box-sizing:border-box; padding:82px 0 32px;
     display:flex; flex-direction:column; justify-content:center; }
-  #eligibility.eb-on .wrap{ width:100%; }
-  #eligibility.eb-on .sec-head{ margin-bottom:14px; }
-  #eligibility.eb-on .sec-head .title{ font-size:clamp(1.8rem,2.9vw,2.35rem); }
-  #eligibility.eb-on .sec-head .lead{ margin-top:6px; font-size:1rem; }
-  #eligibility.eb-on .elig-grid{ margin-top:4px; }
-  #eligibility.eb-on .elig-card{ padding:24px 26px 20px; }
-  #eligibility.eb-on .elig-card .chip{ margin-bottom:13px; width:42px; height:42px; }
-  #eligibility.eb-on .elig-card h3{ font-size:1.28rem; margin-bottom:6px; }
-  #eligibility.eb-on .elig-card .elig-intro{ font-size:.85rem; margin-bottom:15px; line-height:1.48; }
-  #eligibility.eb-on .elig-card ul{ gap:11px; }
-  #eligibility.eb-on .elig-card li{ grid-template-columns:18px 1fr; column-gap:12px; }
-  #eligibility.eb-on .elig-card li span{ font-size:.85rem; line-height:1.42; }
-  #eligibility.eb-on .elig-note{ padding-top:15px; font-size:.9rem; }
+  #eligibility.eb-sec .wrap{ width:100%; }
+  #eligibility.eb-sec .sec-head{ margin-bottom:14px; }
+  #eligibility.eb-sec .sec-head .title{ font-size:clamp(1.8rem,2.9vw,2.35rem); }
+  #eligibility.eb-sec .sec-head .lead{ margin-top:6px; font-size:1rem; }
+  #eligibility.eb-sec .elig-grid{ margin-top:4px; }
+  #eligibility.eb-sec .elig-card{ padding:24px 26px 20px; }
+  #eligibility.eb-sec .elig-card .chip{ margin-bottom:13px; width:42px; height:42px; }
+  #eligibility.eb-sec .elig-card h3{ font-size:1.28rem; margin-bottom:6px; }
+  #eligibility.eb-sec .elig-card .elig-intro{ font-size:.85rem; margin-bottom:15px; line-height:1.48; }
+  #eligibility.eb-sec .elig-card ul{ gap:11px; }
+  #eligibility.eb-sec .elig-card li{ grid-template-columns:18px 1fr; column-gap:12px; }
+  #eligibility.eb-sec .elig-card li span{ font-size:.85rem; line-height:1.42; }
+  #eligibility.eb-sec .elig-note{ padding-top:15px; font-size:.9rem; }
 }
 
 /* ---- Blog: editorial featured card + pinned "More Insights" grid ---- */
@@ -1406,10 +1406,10 @@ body[data-page="blog"] .feat-card .soon{ margin-top:auto; padding-top:14px; font
 @media (max-width:760px){ .blog-feat{ grid-template-columns:1fr; } .blog-feat .bf-body{ padding:34px 28px; } }
 @media (min-width:901px){
   /* More Insights — pin, heading held at top, grid cascades in */
-  #insights.eb-on{ min-height:100vh; box-sizing:border-box; padding:86px 0 40px;
+  #insights.eb-sec{ min-height:100vh; box-sizing:border-box; padding:86px 0 40px;
     display:flex; flex-direction:column; justify-content:center; }
-  #insights.eb-on .wrap{ width:100%; }
-  #insights.eb-on .sec-head{ margin-bottom:28px; }
+  #insights.eb-sec .wrap{ width:100%; }
+  #insights.eb-sec .sec-head{ margin-bottom:28px; }
 }
 
 /* ============ ABOUT — de-pinned static sections (editorial refactor) ============
