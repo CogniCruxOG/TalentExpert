@@ -179,11 +179,23 @@ header.nav{position:fixed;top:16px;left:0;right:0;margin-left:auto;margin-right:
 .burger span::before,.burger span::after{content:"";position:absolute;left:0;width:20px;height:2px;background:var(--ink);border-radius:2px}
 .burger span::before{top:-6px}.burger span::after{top:6px}
 /* Mobile nav */
-.mnav{position:fixed;inset:0;z-index:120;background:rgba(252,251,249,.98);backdrop-filter:blur(20px);display:flex;flex-direction:column;padding:90px 26px 40px;gap:4px;opacity:0;pointer-events:none;transition:.4s;overflow-y:auto}
+.mnav{position:fixed;inset:0;z-index:120;background:rgba(252,251,249,.98);backdrop-filter:blur(20px);display:flex;flex-direction:column;padding:90px 26px calc(34px + env(safe-area-inset-bottom));gap:0;opacity:0;pointer-events:none;transition:.4s;overflow-y:auto}
 .mnav.open{opacity:1;pointer-events:auto}
-.mnav a{font-family:'Plus Jakarta Sans';font-size:1.5rem;color:var(--ink);padding:12px 4px;border-bottom:1px solid var(--hair)}
-.mnav .sub{font-family:'Inter';font-size:1rem;font-weight:600;color:var(--ink2);padding-left:18px;border:none}
-.mnav .m-cta{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+/* Top-level items: larger + semibold, separated by a hairline */
+.mnav>a{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.34rem;font-weight:600;color:var(--ink);padding:13px 2px;border-bottom:1px solid var(--hair);line-height:1.15}
+/* A parent that is immediately followed by its children flows straight into them — no divider */
+.mnav>a:has(+ a.sub){border-bottom:none;padding-bottom:5px}
+/* Child (submenu) items: smaller, medium weight, indented, with a nesting rail so they read
+   as children of the parent above; tight, consistent spacing between them. */
+.mnav a.sub{font-family:'Inter',sans-serif;font-size:1.02rem;font-weight:500;color:var(--ink2);padding:8px 2px 8px 30px;border-bottom:none;position:relative;line-height:1.2}
+.mnav a.sub::before{content:"";position:absolute;left:12px;top:6px;bottom:6px;width:2px;border-radius:2px;background:var(--orange-t2)}
+/* The last child in a group closes it with the hairline divider */
+.mnav a.sub:has(+ a:not(.sub)){border-bottom:1px solid var(--hair);padding-bottom:13px}
+/* Bottom CTA buttons — two balanced pills. Scoping the base rule to .mnav>a already frees
+   these (they're inside .m-cta), but pin the button styling explicitly so the labels always
+   show and both stay equal height / width across 320–430px. */
+.mnav .m-cta{display:flex;gap:12px;justify-content:center;align-items:stretch;margin-top:28px;padding-top:24px;border-top:1px solid var(--hair)}
+.mnav .m-cta .btn{flex:1 1 0;min-width:0;border-bottom:none;min-height:54px;padding:15px 12px;font-size:clamp(.85rem,3.6vw,1rem);line-height:1;white-space:nowrap;text-align:center;justify-content:center;color:#fff}
 .mnav-close{position:absolute;top:26px;right:26px;display:grid}
 
 /* ============ REVEAL ============ */
@@ -700,6 +712,23 @@ footer.site:hover .foot-glow{opacity:1}
   .ind-chip,.nav-inner,.hm-switch,.stat-card,.faq-item,.mega,table.data{background:#fdfcfa!important}
   .nav-inner{background:rgba(253,252,250,.96)!important}
   .svc-node{animation:none!important}
+}
+/* ---- Mobile scroll rendering: kill seams, flickering edges & repaint artifacts ---- */
+@media(max-width:900px){
+  /* The top "veil" is a desktop floating-pill seal; on mobile it becomes a fixed masked
+     strip that can flicker/leave a seam while scrolling. Drop it — the FOUT gate that hides
+     the page until fonts load still works on its own. */
+  body::before{ display:none !important; }
+  /* Pin fixed chrome to its own compositor layer so scrolling content never repaints it
+     (prevents the thin flickering line under the floating nav). */
+  header.nav, .wa-float, .scroll-progress{ -webkit-transform:translateZ(0); transform:translateZ(0);
+    -webkit-backface-visibility:hidden; backface-visibility:hidden; }
+  /* Full-height heroes use the DYNAMIC viewport unit so the iOS Safari address-bar show/hide
+     doesn't resize 100vh and expose seams between sections (falls back to vh on old browsers). */
+  .x-hero{ min-height:100vh; min-height:100svh; }
+  /* Round section paint to the pixel grid: a 3D layer on backgrounded blocks stops the
+     sub-pixel hairline (often a thin white line) that appears at their edges mid-scroll. */
+  .hero, .x-gap, .cta, .quote-band, .x-finale, footer.site{ -webkit-transform:translateZ(0); transform:translateZ(0); }
 }
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001s!important;transition-duration:.001s!important;scroll-behavior:auto!important}
@@ -1487,6 +1516,16 @@ body[data-page="employers"] #problem .prob .a{ max-height:none !important; overf
 /* ============ SERVICES — overview as a one-viewport pinned chapter ============ */
 @media(min-width:901px){
   body[data-page="services"] #svc-overview{ min-height:100vh; margin-top:0; display:flex; align-items:center; box-sizing:border-box; padding:96px 0 44px; }
+}
+
+/* ============ CONTACT — "Get in Touch" as a one-viewport pinned chapter ============ */
+/* No hero above it any more, so reserve space for the fixed navbar (all sizes) */
+body[data-page="contact"] #reach{ padding-top:120px; }
+@media(max-width:600px){ body[data-page="contact"] #reach{ padding-top:104px; } }
+@media(min-width:901px){
+  body[data-page="contact"] #reach{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; padding:112px 0 40px; }
+  body[data-page="contact"] #reach .crumb{ display:none; }   /* breadcrumb reads oddly when the chapter is vertically centred */
+  body[data-page="contact"] #reach .sec-head{ margin-bottom:24px; }
 }
 
 

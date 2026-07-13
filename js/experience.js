@@ -169,10 +169,16 @@
       { opacity: 1, y: 0, scale: 1, duration: 0.72, stagger: 0.1 },
       (head || headKids.length) ? '-=0.04' : 0);   // heading settles, then cards float in
     if (reduce) { tl.progress(1); return; }
-    // Play exactly ONCE. Scrolling back up re-shows the finished state instantly (no replay).
+    // Entrance plays ONCE PER BROWSER SESSION (sessionStorage), so returning to Home renders
+    // played sections complete instead of hiding + replaying. finish() is exposed on the
+    // section so navigation lands it fully visible.
+    const seenKey = 'te:' + location.pathname + '|' + sel;
+    let seen = false; try { seen = sessionStorage.getItem(seenKey) === '1'; } catch (_) {}
+    const remember = () => { try { sessionStorage.setItem(seenKey, '1'); } catch (_) {} };
     let played = false;
-    const playOnce = () => { if (!played) { played = true; tl.play(); } };
-    const finish = () => { played = true; tl.progress(1); };
+    const playOnce = () => { if (!played) { played = true; remember(); tl.play(); } };
+    const finish = () => { played = true; remember(); tl.progress(1); };
+    sec.__teFinish = finish;
     const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
       ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
     // Auto-fit the pinned element (section OR its pinTarget) so every chapter shrinks to fit
@@ -199,6 +205,8 @@
     } else {
       ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
     }
+    // Already viewed this session → render complete now (no hide, no replay); pin still works.
+    if (seen) finish();
   };
 
   void reveal;   // section headings are now handled by each chapter's sectionIntro

@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>(function(){var d=document.documentElement;d.className+=" fonts-loading";var r=function(){d.classList.remove("fonts-loading")};try{if(document.fonts&&document.fonts.ready){document.fonts.ready.then(r)}}catch(e){}setTimeout(r,1200);})();</script>
-<link rel="stylesheet" href="css/styles.css?v=35">
+<link rel="stylesheet" href="css/styles.css?v=36">
 </head>
 <body data-page="contact">
 <header class="nav" id="nav"><div class="nav-inner">
@@ -69,13 +69,13 @@
 </div>
 </nav>
 <div class="nav-cta"><a class="btn btn-blue" href="employers.html" data-portal-choice="business">Get Talent Now</a><a class="btn btn-orange" href="job-seekers.html" data-portal-choice="jobseeker">Find Jobs</a><button class="burger" onclick="toggleMenu(true)" aria-label="Open menu"><span></span></button></div></div></header>
-<div class="mnav" id="mnav"><button class="burger mnav-close" onclick="toggleMenu(false)" aria-label="Close menu"><span></span></button><a href="index.html">Home</a><a href="about.html">About Us</a><a href="services.html">Services</a><a href="employers.html">For Business Owners</a><a href="job-seekers.html">For Job Seekers</a><a href="industries.html" class="sub">Industries We Serve</a><a href="hiring-models.html" class="sub">Hiring Models</a><a href="career-tips.html" class="sub">Career Tips</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><div class="m-cta"><a class="btn btn-blue" href="employers.html">Get Talent Now</a><a class="btn btn-orange" href="job-seekers.html">Find Jobs</a></div></div>
-<section class="hero" id="top">
+<div class="mnav" id="mnav"><button class="burger mnav-close" onclick="toggleMenu(false)" aria-label="Close menu"><span></span></button><a href="index.html">Home</a><a href="about.html">About Us</a><a href="services.html">Services</a><a href="employers.html">For Business Owners</a><a href="industries.html" class="sub">Industries We Serve</a><a href="hiring-models.html" class="sub">Hiring Models</a><a href="job-seekers.html">For Job Seekers</a><a href="career-tips.html" class="sub">Career Tips</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><div class="m-cta"><a class="btn btn-blue" href="employers.html">Get Talent Now</a><a class="btn btn-orange" href="job-seekers.html">Find Jobs</a></div></div>
+<section class="section" id="reach">
 <div class="wrap"><div class="crumb reveal"><a href="index.html">Home</a><span class="sep">/</span><span>Contact Us</span></div>
-<div class="sec-head reveal center"><span class="eyebrow">Get in Touch</span>
+<div class="sec-head center"><span class="eyebrow">Get in Touch</span>
 <h1 class="display"><span class="hl-mark">Let's start a <em>conversation</em></span></h1>
-<p class="lead">Whether you're hiring or job-seeking — we'll respond within 24 hours.</p></div></div></section>
-<section class="section" style="padding-top:0"><div class="wrap"><div class="contact-grid">
+<p class="lead">Whether you're hiring or job-seeking — we'll respond within 24 hours.</p></div>
+<div class="contact-grid">
 <div class="contact-cards reveal">
 <div class="cc"><span class="chip o"><svg class="ic"><use href="assets/icons/sprite.svg#i-pin"/></svg></span><div><h4>Address</h4><p>Happy Towers, 129, Dhanakotti Raja Street, South Phase, Sundar Nagar, Ekkattuthangal, Chennai, Tamil Nadu 600032</p></div></div>
 <div class="cc"><span class="chip b"><svg class="ic"><use href="assets/icons/sprite.svg#i-phone"/></svg></span><div><h4>Phone</h4><p><a href="tel:+919597851600">+91 95978 51600</a></p></div></div>
@@ -186,19 +186,31 @@
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/919597851600" aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg class="ic"><use href="assets/icons/sprite.svg#i-whatsapp"/></svg></a>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
-<script src="js/main.js?v=13"></script>
+<script src="js/main.js?v=14"></script>
 <script>
-/* Smooth scroll (Lenis) — desktop + motion only; mobile keeps native touch scroll.
-   Standalone RAF loop (no GSAP on this page). Exposed as window.__lenis so main.js's
-   instant anchor-nav can jump through it. */
+/* Contact page: Lenis smooth scroll synced to GSAP ScrollTrigger so the "Get in Touch"
+   chapter pins & reveals like every other page (shared TEChapter engine in main.js). */
 (function(){
+  var hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  if(hasGSAP){ gsap.registerPlugin(ScrollTrigger); gsap.config({ nullTargetWarn:false }); ScrollTrigger.config({ ignoreMobileResize:true }); }
   if(matchMedia('(min-width:901px)').matches && matchMedia('(prefers-reduced-motion:no-preference)').matches && typeof window.Lenis !== 'undefined'){
     var lenis = new Lenis({ duration:1.5, wheelMultiplier:0.9,
       easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
-    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
+    if(hasGSAP){ lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add(function(t){ lenis.raf(t * 1000); }); gsap.ticker.lagSmoothing(0); }
+    else { (function raf(time){ lenis.raf(time); requestAnimationFrame(raf); })(0); }
     window.__lenis = lenis;
+  }
+  /* Pin & reveal: heading floats up first, then the info cards + form appear together. */
+  if(typeof window.TEChapter === 'function'){
+    window.TEChapter([{ sec:'#reach', head:'.sec-head', items:'.contact-cards, .form-card', pin:true, hold:0.7 }]);
+  }
+  if(hasGSAP){
+    ScrollTrigger.refresh();
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ ScrollTrigger.refresh(); }); }
+    addEventListener('load', function(){ ScrollTrigger.refresh(); });
   }
 })();
 </script>

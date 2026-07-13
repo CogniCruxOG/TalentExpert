@@ -99,6 +99,9 @@
       window.scrollTo(0, y);
       root.style.scrollBehavior = prev;
     }
+    // Land the destination in its FINISHED state so it's immediately ready to read — full
+    // heading, all cards/forms/tables — without needing an extra scroll to trigger it.
+    try { if (el && typeof el.__teFinish === 'function') el.__teFinish(); } catch (_) {}
     if (window.ScrollTrigger && typeof window.ScrollTrigger.update === 'function') window.ScrollTrigger.update();
     return true;
   };
@@ -168,7 +171,10 @@
     var cs = window.getComputedStyle(sec);
     var reserve = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
     var avail = window.innerHeight - reserve - 6;
-    var natural = inner.getBoundingClientRect().height;
+    // Use the LARGER of scrollHeight and the bounding box — scrollHeight catches content that
+    // overflows the wrapper's own box (e.g. a tall form), which the bounding rect misses, so a
+    // section that's actually too tall gets scaled down instead of silently refusing to pin.
+    var natural = Math.max(inner.scrollHeight, Math.ceil(inner.getBoundingClientRect().height));
     if (natural > avail && avail > 0) {
       var s = avail / natural; if (s < 0.5) s = 0.5;
       inner.style.transform = 'scale(' + s.toFixed(4) + ')';
@@ -204,10 +210,17 @@
         { opacity: 1, y: 0, scale: 1, duration: 0.72, stagger: 0.1 },
         (head || headKids.length) ? '-=0.04' : 0);   // heading settles, then cards float in
       if (reduceM) { tl.progress(1); return; }
-      // Play exactly ONCE. Scrolling back up re-shows the finished state instantly (no replay).
+      // Entrance plays ONCE PER BROWSER SESSION. sessionStorage remembers sections that have
+      // already played, so returning to a page (via nav, mega menu, or the back button) renders
+      // them complete immediately instead of hiding + replaying. finish() is also stored on the
+      // section so navigation can land it in its completed state (see jumpTo).
+      const seenKey = 'te:' + location.pathname + '|' + c.sec;
+      let seen = false; try { seen = sessionStorage.getItem(seenKey) === '1'; } catch (_) {}
+      const remember = () => { try { sessionStorage.setItem(seenKey, '1'); } catch (_) {} };
       let played = false;
-      const playOnce = () => { if (!played) { played = true; tl.play(); } };
-      const finish = () => { played = true; tl.progress(1); };
+      const playOnce = () => { if (!played) { played = true; remember(); tl.play(); } };
+      const finish = () => { played = true; remember(); tl.progress(1); };
+      sec.__teFinish = finish;   // nav uses this to land the section fully visible
       const doPin = desktop && c.pin !== false;
       const pinTargetEl = c.pinTarget ? sec.querySelector(c.pinTarget) : null;
       // Auto-fit the whole-section chapters so they ALWAYS fit the screen (any device / scaling)
@@ -233,6 +246,10 @@
       } else {
         ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
       }
+      // Already viewed earlier this session → show it complete right now (no hide, no replay).
+      // The pin is still created above, so the scroll pause keeps working; it just never
+      // re-animates the content.
+      if (seen) finish();
     });
     // Re-fit every managed chapter whenever ScrollTrigger recomputes (window resize, zoom,
     // orientation change) BEFORE it re-measures pin positions — so the fit stays correct.
