@@ -12,6 +12,10 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
   const hover = matchMedia('(hover:hover)').matches;
+  // Desktop-only "smooth" layer: Lenis smooth-scroll + per-frame scroll parallax run ONLY here.
+  // On mobile/touch they cause scroll jank ("hanging"), so touch devices use plain native scroll
+  // and static backdrops — the one-shot entrance reveals still play everywhere.
+  const smooth = matchMedia('(min-width:901px)').matches;
   const hasGSAP = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
 
   /* ---- Load the exact uploaded temple illustration (used in every path) ---- */
@@ -51,8 +55,8 @@
   /* ---- Smooth scroll (Lenis) — light + responsive: buttery momentum without lag ----
      Driven by GSAP's ticker and synced to ScrollTrigger so pinned/scrub scenes stay
      perfectly in step. Disabled under reduced-motion (handled by the early return). */
-  if (typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.6 });
+  if (smooth && typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true, wheelMultiplier: 1 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -62,11 +66,12 @@
 
   /* ---- Scroll progress bar ---- */
   const prog = $('#xProgress');
-  if (prog) ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (self) => gsap.set(prog, { scaleX: self.progress }) });
+  if (prog && smooth) ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (self) => gsap.set(prog, { scaleX: self.progress }) });
 
-  /* ---- Environmental temple backdrop: very slow drift + subtle scale (alive) ---- */
+  /* ---- Environmental temple backdrop: very slow drift + subtle scale (alive). Desktop only —
+     a scroll-scrubbed transform on mobile repaints every frame and makes scrolling stutter. ---- */
   const pageTemple = $('#pageTemple');
-  if (pageTemple) gsap.fromTo(pageTemple,
+  if (pageTemple && smooth) gsap.fromTo(pageTemple,
     { yPercent: -4, scale: 1.02 },
     { yPercent: 8, scale: 1.09, ease: 'none',
       scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
@@ -95,11 +100,14 @@
     gsap.set(temple, { '--amb': 0.12, '--apex': 0 });
     gsap.from('.x-temple-media', { opacity: 0, scale: 1.05, duration: 1.4, ease: 'power2.out', delay: 0.15 });
     gsap.to(temple, { '--amb': 0.4, duration: 1.4, ease: 'sine.out', delay: 0.3 });
-    // depth: content drifts up a touch faster than the temple → the temple feels anchored
-    gsap.to('.x-temple-media', { yPercent: 7, scale: 1.05, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
-    gsap.to('.x-hero-content', { yPercent: -5, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
-    // CTA floats gently once revealed
-    gsap.to('.x-hero .hero-actions', { y: -6, duration: 2.6, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 1.5 });
+    // depth: content drifts up a touch faster than the temple → the temple feels anchored.
+    // Desktop only — these are scroll-scrubbed (per-frame) and the CTA float is an infinite
+    // ticker animation; both stutter/drain on mobile, so touch devices get a static hero.
+    if (smooth) {
+      gsap.to('.x-temple-media', { yPercent: 7, scale: 1.05, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
+      gsap.to('.x-hero-content', { yPercent: -5, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
+      gsap.to('.x-hero .hero-actions', { y: -6, duration: 2.6, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 1.5 });
+    }
   }
 
   /* ================= TRUST — counters (shake-proof, animate ONCE) ================= */

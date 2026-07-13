@@ -729,6 +729,10 @@ footer.site:hover .foot-glow{opacity:1}
   /* Round section paint to the pixel grid: a 3D layer on backgrounded blocks stops the
      sub-pixel hairline (often a thin white line) that appears at their edges mid-scroll. */
   .hero, .x-gap, .cta, .quote-band, .x-finale, footer.site{ -webkit-transform:translateZ(0); transform:translateZ(0); }
+  /* Don't proactively promote dozens of elements to GPU layers on mobile — the extra
+     compositing memory is a big cause of scroll stutter / hanging on real phones. Let the
+     browser decide; the few fixed/backgrounded layers above are enough. */
+  *{ will-change:auto !important; }
 }
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001s!important;transition-duration:.001s!important;scroll-behavior:auto!important}
