@@ -175,9 +175,12 @@
     const finish = () => { played = true; tl.progress(1); };
     const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
       ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
-    // Auto-fit whole-section chapters (no custom pinTarget) so they shrink to fit ANY screen
-    // and can pin everywhere — same helper the inner pages use (shared via window.TEFitSection).
-    if (pinEl && !opts.pinTarget && typeof window.TEFitSection === 'function') window.TEFitSection(sec);
+    // Auto-fit the pinned element (section OR its pinTarget) so every chapter shrinks to fit
+    // ANY screen and can pin everywhere — same helper the inner pages use. The Who-We-Are /
+    // What-We-Do / Why-Choose-Us scenes are static grids (their scrub code is inactive), so
+    // scaling them is safe. The pinTargets carry their own navbar-clearance padding, which
+    // TEFitSection reserves, so the scaled content never tucks under the nav.
+    if (pinEl && typeof window.TEFitSection === 'function') window.TEFitSection(pinEl);
     // Pin only when the chapter content actually fits within one screen. After auto-fit the
     // whole-section chapters fit by construction; this still guards the pinTarget scenes.
     const canPin = pinEl && pinEl.scrollHeight <= innerHeight + 4;
