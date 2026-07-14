@@ -59,7 +59,7 @@
      Driven by GSAP's ticker and synced to ScrollTrigger so pinned/scrub scenes stay
      perfectly in step. Disabled under reduced-motion (handled by the early return). */
   if (smooth && typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({ lerp: 0.07, smoothWheel: true, wheelMultiplier: 0.75, touchMultiplier: 1.5 });
+    const lenis = new Lenis({ lerp: 0.07, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.5 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -208,7 +208,7 @@
       // fastScrollEnd (jumps the pin to its end on fast scroll = skipped pause). The ~1.4-screen
       // hold means one wheel flick can't blow through it, so the section genuinely rests.
       ScrollTrigger.create({
-        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 1.4)),
+        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.55)),
         pin: pinEl, pinSpacing: true, invalidateOnRefresh: true,
         onEnter: playOnce, onEnterBack: finish,
         // If the page loads already scrolled into/past this chapter, show it complete.
@@ -272,7 +272,7 @@
     void armWho;
   }
   /* BRAND CREDIBILITY chapter: heading fades first, then KPIs stagger + temple rises, once */
-  sectionIntro('#brand', '.x-brand-head', '.x-kpi-row, .x-brand-art', { pin: true, hold: 1.4 });
+  sectionIntro('#brand', '.x-brand-head', '.x-kpi-row, .x-brand-art', { pin: true, hold: 0.55 });
   /* KPI counters — count 0 → target ONCE as the section settles; the "+" appears with the
      final number; smooth ease-out ~1.8s; never replays. Reduced-motion shows finals. */
   (function () {
@@ -296,16 +296,16 @@
   })();
 
   /* WHO WE ARE chapter: pin + float the story paragraphs and the step diagram in once */
-  sectionIntro('.x-who', '.x-who-head', '.x-who-story .wp, .x-who .ddd-stage', { pin: true, pinTarget: '.x-who-pin', hold: 1.4 });
+  sectionIntro('.x-who', '.x-who-head', '.x-who-story .wp, .x-who .ddd-stage', { pin: true, pinTarget: '.x-who-pin', hold: 0.55 });
 
   /* ============ WHAT WE DO — static grid; coordinated heading->cards intro + brief pin ============ */
-  sectionIntro('#rail', '.x-do-head', '#doStage .do-panel', { pin: true, pinTarget: '.x-do-pin', hold: 1.4 });
+  sectionIntro('#rail', '.x-do-head', '#doStage .do-panel', { pin: true, pinTarget: '.x-do-pin', hold: 0.55 });
 
   /* ============ WHY CHOOSE US — static grid; coordinated heading->cards intro + brief pin ============ */
-  sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof', { pin: true, pinTarget: '.x-why-pin', hold: 1.4 });
+  sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof', { pin: true, pinTarget: '.x-why-pin', hold: 0.55 });
 
   /* ================= AUDIENCE PATHS chapter: pin + float the two path cards in ================= */
-  sectionIntro('#paths', '.sec-head', '.x-path', { pin: true, hold: 1.4 });
+  sectionIntro('#paths', '.sec-head', '.x-path', { pin: true, hold: 0.55 });
   // elegant mouse-follow spotlight on the path cards (no tilt — clean, premium)
   if (hover) $$('[data-spotlight]').forEach((card) => {
     card.addEventListener('pointermove', (e) => {
@@ -322,10 +322,10 @@
      word in an inline-block broke the line spacing around the italic phrase and opened a
      blank gap). The block-level entrance below reveals it as a finished editorial layout. */
   /* FOUNDER chapter: pin + float the quote + signature in once */
-  sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 1.4 });
+  sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 0.55 });
 
   /* ================= FINAL CTA chapter: pin + float heading then cards in once ================= */
-  sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { pin: true, hold: 1.4 });
+  sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { pin: true, hold: 0.55 });
   gsap.from('.x-finale .fin-blob', {
     scrollTrigger: { trigger: '.x-finale', start: 'top 80%', once: true },
     opacity: 0, scale: 0.6, duration: 1.4, ease: 'power2.out', stagger: 0.15

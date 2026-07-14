@@ -239,7 +239,7 @@
         // a mouse wheel would skip the pause entirely. The hold is ~1.4 screens of scroll so a
         // single wheel flick can't blow straight through it: the section genuinely rests.
         ScrollTrigger.create({
-          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 1.4)),
+          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.55)),
           pin: pinEl, pinSpacing: true, invalidateOnRefresh: true,
           onEnter: playOnce, onEnterBack: finish,
           // If the page loads already scrolled into/past this chapter, show it complete.
