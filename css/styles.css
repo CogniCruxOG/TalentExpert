@@ -54,6 +54,10 @@ body{font-family:'Inter',sans-serif;color:var(--ink2);background:transparent;lin
    eases to a stop and releases with NO snap (a JS pin freezes instantly, which is felt as a
    hard "fast lock"). The section becomes a plain tall block that gives the sticky child room;
    the child carries the chapter's real layout (flex + navbar-clearance padding, set inline). */
+/* A chapter whose content is far shorter than one screen (JS adds .te-short): collapse the
+   forced full-screen height so the content isn't stranded in a sea of blank. */
+.te-short{ min-height:0 !important; }
+
 .te-sticky{ display:block !important; min-height:0 !important;
   padding-top:0 !important; padding-bottom:0 !important;
   /* the section is now 100vh + hold tall — its background moves to .te-stick (one screen)

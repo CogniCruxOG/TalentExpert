@@ -183,6 +183,18 @@
   }
   window.TEFitSection = fitSection;   // exposed so the home engine (experience.js) can reuse it
 
+  /* Natural height of a chapter's content, ignoring any forced min-height. Lets us tell a real
+     full-screen chapter from a SHORT block that would otherwise sit in a sea of blank (e.g. the
+     home finale: 296px of content stranded inside an 807px screen = 511px dead space). */
+  function naturalHeight(el) {
+    var pm = el.style.minHeight, ph = el.style.height;
+    el.style.minHeight = '0'; el.style.height = 'auto';
+    var h = el.scrollHeight;
+    el.style.minHeight = pm; el.style.height = ph;
+    return h;
+  }
+  window.TENaturalHeight = naturalHeight;
+
   /* ---- NATIVE STICKY chapter pin -------------------------------------------------
      A JS pin freezes the element instantly (one frame moving with the scroll, the next
      frozen) — that hard stop is what reads as a "fast lock" and no amount of easing can
@@ -271,7 +283,13 @@
       sec.__teFinish = finish;   // nav uses this to land the section fully visible
       const doPin = desktop && c.pin !== false;
       const pinTargetEl = c.pinTarget ? sec.querySelector(c.pinTarget) : null;
-      if (doPin && !pinTargetEl) {
+      // A chapter with far less content than one screen is NOT a full-screen chapter — forcing it
+      // to 100vh strands the content in blank (home finale: 296px content in an 807px screen =
+      // 511px dead). Below ~62% of the screen it collapses to its natural height (no 100vh, no
+      // pin). Calibrated so genuinely short blocks collapse while real chapters still pin.
+      const shortChapter = doPin && !pinTargetEl && naturalHeight(sec) < innerHeight * 0.62;
+      if (shortChapter) sec.classList.add('te-short');
+      if (doPin && !pinTargetEl && !shortChapter) {
         // NATIVE STICKY pin: the browser holds the chapter on the compositor, so it eases to a
         // rest and releases with zero snap (a JS pin freezes instantly = the "fast lock").
         // The auto-fit then scales the content INSIDE the sticky child so the chapter fits any
