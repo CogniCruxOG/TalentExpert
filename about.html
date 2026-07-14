@@ -331,7 +331,7 @@
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
 <script src="js/vendor/split-type.min.js"></script>
-<script src="js/main.js?v=16"></script>
+<script src="js/main.js?v=17"></script>
 <script>
 /* About-page scroll engine:
    Lenis (eased smooth scroll, desktop) + GSAP ScrollTrigger (pin/scrub/toggle-on-enter)
@@ -388,7 +388,7 @@
     /* ---- Lenis smooth scroll (desktop): eased, weighted inertia synced to ScrollTrigger
        through the GSAP ticker. Mobile keeps native touch scroll. ---- */
     if(typeof window.Lenis !== 'undefined' && matchMedia('(min-width:901px)').matches){
-      var lenis = new Lenis({ lerp:0.085, smoothWheel:true, wheelMultiplier:1, touchMultiplier:1.5 });
+      var lenis = new Lenis({ lerp:0.07, smoothWheel:true, wheelMultiplier:0.75, touchMultiplier:1.5 });
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
       gsap.ticker.lagSmoothing(0);

@@ -234,13 +234,13 @@
       // pinTarget case and any section too short to bother.
       const fitsViewport = pinEl && pinEl.scrollHeight <= innerHeight + 4;
       if (pinEl && fitsViewport) {
-        // Brief chapter pin. anticipatePin makes the lock-in read as a smooth continuation of
-        // the scroll rather than a snap; it holds for a short reading pause, then releases.
-        // NB: NO fastScrollEnd — that makes the pin jump straight to its end on fast scroll, so
-        // a mouse wheel (big, fast jumps) would skip the pause entirely while a trackpad works.
+        // Chapter pin. NO anticipatePin — it engages the pin EARLY on fast scroll, which is
+        // felt as a hard snap. NO fastScrollEnd — it jumps the pin to its end on fast scroll, so
+        // a mouse wheel would skip the pause entirely. The hold is ~1.4 screens of scroll so a
+        // single wheel flick can't blow straight through it: the section genuinely rests.
         ScrollTrigger.create({
-          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.9)),
-          pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
+          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 1.4)),
+          pin: pinEl, pinSpacing: true, invalidateOnRefresh: true,
           onEnter: playOnce, onEnterBack: finish,
           // If the page loads already scrolled into/past this chapter, show it complete.
           onRefresh: (self) => { if (!played && self.progress > 0.001) finish(); }
