@@ -195,13 +195,10 @@
     sec.__teFinish = finish;
     const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
       ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
-    // A chapter with far less content than one screen isn't a full-screen chapter — forcing it
-    // to 100vh strands the content in blank (the finale: 296px of content in an 807px screen).
-    // Let it collapse to its natural height instead, and skip the pin.
-    const shortChapter = pinEl && !opts.pinTarget && typeof window.TENaturalHeight === 'function'
-      && window.TENaturalHeight(sec) < innerHeight * 0.62;
-    if (shortChapter) sec.classList.add('te-short');
-    if (pinEl && !shortChapter && typeof window.TEMakeSticky === 'function') {
+    // collapse:true — see main.js: less than a screen of content, so flow at natural height
+    // instead of stretching to 100vh around blank. Declared, not measured (font-timing-proof).
+    if (opts.collapse) sec.classList.add('te-short');
+    if (pinEl && !opts.collapse && typeof window.TEMakeSticky === 'function') {
       // NATIVE STICKY pin — the browser rests the chapter on the compositor, so it eases to a
       // stop and releases with zero snap (a JS pin freezes instantly = the hard "fast lock").
       const holdVh = opts.hold || 0.55;
@@ -334,7 +331,7 @@
   sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 0.55 });
 
   /* ================= FINAL CTA chapter: pin + float heading then cards in once ================= */
-  sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { pin: true, hold: 0.55 });
+  sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { collapse: true });
   gsap.from('.x-finale .fin-blob', {
     scrollTrigger: { trigger: '.x-finale', start: 'top 80%', once: true },
     opacity: 0, scale: 0.6, duration: 1.4, ease: 'power2.out', stagger: 0.15

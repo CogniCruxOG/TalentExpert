@@ -54,8 +54,10 @@ body{font-family:'Inter',sans-serif;color:var(--ink2);background:transparent;lin
    eases to a stop and releases with NO snap (a JS pin freezes instantly, which is felt as a
    hard "fast lock"). The section becomes a plain tall block that gives the sticky child room;
    the child carries the chapter's real layout (flex + navbar-clearance padding, set inline). */
-/* A chapter whose content is far shorter than one screen (JS adds .te-short): collapse the
-   forced full-screen height so the content isn't stranded in a sea of blank. */
+/* A chapter declared `collapse:true` carries less than a screen of content (JS adds .te-short):
+   drop the forced full-screen height so the content isn't stranded in a sea of blank. Such a
+   chapter also skips the pin — a pinned section always leaves its own leftover area on screen,
+   so short + pinned inevitably means blank. Zero-blank and pinned are mutually exclusive here. */
 .te-short{ min-height:0 !important; }
 
 .te-sticky{ display:block !important; min-height:0 !important;
@@ -1558,7 +1560,9 @@ body[data-page="contact"] #reach{ padding-top:120px; }
    feature; "Best for" is a separate card, never another timeline point. Heights are fluid
    (content decides), so the section adapts inside the pin on any screen. */
 #models .hm-split{ position:relative; width:min(900px,94vw); margin:0 auto; padding-top:4px; }
-#models .hm-flows{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(26px,3.4vw,46px); align-items:stretch; justify-items:stretch; }
+/* equal column widths, but each column keeps its OWN natural height (align-items:start) so a
+   Best-for card simply follows its own timeline instead of being stretched into alignment */
+#models .hm-flows{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(26px,3.4vw,46px); align-items:start; }
 /* column is a flex stack so every "Best for" card sits on the SAME baseline across models */
 #models .hm-flow{ position:relative; display:flex; flex-direction:column; height:auto; }
 /* ---- hierarchy: kicker (small caps) → title (large) → subtitle (light) ---- */
@@ -1582,11 +1586,14 @@ body[data-page="contact"] #reach{ padding-top:120px; }
 #models .hm-mtext em{ display:block; font-style:normal; font-family:'Inter'; font-weight:400; font-size:.82rem; color:var(--ink3); line-height:1.45; }
 /* ---- "Best for" = the conclusion, a separate highlight card (not a timeline point).
    margin-top:auto pins it to the bottom so both models' cards align horizontally. ---- */
-/* font-style:normal resets the legacy global `.hm-best{font-style:italic}` (line ~355) */
-#models .hm-best{ margin-top:auto; padding:16px 18px; border-radius:16px; font-style:normal;
+/* Conclusion card: sits directly under its own last timeline item and is CENTRED within its
+   own column (margin:0 auto, ~88% width). NOT margin-top:auto — that bottom-aligned the two
+   cards to each other; each should follow its own timeline naturally.
+   font-style:normal resets the legacy global `.hm-best{font-style:italic}` (line ~355). */
+#models .hm-best{ width:88%; max-width:440px; margin:22px auto 0; padding:16px 18px; border-radius:16px; font-style:normal;
   background:var(--orange-wash); border:1px solid rgba(242,111,33,.18);
   box-shadow:0 8px 24px -18px rgba(242,111,33,.4); }
-#models .hm-flow .hm-line{ margin-bottom:22px; }   /* clear separation from the card */
+
 #models .hm-best-top{ display:flex; align-items:center; gap:8px; margin-bottom:7px; }
 #models .hm-best-ic{ width:22px; height:22px; border-radius:50%; display:grid; place-items:center;
   background:var(--accent); color:#fff; flex:none; }
@@ -1598,7 +1605,7 @@ body[data-page="contact"] #reach{ padding-top:120px; }
 @media(max-width:900px){
   #models .hm-flows{ grid-template-columns:1fr; gap:40px; }
   #models .hm-split{ width:min(460px,92vw); padding-top:8px; }
-  #models .hm-best{ margin-top:20px; }   /* no equal-height stretch when stacked */
+  #models .hm-best{ width:92%; max-width:none; margin:20px auto 0; }   /* stays centred when stacked */
 }
 
 /* Get Talent Now — file upload control */

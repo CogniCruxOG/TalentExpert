@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>(function(){var d=document.documentElement;d.className+=" fonts-loading";var r=function(){d.classList.remove("fonts-loading")};try{if(document.fonts&&document.fonts.ready){document.fonts.ready.then(r)}}catch(e){}setTimeout(r,1200);})();</script>
-<link rel="stylesheet" href="css/styles.css?v=43">
+<link rel="stylesheet" href="css/styles.css?v=44">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","serviceType":"Recruitment and staffing","provider":{"@type":"Organization","name":"Talent Expert"},"areaServed":"Tamil Nadu, India"}</script>
 </head>
 <body data-page="services">
@@ -200,7 +200,7 @@
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
 <script src="js/vendor/split-type.min.js"></script>
-<script src="js/main.js?v=22"></script>
+<script src="js/main.js?v=23"></script>
 <script>
 /* Services scroll engine — GSAP ScrollTrigger + Lenis.
    Story: each service card slides up from below, PINS CENTERED in the viewport, holds for a
@@ -239,7 +239,7 @@
      entrance once, then releases. No scrub, no replay. */
   if(typeof window.TEChapter === 'function'){
     window.TEChapter([
-      { sec:'#svc-overview', head:'.ov-center', items:'.ov-col', pin:true, hold:0.55 }
+      { sec:'#svc-overview', head:'.ov-center', items:'.ov-col', collapse:true }
     ]);
   }
 })();
