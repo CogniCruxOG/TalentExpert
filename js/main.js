@@ -204,6 +204,7 @@
       var padT = cs.paddingTop, padB = cs.paddingBottom;
       var fd = cs.flexDirection, jc = cs.justifyContent, ai = cs.alignItems;
       var wasFlex = (cs.display === 'flex' || cs.display === 'inline-flex');
+      var bgColor = cs.backgroundColor, bgImage = cs.backgroundImage;
       stick = document.createElement('div');
       stick.className = 'te-stick';
       while (sec.firstChild) stick.appendChild(sec.firstChild);
@@ -215,6 +216,11 @@
       if (wasFlex && ai && ai !== 'normal') stick.style.alignItems = ai;
       stick.style.paddingTop = padT;
       stick.style.paddingBottom = padB;
+      // Move any BACKGROUND onto the sticky child. The section is now 100vh + hold tall, so a
+      // background left on it would paint ~1.5 screens (e.g. the dark finale block) and read as
+      // a huge empty band. On the child it covers exactly one screen, as it did before.
+      if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') stick.style.backgroundColor = bgColor;
+      if (bgImage && bgImage !== 'none') stick.style.backgroundImage = bgImage;
       sec.classList.add('te-sticky');
     }
     // room to stick = one screen of content + the hold distance
