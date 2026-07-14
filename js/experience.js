@@ -21,6 +21,9 @@
   /* ---- Load the exact uploaded temple illustration (used in every path) ---- */
   function loadTempleImg() {
     const t = $('#xTemple'); if (!t) return;
+    // The hero backdrop is hidden (plain-background pages) — don't fetch the artwork at all.
+    // Self-adjusting: if the backdrop is ever re-enabled in CSS, the image loads again.
+    if (getComputedStyle(t).display === 'none') return;
     const media = $('.x-temple-media', t);
     const srcs = [t.dataset.src, t.dataset.src2].filter(Boolean);
     let i = 0;

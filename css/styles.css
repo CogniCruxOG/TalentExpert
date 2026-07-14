@@ -1819,3 +1819,30 @@ body[data-page="contact"] #reach{ padding-top:120px; }
   }
   body[data-page="blog"] #insights .sec-head{ margin-bottom:24px; }
 }
+
+
+/* ============ PLAIN BACKGROUND — Home & About ============
+   These two pages sit on ONE flat surface: no temple / illustration watermark, no ambient
+   glows or blobs, no gradient washes, no alternating section tints. The dark CTA / finale
+   blocks are kept — they're design blocks, not page background. */
+body[data-page="home"], body[data-page="about"]{ background:#FCFAF8; }
+
+/* decorative watermark + glow layers off (display:none also stops their art downloading) */
+body[data-page="home"] .page-temple,
+body[data-page="home"] .x-temple,
+body[data-page="home"] .x-hero-glow,
+body[data-page="home"] .x-founder-bg,
+body[data-page="home"] .fin-blob,
+body[data-page="about"] .about-bg,
+body[data-page="about"] .cta-glow{ display:none !important; }
+
+/* flatten every gradient wash / alternating tint down to the one plain surface */
+body[data-page="home"] .x-hero,
+body[data-page="home"] .x-founder,
+body[data-page="home"] .x-gap,
+body[data-page="home"] .section,
+body[data-page="home"] .section.alt,
+body[data-page="about"] .hero,
+body[data-page="about"] .quote-band,
+body[data-page="about"] .section,
+body[data-page="about"] .section.alt{ background:none !important; }
