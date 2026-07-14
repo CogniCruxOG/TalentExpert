@@ -82,13 +82,7 @@ html.lenis,html.lenis body{height:auto}
    custom dropdown pins the page (lenis.stop), shifting the layout ("shake").
    Lenis still blocks wheel/touch while stopped, so the page stays pinned. */
 
-/* Global cursor spotlight (injected by main.js): bright warm centre + soft dark vignette */
-.cursor-glow{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .5s ease;will-change:opacity;
-  background:
-    radial-gradient(520px circle at var(--cx,50%) var(--cy,50%),rgba(242,111,33,.16),rgba(249,165,106,.09) 22%,transparent 46%),
-    radial-gradient(1100px circle at var(--cx,50%) var(--cy,50%),transparent 48%,rgba(26,26,26,.045) 100%)}
-.cursor-glow.on{opacity:1}
-@media(hover:none){.cursor-glow{display:none}}
+/* Global cursor spotlight: REMOVED site-wide (was .cursor-glow, injected by main.js). */
 
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
 .section{padding:104px 0;position:relative}
@@ -561,10 +555,8 @@ footer.site .foot-orn>svg{position:absolute;bottom:-16px;left:0;width:100%;heigh
 footer.site .foot-orn::before,footer.site .foot-orn::after{content:"";position:absolute;border-radius:50%;filter:blur(64px)}
 footer.site .foot-orn::before{width:440px;height:440px;top:-140px;right:5%;background:radial-gradient(circle,rgba(242,111,33,.14),transparent 70%)}
 footer.site .foot-orn::after{width:380px;height:380px;bottom:-150px;left:-50px;background:radial-gradient(circle,rgba(249,165,106,.12),transparent 70%)}
-/* footer-scoped cursor glow (follows the pointer inside the footer) */
-.foot-glow{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .5s ease;
-  background:radial-gradient(340px circle at var(--fx,50%) var(--fy,50%),rgba(242,111,33,.10),transparent 60%)}
-footer.site:hover .foot-glow{opacity:1}
+/* footer-scoped cursor glow: REMOVED site-wide (kept hidden in case the markup remains) */
+.foot-glow{display:none}
 .foot-wrap{position:relative;z-index:2;max-width:1400px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
 /* four balanced columns: brand | quick links | business/job | newsletter */
 .foot-top{display:grid;grid-template-columns:1.5fr 2fr 1.55fr;gap:clamp(26px,3vw,48px);align-items:start}

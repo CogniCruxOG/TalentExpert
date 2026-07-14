@@ -462,45 +462,14 @@
   $$('[data-portal-choice]').forEach(el =>
     el.addEventListener('click', () => window.rememberPortal(el.dataset.portalChoice)));
 
-  /* ---- Global ambient cursor glow (site-wide) ---- */
-  if (matchMedia('(hover:hover)').matches && !reduce) {
-    const glow = document.createElement('div');
-    glow.className = 'cursor-glow';
-    document.body.appendChild(glow);
-    let tx = innerWidth / 2, ty = innerHeight / 2, gx = tx, gy = ty, shown = false, raf = 0;
-    const tick = () => {
-      gx += (tx - gx) * 0.12; gy += (ty - gy) * 0.12;
-      glow.style.setProperty('--cx', gx.toFixed(1) + 'px');
-      glow.style.setProperty('--cy', gy.toFixed(1) + 'px');
-      raf = requestAnimationFrame(tick);
-    };
-    addEventListener('mousemove', (e) => {
-      tx = e.clientX; ty = e.clientY;
-      if (!shown) { shown = true; glow.classList.add('on'); }
-    }, { passive: true });
-    document.addEventListener('mouseleave', () => { shown = false; glow.classList.remove('on'); });
-    tick();
-  }
+  /* Global ambient cursor glow: REMOVED (site-wide). It also ran a permanent
+     requestAnimationFrame loop, so dropping it is a free performance win. */
 
   /* ---- Footer year ---- */
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
 
-  /* ---- Footer: cursor-follow glow + magnetic buttons ---- */
+  /* ---- Footer: magnetic buttons (the cursor-follow glow was removed site-wide) ---- */
   if (matchMedia('(hover:hover)').matches && !reduce) {
-    const foot = $('footer.site');
-    if (foot) {
-      let fraf = 0, fx = 50, fy = 50;
-      foot.addEventListener('pointermove', (e) => {
-        const r = foot.getBoundingClientRect();
-        fx = ((e.clientX - r.left) / r.width) * 100;
-        fy = ((e.clientY - r.top) / r.height) * 100;
-        if (!fraf) fraf = requestAnimationFrame(() => {
-          fraf = 0;
-          foot.style.setProperty('--fx', fx + '%');
-          foot.style.setProperty('--fy', fy + '%');
-        });
-      }, { passive: true });
-    }
     // Magnetic hover — footer subscribe button only (home hero CTAs are handled
     // by experience.js). Button drifts toward the cursor, springs back on leave.
     $$('.news-btn.magnetic').forEach((btn) => {
