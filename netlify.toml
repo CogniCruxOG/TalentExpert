@@ -3,7 +3,29 @@
   publish = "."
   command = ""
 
-# Long-cache the versioned assets (they use ?v=N cache-busting in the HTML)
+# HTML must always revalidate, so a deploy is visible IMMEDIATELY (no 10-minute stale window
+# like GitHub Pages' fixed max-age=600). The HTML is tiny; the revalidation is a 304.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# CSS/JS are cache-busted with ?v=N in the HTML, so they can be held for a long time safely.
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
 [[headers]]
   for = "/assets/*"
   [headers.values]
