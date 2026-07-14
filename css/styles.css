@@ -40,8 +40,9 @@ body[data-portal="seeker"]{--accent:var(--orange);--accent-t:var(--orange-t);--a
    Lenis initialises) = rapid animation playback. All anchor nav goes through main.js's
    instant jump (Lenis immediate / instant window.scrollTo) instead. */
 html{scroll-behavior:auto;font-size:16px;
-  /* one continuous warm canvas so sections blend instead of stacking as boxes */
-  background:linear-gradient(180deg,#FFFFFF 0%,#FFF9F4 28%,#FDF3EC 52%,#FFF8F2 74%,#FFFFFF 100%)}
+  /* One flat milky-white canvas site-wide — a clean editorial surface with only the faintest
+     warmth (no gradient, no beige/yellow cast). Cards/shadows/accents are unchanged. */
+  background:#FCFCFA}
 body{font-family:'Inter',sans-serif;color:var(--ink2);background:transparent;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
 /* Auto-fit wrappers (JS injects them into pinned chapters): the outer holds the scaled
    layout height, the inner is scaled from its top so a full-screen chapter fits any screen. */
@@ -1545,37 +1546,52 @@ body[data-page="contact"] #reach{ padding-top:120px; }
 /* ============ Hiring Models — editorial parallel timelines (no cards) ============
    Two flows branch from a single node under the heading; each benefit is a milestone on
    a vertical connector line; "Best for" is the final highlighted milestone. No boxes. */
-#models .hm-split{ position:relative; width:min(1060px,94vw); margin:0 auto; padding-top:18px; }
-/* central stem + node dropping from the heading into the split */
-#models .hm-stem{ position:absolute; top:-4px; left:50%; transform:translateX(-50%); width:2px; height:26px; background:linear-gradient(var(--accent), rgba(242,111,33,.25)); }
-#models .hm-stem::after{ content:""; position:absolute; left:50%; bottom:-4px; transform:translateX(-50%); width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 5px var(--orange-wash); }
-#models .hm-flows{ display:grid; grid-template-columns:1fr 1fr; gap:58px; }
-#models .hm-flow{ position:relative; }
-/* flow header */
-#models .hm-fhead{ margin-bottom:16px; }
-#models .hm-ic{ width:46px; height:46px; border-radius:14px; display:grid; place-items:center; margin:0 0 10px; }
-#models .hm-ic .ic{ width:22px; height:22px; }
-#models .hm-kicker{ display:block; font-family:'Inter'; font-weight:700; font-size:.66rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ink3); margin-bottom:5px; }
-#models .hm-fhead h3{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.42rem; font-weight:600; line-height:1.1; margin:0 0 4px; color:var(--ink); letter-spacing:-.012em; }
-#models .hm-tag{ font-family:'Inter'; font-weight:500; font-size:.85rem; color:var(--ink3); line-height:1.4; margin:0; }
-/* the vertical connector line + milestones */
+   Each model reads: Model → Features (timeline) → Conclusion ("Best for" highlight card).
+   NO centre connector — the two models are independent. The timeline ENDS after the last
+   feature; "Best for" is a separate card, never another timeline point. Heights are fluid
+   (content decides), so the section adapts inside the pin on any screen. */
+#models .hm-split{ position:relative; width:min(1060px,94vw); margin:0 auto; padding-top:4px; }
+#models .hm-flows{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,4vw,58px); align-items:stretch; }
+/* column is a flex stack so every "Best for" card sits on the SAME baseline across models */
+#models .hm-flow{ position:relative; display:flex; flex-direction:column; height:auto; }
+/* ---- hierarchy: kicker (small caps) → title (large) → subtitle (light) ---- */
+#models .hm-fhead{ margin-bottom:18px; }
+#models .hm-ic{ width:44px; height:44px; border-radius:13px; display:grid; place-items:center; margin:0 0 12px; }
+#models .hm-ic .ic{ width:21px; height:21px; }
+#models .hm-kicker{ display:block; font-family:'Inter'; font-weight:700; font-size:.64rem; letter-spacing:.17em; text-transform:uppercase; color:var(--ink3); margin-bottom:6px; }
+#models .hm-fhead h3{ font-family:'Plus Jakarta Sans',sans-serif; font-size:1.5rem; font-weight:700; line-height:1.08; margin:0 0 5px; color:var(--ink); letter-spacing:-.018em; }
+#models .hm-tag{ font-family:'Inter'; font-weight:400; font-size:.85rem; color:var(--ink3); line-height:1.45; margin:0; }
+/* ---- timeline: line stops at the LAST feature's dot, never continues past it ---- */
 #models .hm-line{ list-style:none; margin:0; padding:0; position:relative; }
-#models .hm-line::before{ content:""; position:absolute; left:6px; top:6px; bottom:16px; width:2px; background:linear-gradient(var(--accent) 0%, rgba(242,111,33,.2) 100%); }
-#models .hm-line li{ position:relative; padding:0 0 12px 30px; }
+#models .hm-line li{ position:relative; padding:0 0 14px 30px; }
 #models .hm-line li:last-child{ padding-bottom:0; }
+/* draw the connector per-item (not one long bar) so it simply ends with the final feature */
+#models .hm-line li::before{ content:""; position:absolute; left:6px; top:15px; bottom:-3px; width:2px;
+  background:rgba(242,111,33,.22); }
+#models .hm-line li:last-child::before{ display:none; }   /* ← timeline ends cleanly */
 #models .hm-mile{ position:absolute; left:0; top:3px; width:14px; height:14px; border-radius:50%; background:#fff; border:2px solid var(--accent); box-sizing:border-box; }
 #models .hm-mtext{ display:block; }
 #models .hm-mtext b{ display:block; font-family:'Inter'; font-weight:600; font-size:.9rem; color:var(--ink); line-height:1.3; margin-bottom:2px; letter-spacing:.002em; }
 #models .hm-mtext em{ display:block; font-style:normal; font-family:'Inter'; font-weight:400; font-size:.82rem; color:var(--ink3); line-height:1.45; }
-/* final milestone = Best For (highlighted, no box) */
-#models .hm-final{ margin-top:5px; }
-#models .hm-final .hm-mile{ width:16px; height:16px; top:2px; background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 5px var(--orange-wash); }
-#models .hm-final .hm-mtext b{ font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
-#models .hm-final .hm-mtext em{ font-size:.88rem; color:var(--ink2); }
-/* tablet / mobile: the two flows stack into one column */
+/* ---- "Best for" = the conclusion, a separate highlight card (not a timeline point).
+   margin-top:auto pins it to the bottom so both models' cards align horizontally. ---- */
+/* font-style:normal resets the legacy global `.hm-best{font-style:italic}` (line ~355) */
+#models .hm-best{ margin-top:auto; padding:16px 18px; border-radius:16px; font-style:normal;
+  background:var(--orange-wash); border:1px solid rgba(242,111,33,.18);
+  box-shadow:0 8px 24px -18px rgba(242,111,33,.4); }
+#models .hm-flow .hm-line{ margin-bottom:22px; }   /* clear separation from the card */
+#models .hm-best-top{ display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+#models .hm-best-ic{ width:22px; height:22px; border-radius:50%; display:grid; place-items:center;
+  background:var(--accent); color:#fff; flex:none; }
+#models .hm-best-ic .ic{ width:12px; height:12px; }
+#models .hm-best-lbl{ font-family:'Inter'; font-weight:700; font-size:.68rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--accent); }
+#models .hm-best p{ margin:0; font-family:'Inter'; font-size:.88rem; line-height:1.5; color:var(--ink2); }
+/* tablet / mobile: the two models stack, each keeping its own Best-for card */
 @media(max-width:900px){
-  #models .hm-flows{ grid-template-columns:1fr; gap:38px; }
-  #models .hm-split{ width:min(460px,92vw); padding-top:24px; }
+  #models .hm-flows{ grid-template-columns:1fr; gap:40px; }
+  #models .hm-split{ width:min(460px,92vw); padding-top:8px; }
+  #models .hm-best{ margin-top:20px; }   /* no equal-height stretch when stacked */
 }
 
 /* Get Talent Now — file upload control */
@@ -1827,7 +1843,7 @@ body[data-page="contact"] #reach{ padding-top:120px; }
    These two pages sit on ONE flat surface: no temple / illustration watermark, no ambient
    glows or blobs, no gradient washes, no alternating section tints. The dark CTA / finale
    blocks are kept — they're design blocks, not page background. */
-body[data-page="home"], body[data-page="about"]{ background:#FCFAF8; }
+body[data-page="home"], body[data-page="about"]{ background:#FCFCFA; }
 
 /* decorative watermark + glow layers off (display:none also stops their art downloading) */
 body[data-page="home"] .page-temple,
