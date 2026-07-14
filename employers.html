@@ -280,7 +280,7 @@
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
 <script src="js/vendor/split-type.min.js"></script>
-<script src="js/main.js?v=15"></script>
+<script src="js/main.js?v=16"></script>
 <script>
 /* ============ Business Owners — pinned editorial scroll engine ============
    Each section pins, its heading stays fixed, and its content animates
@@ -296,8 +296,7 @@
 
   var motionOK = matchMedia('(prefers-reduced-motion:no-preference)').matches;
   if(matchMedia('(min-width:901px)').matches && motionOK && typeof window.Lenis !== 'undefined'){
-    var lenis = new Lenis({ duration:1.5, wheelMultiplier:0.9,
-      easing:function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
+    var lenis = new Lenis({ lerp:0.085, smoothWheel:true, wheelMultiplier:1, touchMultiplier:1.5 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
     gsap.ticker.lagSmoothing(0);
@@ -311,14 +310,14 @@
      screen so nothing is ever clipped while pinned. No scrub, no replay. */
   if(typeof window.TEChapter === 'function'){
     window.TEChapter([
-      { sec:'#problem',  head:'.sec-head', items:'.prob',                 pin:true, hold:0.75 },
-      { sec:'#why',      head:'.sec-head', items:'.why-track .feat-card', pin:true, hold:0.75 },
-      { sec:'#process',  head:'.sec-head', items:'.tl-step',              pin:true, hold:0.75 },
-      { sec:'#services', head:'.sec-head', items:'.tbl-wrap',             pin:true, hold:0.75 },
-      { sec:'#models',   head:'.sec-head', items:'.hm-flow',              pin:true, hold:0.75 },
-      { sec:'#stories',  head:'.sec-head', items:'.tst-card',             pin:true, hold:0.75 },
-      { sec:'#faq',      head:'.sec-head', items:'.faq-item',             pin:true, hold:0.75 },
-      { sec:'#contact',  head:'.sec-head', items:'.form-card',            pin:true, hold:0.75 }
+      { sec:'#problem',  head:'.sec-head', items:'.prob',                 pin:true, hold:0.9 },
+      { sec:'#why',      head:'.sec-head', items:'.why-track .feat-card', pin:true, hold:0.9 },
+      { sec:'#process',  head:'.sec-head', items:'.tl-step',              pin:true, hold:0.9 },
+      { sec:'#services', head:'.sec-head', items:'.tbl-wrap',             pin:true, hold:0.9 },
+      { sec:'#models',   head:'.sec-head', items:'.hm-flow',              pin:true, hold:0.9 },
+      { sec:'#stories',  head:'.sec-head', items:'.tst-card',             pin:true, hold:0.9 },
+      { sec:'#faq',      head:'.sec-head', items:'.faq-item',             pin:true, hold:0.9 },
+      { sec:'#contact',  head:'.sec-head', items:'.form-card',            pin:true, hold:0.9 }
     ]);
   }
 

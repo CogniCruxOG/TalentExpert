@@ -59,7 +59,7 @@
      Driven by GSAP's ticker and synced to ScrollTrigger so pinned/scrub scenes stay
      perfectly in step. Disabled under reduced-motion (handled by the early return). */
   if (smooth && typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true, wheelMultiplier: 1 });
+    const lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.5 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -172,13 +172,15 @@
     // floats gently up + fades in together. fromTo with an explicit VISIBLE end state so
     // nothing can be left hidden regardless of each element's base CSS (a plain .from()
     // captures the element's current value as the end — if that is 0 it stays invisible).
-    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
-    if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.08 });
-    else if (head) tl.fromTo(head, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55 });
+    // Gentle, unhurried entrance (matches the inner pages): power2.out reads softer than
+    // power3's hard decel, and the longer durations let content settle instead of snapping.
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+    if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.09 });
+    else if (head) tl.fromTo(head, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 });
     if (items.length) tl.fromTo(items,
-      { opacity: 0, y: 30, scale: 0.985 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.72, stagger: 0.1 },
-      (head || headKids.length) ? '-=0.04' : 0);   // heading settles, then cards float in
+      { opacity: 0, y: 26, scale: 0.99 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.11 },
+      (head || headKids.length) ? '-=0.28' : 0);   // heading settles, then cards float in
     if (reduce) { tl.progress(1); return; }
     // Entrance plays ONCE PER BROWSER SESSION (sessionStorage), so returning to Home renders
     // played sections complete instead of hiding + replaying. finish() is exposed on the
@@ -207,7 +209,7 @@
       // NB: NO fastScrollEnd — it makes the pin jump to its end on fast scroll, so a mouse wheel
       // (big fast jumps) would skip the pause while a trackpad works. Removing it = pins on both.
       ScrollTrigger.create({
-        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.75)),
+        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.9)),
         pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
         onEnter: playOnce, onEnterBack: finish,
         // If the page loads already scrolled into/past this chapter, show it complete.
@@ -271,7 +273,7 @@
     void armWho;
   }
   /* BRAND CREDIBILITY chapter: heading fades first, then KPIs stagger + temple rises, once */
-  sectionIntro('#brand', '.x-brand-head', '.x-kpi-row, .x-brand-art', { pin: true, hold: 0.65 });
+  sectionIntro('#brand', '.x-brand-head', '.x-kpi-row, .x-brand-art', { pin: true, hold: 0.9 });
   /* KPI counters — count 0 → target ONCE as the section settles; the "+" appears with the
      final number; smooth ease-out ~1.8s; never replays. Reduced-motion shows finals. */
   (function () {
@@ -295,16 +297,16 @@
   })();
 
   /* WHO WE ARE chapter: pin + float the story paragraphs and the step diagram in once */
-  sectionIntro('.x-who', '.x-who-head', '.x-who-story .wp, .x-who .ddd-stage', { pin: true, pinTarget: '.x-who-pin', hold: 0.6 });
+  sectionIntro('.x-who', '.x-who-head', '.x-who-story .wp, .x-who .ddd-stage', { pin: true, pinTarget: '.x-who-pin', hold: 0.9 });
 
   /* ============ WHAT WE DO — static grid; coordinated heading->cards intro + brief pin ============ */
-  sectionIntro('#rail', '.x-do-head', '#doStage .do-panel', { pin: true, pinTarget: '.x-do-pin', hold: 0.6 });
+  sectionIntro('#rail', '.x-do-head', '#doStage .do-panel', { pin: true, pinTarget: '.x-do-pin', hold: 0.9 });
 
   /* ============ WHY CHOOSE US — static grid; coordinated heading->cards intro + brief pin ============ */
-  sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof', { pin: true, pinTarget: '.x-why-pin', hold: 0.6 });
+  sectionIntro('.x-why', '.x-why-head', '.x-why-stage .proof', { pin: true, pinTarget: '.x-why-pin', hold: 0.9 });
 
   /* ================= AUDIENCE PATHS chapter: pin + float the two path cards in ================= */
-  sectionIntro('#paths', '.sec-head', '.x-path', { pin: true, hold: 0.6 });
+  sectionIntro('#paths', '.sec-head', '.x-path', { pin: true, hold: 0.9 });
   // elegant mouse-follow spotlight on the path cards (no tilt — clean, premium)
   if (hover) $$('[data-spotlight]').forEach((card) => {
     card.addEventListener('pointermove', (e) => {
@@ -321,10 +323,10 @@
      word in an inline-block broke the line spacing around the italic phrase and opened a
      blank gap). The block-level entrance below reveals it as a finished editorial layout. */
   /* FOUNDER chapter: pin + float the quote + signature in once */
-  sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 0.6 });
+  sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 0.9 });
 
   /* ================= FINAL CTA chapter: pin + float heading then cards in once ================= */
-  sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { pin: true, hold: 0.6 });
+  sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { pin: true, hold: 0.9 });
   gsap.from('.x-finale .fin-blob', {
     scrollTrigger: { trigger: '.x-finale', start: 'top 80%', once: true },
     opacity: 0, scale: 0.6, duration: 1.4, ease: 'power2.out', stagger: 0.15

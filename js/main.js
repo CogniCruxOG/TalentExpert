@@ -202,13 +202,15 @@
       // One entrance: heading/label/description rise FIRST, then the whole content group
       // floats gently up + fades in together. fromTo with an explicit VISIBLE end state so
       // nothing can be left hidden regardless of each element's base CSS.
-      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
-      if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.08 });
-      else if (head) tl.fromTo(head, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55 });
+      // Gentle, unhurried entrance: power2.out reads softer than power3's hard decel, and the
+      // slightly longer durations let the content settle instead of snapping into place.
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+      if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.09 });
+      else if (head) tl.fromTo(head, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 });
       if (items.length) tl.fromTo(items,
-        { opacity: 0, y: 30, scale: 0.985 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.72, stagger: 0.1 },
-        (head || headKids.length) ? '-=0.04' : 0);   // heading settles, then cards float in
+        { opacity: 0, y: 26, scale: 0.99 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.11 },
+        (head || headKids.length) ? '-=0.28' : 0);   // heading settles, then cards float in
       if (reduceM) { tl.progress(1); return; }
       // Entrance plays ONCE PER BROWSER SESSION. sessionStorage remembers sections that have
       // already played, so returning to a page (via nav, mega menu, or the back button) renders
@@ -237,7 +239,7 @@
         // NB: NO fastScrollEnd — that makes the pin jump straight to its end on fast scroll, so
         // a mouse wheel (big, fast jumps) would skip the pause entirely while a trackpad works.
         ScrollTrigger.create({
-          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.75)),
+          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.9)),
           pin: pinEl, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
           onEnter: playOnce, onEnterBack: finish,
           // If the page loads already scrolled into/past this chapter, show it complete.
