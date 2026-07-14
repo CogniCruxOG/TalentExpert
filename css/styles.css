@@ -48,6 +48,16 @@ body{font-family:'Inter',sans-serif;color:var(--ink2);background:transparent;lin
 .te-fit-outer{ width:100%; }
 .te-fit{ width:100%; transform-origin:top center; }
 
+/* ---- NATIVE STICKY chapter pin (JS injects .te-stick and adds .te-sticky) ----
+   The chapter rests via the browser's own position:sticky — handled on the compositor, so it
+   eases to a stop and releases with NO snap (a JS pin freezes instantly, which is felt as a
+   hard "fast lock"). The section becomes a plain tall block that gives the sticky child room;
+   the child carries the chapter's real layout (flex + navbar-clearance padding, set inline). */
+.te-sticky{ display:block !important; min-height:0 !important;
+  padding-top:0 !important; padding-bottom:0 !important; }
+.te-sticky > .te-stick{ position:-webkit-sticky; position:sticky; top:0;
+  min-height:100vh; box-sizing:border-box; width:100%; }
+
 /* Anti-FOUT: hold the page hidden until the web fonts have rendered, then fade the fully
    styled page in — so a hard refresh never shows the fallback font first (an inline <head>
    script toggles html.fonts-loading and removes it on document.fonts.ready, with a timeout

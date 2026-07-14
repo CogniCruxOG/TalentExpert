@@ -183,6 +183,46 @@
   }
   window.TEFitSection = fitSection;   // exposed so the home engine (experience.js) can reuse it
 
+  /* ---- NATIVE STICKY chapter pin -------------------------------------------------
+     A JS pin freezes the element instantly (one frame moving with the scroll, the next
+     frozen) — that hard stop is what reads as a "fast lock" and no amount of easing can
+     soften it. CSS position:sticky is handled by the browser on the compositor: the section
+     glides to a rest and releases naturally, with zero snap.
+
+     Structure built here (once):
+        <section class="te-sticky" style="height:100vh + hold">   ← block, gives room to stick
+          <div class="te-stick">   ← position:sticky; top:0; min-height:100vh; carries the
+                                     chapter's own flex layout + navbar-clearance padding
+             …chapter content…
+     Returns the sticky child so the auto-fit can size the content inside it. */
+  function makeSticky(sec, holdVh) {
+    if (!sec) return null;
+    var stick = sec.firstElementChild;
+    if (!stick || !stick.classList || !stick.classList.contains('te-stick')) {
+      // read the chapter's OWN layout before .te-sticky neutralises it on the section
+      var cs = window.getComputedStyle(sec);
+      var padT = cs.paddingTop, padB = cs.paddingBottom;
+      var fd = cs.flexDirection, jc = cs.justifyContent, ai = cs.alignItems;
+      var wasFlex = (cs.display === 'flex' || cs.display === 'inline-flex');
+      stick = document.createElement('div');
+      stick.className = 'te-stick';
+      while (sec.firstChild) stick.appendChild(sec.firstChild);
+      sec.appendChild(stick);
+      // carry that layout onto the sticky child so the chapter still composes identically
+      stick.style.display = 'flex';
+      stick.style.flexDirection = (wasFlex && fd === 'row') ? 'row' : 'column';
+      stick.style.justifyContent = wasFlex ? (jc || 'center') : 'center';
+      if (wasFlex && ai && ai !== 'normal') stick.style.alignItems = ai;
+      stick.style.paddingTop = padT;
+      stick.style.paddingBottom = padB;
+      sec.classList.add('te-sticky');
+    }
+    // room to stick = one screen of content + the hold distance
+    sec.style.height = 'calc(100vh + ' + Math.round(window.innerHeight * (holdVh || 0.55)) + 'px)';
+    return stick;
+  }
+  window.TEMakeSticky = makeSticky;   // shared with the home engine
+
   window.TEChapter = function (cfg) {
     if (typeof window.gsap === 'undefined' || typeof window.ScrollTrigger === 'undefined') return;
     try { gsap.registerPlugin(ScrollTrigger); } catch (_) {}
@@ -225,38 +265,36 @@
       sec.__teFinish = finish;   // nav uses this to land the section fully visible
       const doPin = desktop && c.pin !== false;
       const pinTargetEl = c.pinTarget ? sec.querySelector(c.pinTarget) : null;
-      // Auto-fit the whole-section chapters so they ALWAYS fit the screen (any device / scaling)
-      // and can therefore pin. Sections that pin a specific inner target are left to the normal
-      // fits-test (they manage their own height).
-      if (doPin && !pinTargetEl) { fitSection(sec); managed.push(sec); }
-      const pinEl = doPin ? (pinTargetEl || sec) : null;
-      // After auto-fit, whole-section chapters fit by construction; the test still guards the
-      // pinTarget case and any section too short to bother.
-      const fitsViewport = pinEl && pinEl.scrollHeight <= innerHeight + 4;
-      if (pinEl && fitsViewport) {
-        // Chapter pin. NO anticipatePin — it engages the pin EARLY on fast scroll, which is
-        // felt as a hard snap. NO fastScrollEnd — it jumps the pin to its end on fast scroll, so
-        // a mouse wheel would skip the pause entirely. The hold is ~1.4 screens of scroll so a
-        // single wheel flick can't blow straight through it: the section genuinely rests.
-        ScrollTrigger.create({
-          trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (c.hold || 0.55)),
-          pin: pinEl, pinSpacing: true, invalidateOnRefresh: true,
-          onEnter: playOnce, onEnterBack: finish,
-          // If the page loads already scrolled into/past this chapter, show it complete.
-          onRefresh: (self) => { if (!played && self.progress > 0.001) finish(); }
-        });
+      if (doPin && !pinTargetEl) {
+        // NATIVE STICKY pin: the browser holds the chapter on the compositor, so it eases to a
+        // rest and releases with zero snap (a JS pin freezes instantly = the "fast lock").
+        // The auto-fit then scales the content INSIDE the sticky child so the chapter fits any
+        // screen (resolution / display-scaling) and still rests correctly.
+        sec.__teHold = c.hold || 0.55;
+        const stick = makeSticky(sec, sec.__teHold);
+        fitSection(stick);
+        managed.push(sec);
+        // ScrollTrigger no longer pins anything — it only fires the one-time entrance.
+        ScrollTrigger.create({ trigger: sec, start: 'top top', once: true, onEnter: playOnce });
       } else {
         ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
       }
       // Already viewed earlier this session → show it complete right now (no hide, no replay).
-      // The pin is still created above, so the scroll pause keeps working; it just never
-      // re-animates the content.
+      // The sticky pause keeps working; it just never re-animates the content.
       if (seen) finish();
     });
-    // Re-fit every managed chapter whenever ScrollTrigger recomputes (window resize, zoom,
-    // orientation change) BEFORE it re-measures pin positions — so the fit stays correct.
+    // On resize / zoom / orientation change: recompute the sticky room for the new viewport
+    // height, then re-fit the content inside the sticky child (NOT the section — the fit
+    // wrapper lives inside .te-stick).
     if (managed.length) {
-      try { ScrollTrigger.addEventListener('refreshInit', function () { for (var i = 0; i < managed.length; i++) fitSection(managed[i]); }); } catch (_) {}
+      try {
+        ScrollTrigger.addEventListener('refreshInit', function () {
+          for (var i = 0; i < managed.length; i++) {
+            var s = managed[i];
+            fitSection(makeSticky(s, s.__teHold || 0.55));
+          }
+        });
+      } catch (_) {}
     }
     try { ScrollTrigger.refresh(); } catch (_) {}
   };

@@ -152,8 +152,9 @@
 
   /* ---- Coordinated section intro: heading reveals FIRST, then the cards/content rise in
      together with a subtle stagger — once, never scrubbed, never replayed. When opts.pin is
-     set (desktop + motion), the section is held for a brief ~0.5s "reading pause" while the
-     reveal completes, then the pin releases automatically. ---- */
+     set (desktop + motion), the chapter RESTS via native CSS position:sticky (browser
+     compositor = eases to a stop, no snap), then releases naturally. ---- */
+  const stickies = [];   // chapters resting via native sticky — re-measured on resize
   const sectionIntro = (sel, headSel, itemSel, opts) => {
     opts = opts || {};
     const sec = $(sel); if (!sec) return;
@@ -194,26 +195,28 @@
     sec.__teFinish = finish;
     const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
       ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
-    // Auto-fit the pinned element (section OR its pinTarget) so every chapter shrinks to fit
-    // ANY screen and can pin everywhere — same helper the inner pages use. The Who-We-Are /
-    // What-We-Do / Why-Choose-Us scenes are static grids (their scrub code is inactive), so
-    // scaling them is safe. The pinTargets carry their own navbar-clearance padding, which
-    // TEFitSection reserves, so the scaled content never tucks under the nav.
-    if (pinEl && typeof window.TEFitSection === 'function') window.TEFitSection(pinEl);
-    // Pin only when the chapter content actually fits within one screen. After auto-fit the
-    // whole-section chapters fit by construction; this still guards the pinTarget scenes.
-    const canPin = pinEl && pinEl.scrollHeight <= innerHeight + 4;
-    if (canPin) {
-      // Chapter pin. NO anticipatePin (engages early on fast scroll = hard snap) and NO
-      // fastScrollEnd (jumps the pin to its end on fast scroll = skipped pause). The ~1.4-screen
-      // hold means one wheel flick can't blow through it, so the section genuinely rests.
-      ScrollTrigger.create({
-        trigger: sec, start: 'top top', end: '+=' + Math.round(innerHeight * (opts.hold || 0.55)),
-        pin: pinEl, pinSpacing: true, invalidateOnRefresh: true,
-        onEnter: playOnce, onEnterBack: finish,
-        // If the page loads already scrolled into/past this chapter, show it complete.
-        onRefresh: (self) => { if (!played && self.progress > 0.001) finish(); }
-      });
+    if (pinEl && typeof window.TEMakeSticky === 'function') {
+      // NATIVE STICKY pin — the browser rests the chapter on the compositor, so it eases to a
+      // stop and releases with zero snap (a JS pin freezes instantly = the hard "fast lock").
+      const holdVh = opts.hold || 0.55;
+      let stick;
+      if (opts.pinTarget) {
+        // The pinTarget (.x-who-pin / .x-do-pin / .x-why-pin) is ALREADY the full-screen chapter
+        // box with its own flex layout + navbar padding — just make it the sticky element and
+        // give its section room below to stick against. No re-wrapping needed.
+        sec.classList.add('te-sticky');
+        pinEl.classList.add('te-stick');
+        sec.style.height = 'calc(100vh + ' + Math.round(innerHeight * holdVh) + 'px)';
+        stick = pinEl;
+      } else {
+        stick = window.TEMakeSticky(sec, holdVh);
+      }
+      sec.__teStick = stick; sec.__teHold = holdVh;
+      // Auto-fit the content INSIDE the sticky box so the chapter fits any screen / scaling.
+      if (typeof window.TEFitSection === 'function') window.TEFitSection(stick);
+      stickies.push(sec);
+      // ScrollTrigger no longer pins anything — it only fires the one-time entrance.
+      ScrollTrigger.create({ trigger: sec, start: 'top top', once: true, onEnter: playOnce });
     } else {
       ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
     }
@@ -361,13 +364,15 @@
   }
 
   /* ---- keep ScrollTrigger in sync after fonts/images load ---- */
-  // Re-fit every auto-fitted chapter whenever ScrollTrigger recomputes (resize / zoom /
-  // orientation) BEFORE it re-measures pins, so the fit stays correct on any screen change.
+  // On resize / zoom / orientation: recompute each sticky chapter's room for the new viewport
+  // height, then re-fit the content inside its sticky box.
   try {
     ScrollTrigger.addEventListener('refreshInit', function () {
-      if (typeof window.TEFitSection !== 'function') return;
-      var outers = document.querySelectorAll('.te-fit-outer');
-      for (var i = 0; i < outers.length; i++) window.TEFitSection(outers[i].parentNode);
+      for (var i = 0; i < stickies.length; i++) {
+        var s = stickies[i], hold = s.__teHold || 0.55;
+        s.style.height = 'calc(100vh + ' + Math.round(window.innerHeight * hold) + 'px)';
+        if (typeof window.TEFitSection === 'function' && s.__teStick) window.TEFitSection(s.__teStick);
+      }
     });
   } catch (_) {}
 
