@@ -240,7 +240,6 @@
   window.TEChapter = function (cfg) {
     if (typeof window.gsap === 'undefined' || typeof window.ScrollTrigger === 'undefined') return;
     try { gsap.registerPlugin(ScrollTrigger); } catch (_) {}
-    const reduceM = matchMedia('(prefers-reduced-motion:reduce)').matches;
     const desktop = matchMedia('(min-width:901px)').matches;
     const managed = [];
     (cfg || []).forEach((c) => {
@@ -253,30 +252,16 @@
       // CSS transition so only GSAP drives it (a stray transition double-animates / can
       // leave content stuck). Base is no longer hidden, so content survives even if JS fails.
       [head, ...headKids, ...items].forEach((el) => { if (el) { el.classList.remove('reveal', 'in'); el.style.transition = 'none'; } });
-      // One entrance: heading/label/description rise FIRST, then the whole content group
-      // floats gently up + fades in together. fromTo with an explicit VISIBLE end state so
-      // nothing can be left hidden regardless of each element's base CSS.
-      // Gentle, unhurried entrance: power2.out reads softer than power3's hard decel, and the
-      // slightly longer durations let the content settle instead of snapping into place.
-      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
-      if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.09 });
-      else if (head) tl.fromTo(head, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 });
-      if (items.length) tl.fromTo(items,
-        { opacity: 0, y: 26, scale: 0.99 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.11 },
-        (head || headKids.length) ? '-=0.28' : 0);   // heading settles, then cards float in
-      if (reduceM) { tl.progress(1); return; }
-      // Entrance plays ONCE PER BROWSER SESSION. sessionStorage remembers sections that have
-      // already played, so returning to a page (via nav, mega menu, or the back button) renders
-      // them complete immediately instead of hiding + replaying. finish() is also stored on the
-      // section so navigation can land it in its completed state (see jumpTo).
-      const seenKey = 'te:' + location.pathname + '|' + c.sec;
-      let seen = false; try { seen = sessionStorage.getItem(seenKey) === '1'; } catch (_) {}
-      const remember = () => { try { sessionStorage.setItem(seenKey, '1'); } catch (_) {} };
-      let played = false;
-      const playOnce = () => { if (!played) { played = true; remember(); tl.play(); } };
-      const finish = () => { played = true; remember(); tl.progress(1); };
-      sec.__teFinish = finish;   // nav uses this to land the section fully visible
+      // Entrance fade-in removed site-wide: the heading and content show INSTANTLY at full
+      // opacity / natural position — no fade, no slide-up. gsap.set guarantees the visible end
+      // state even if a base CSS rule tried to hide the element. The pin-and-pause + smooth
+      // scroll below are untouched: the pin comes from the CSS sticky child, not from this reveal.
+      if (headKids.length) gsap.set(headKids, { opacity: 1, y: 0 });
+      else if (head) gsap.set(head, { opacity: 1, y: 0 });
+      if (items.length) gsap.set(items, { opacity: 1, y: 0, scale: 1 });
+      const playOnce = () => {};             // no entrance animation to trigger
+      const finish = () => {};               // already fully visible
+      sec.__teFinish = finish;               // nav still calls this; a no-op is correct now
       const doPin = desktop && c.pin !== false;
       const pinTargetEl = c.pinTarget ? sec.querySelector(c.pinTarget) : null;
       // collapse:true = this chapter carries less than a screen of content, so it flows at its
@@ -296,9 +281,6 @@
       } else {
         ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
       }
-      // Already viewed earlier this session → show it complete right now (no hide, no replay).
-      // The sticky pause keeps working; it just never re-animates the content.
-      if (seen) finish();
     });
     // On resize / zoom / orientation change: recompute the sticky room for the new viewport
     // height, then re-fit the content inside the sticky child (NOT the section — the fit
@@ -355,14 +337,10 @@
     });
   }
 
-  /* ---- Services radial reveal ---- */
+  /* ---- Services floating nodes: shown instantly (fade-in reveal removed) ---- */
   const svc = $('#svcFloat');
   if (svc) {
-    const nodes = $$('.svc-node', svc);
-    nodes.forEach(n => { n.style.opacity = 0; n.style.transition = 'opacity .7s var(--ease)'; });
-    new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) nodes.forEach((n, i) => { n.style.transitionDelay = (i * 0.1) + 's'; n.style.opacity = 1; });
-    }), { threshold: 0.25 }).observe(svc);
+    $$('.svc-node', svc).forEach(n => { n.style.opacity = 1; n.style.transition = 'none'; });
   }
 
   /* ---- Industries marquee: duplicate for seamless loop ---- */

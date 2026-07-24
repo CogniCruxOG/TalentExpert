@@ -83,33 +83,25 @@
   loadTempleImg();
   const temple = $('#xTemple');
 
-  // kinetic headline
+  // headline — text shown instantly; the ONLY kept motion is the highlight underline, which
+  // "scribbles" in left→right shortly after load (a small delay lets the base state paint first
+  // so the CSS scaleX transition actually animates).
   const title = $('.x-title');
-  if (title && typeof SplitType !== 'undefined') {
-    const split = new SplitType(title, { types: 'words,chars' });
+  if (title) {
     gsap.set(title, { opacity: 1 });
-    gsap.from(split.chars, {
-      yPercent: 116, opacity: 0, stagger: 0.018, duration: 0.85, ease: 'power3.out', delay: 0.12
-    });
     const grow = $('.x-title .grow');
-    if (grow) gsap.delayedCall(0.12 + split.chars.length * 0.018 + 0.2, () => grow.classList.add('drawn'));
+    if (grow) gsap.delayedCall(0.35, () => grow.classList.add('drawn'));
   }
-  // supporting hero content
-  gsap.from('.x-eyebrow, .x-sub, .x-rhythm, .x-hero .hero-actions, .x-signature', {
-    y: 22, opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.08, delay: 0.42
-  });
-  // temple backdrop: gentle fade-in + ambient warm-up, then anchored parallax
+  // supporting hero content — visible instantly, no fade-in (its base CSS state is already shown)
+  // temple backdrop: ambient warm-up (no content fade). The hero CTAs are intentionally STATIC —
+  // no idle float and no scroll parallax (they must not drift when scrolling).
   if (temple) {
     gsap.set(temple, { '--amb': 0.12, '--apex': 0 });
-    gsap.from('.x-temple-media', { opacity: 0, scale: 1.05, duration: 1.4, ease: 'power2.out', delay: 0.15 });
     gsap.to(temple, { '--amb': 0.4, duration: 1.4, ease: 'sine.out', delay: 0.3 });
-    // depth: content drifts up a touch faster than the temple → the temple feels anchored.
-    // Desktop only — these are scroll-scrubbed (per-frame) and the CTA float is an infinite
-    // ticker animation; both stutter/drain on mobile, so touch devices get a static hero.
+    // Desktop only — scroll-scrubbed temple depth (the temple is currently hidden, so this is a
+    // no-op unless the backdrop is re-enabled). Content/CTA parallax + float were removed.
     if (smooth) {
       gsap.to('.x-temple-media', { yPercent: 7, scale: 1.05, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
-      gsap.to('.x-hero-content', { yPercent: -5, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
-      gsap.to('.x-hero .hero-actions', { y: -6, duration: 2.6, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 1.5 });
     }
   }
 
@@ -125,22 +117,11 @@
   };
   const band = $('#trust');
   if (band) {
-    gsap.set('.x-trust-quote', { opacity: 0, y: 14 });
-    gsap.set('.x-stat', { opacity: 0, y: 24 });
+    // Quote + stat cards show instantly (fade-in removed). Only the number counters still
+    // run once, when the band scrolls into view — a count-up, not a fade.
     ScrollTrigger.create({
       trigger: band, start: 'top 90%', once: true,
-      onEnter: () => {
-        const tl = gsap.timeline();
-        tl.to('.x-trust-quote', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
-        $$('.x-stat').forEach((st, i) => {
-          const num = $('.num', st);
-          tl.to(st, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, i === 0 ? '-=0.25' : '-=0.32')
-            .add(() => { if (num) runCount(num); }, '<+0.04')
-            .to(temple, { '--apex': 0.14 + i * 0.11, duration: 0.6, ease: 'sine.out' }, '<');
-        });
-        tl.to(temple, { '--apex': 0.38, duration: 0.5, ease: 'sine.out' })
-          .to(temple, { '--apex': 0.26, duration: 0.8, ease: 'sine.inOut' });
-      }
+      onEnter: () => { $$('.x-stat').forEach((st) => { const num = $('.num', st); if (num) runCount(num); }); }
     });
   }
 
@@ -169,30 +150,16 @@
       el.classList.remove('reveal');
       el.style.transition = 'none';
     });
-    // One entrance: label/heading/description rise FIRST, then the whole content group
-    // floats gently up + fades in together. fromTo with an explicit VISIBLE end state so
-    // nothing can be left hidden regardless of each element's base CSS (a plain .from()
-    // captures the element's current value as the end — if that is 0 it stays invisible).
-    // Gentle, unhurried entrance (matches the inner pages): power2.out reads softer than
-    // power3's hard decel, and the longer durations let content settle instead of snapping.
-    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
-    if (headKids.length) tl.fromTo(headKids, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.09 });
-    else if (head) tl.fromTo(head, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 });
-    if (items.length) tl.fromTo(items,
-      { opacity: 0, y: 26, scale: 0.99 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.11 },
-      (head || headKids.length) ? '-=0.28' : 0);   // heading settles, then cards float in
-    if (reduce) { tl.progress(1); return; }
-    // Entrance plays ONCE PER BROWSER SESSION (sessionStorage), so returning to Home renders
-    // played sections complete instead of hiding + replaying. finish() is exposed on the
-    // section so navigation lands it fully visible.
-    const seenKey = 'te:' + location.pathname + '|' + sel;
-    let seen = false; try { seen = sessionStorage.getItem(seenKey) === '1'; } catch (_) {}
-    const remember = () => { try { sessionStorage.setItem(seenKey, '1'); } catch (_) {} };
-    let played = false;
-    const playOnce = () => { if (!played) { played = true; remember(); tl.play(); } };
-    const finish = () => { played = true; remember(); tl.progress(1); };
-    sec.__teFinish = finish;
+    // Entrance fade-in removed site-wide: the heading + content show INSTANTLY at full opacity /
+    // natural position — no fade, no slide-up. gsap.set guarantees the visible end state even if
+    // a base CSS rule tried to hide the element. The pin-and-pause + smooth scroll below are
+    // untouched: the pin is CSS position:sticky, independent of this reveal.
+    if (headKids.length) gsap.set(headKids, { opacity: 1, y: 0 });
+    else if (head) gsap.set(head, { opacity: 1, y: 0 });
+    if (items.length) gsap.set(items, { opacity: 1, y: 0, scale: 1 });
+    const playOnce = () => {};      // no entrance animation to trigger
+    const finish = () => {};        // already fully visible
+    sec.__teFinish = finish;        // nav still calls this; a no-op is correct now
     const pinEl = (opts.pin && matchMedia('(min-width:901px)').matches)
       ? (opts.pinTarget ? $(opts.pinTarget, sec) : sec) : null;
     // collapse:true — see main.js: less than a screen of content, so flow at natural height
@@ -218,13 +185,11 @@
       // Auto-fit the content INSIDE the sticky box so the chapter fits any screen / scaling.
       if (typeof window.TEFitSection === 'function') window.TEFitSection(stick);
       stickies.push(sec);
-      // ScrollTrigger no longer pins anything — it only fires the one-time entrance.
+      // ScrollTrigger no longer pins anything (playOnce is a no-op) — the pin is CSS sticky.
       ScrollTrigger.create({ trigger: sec, start: 'top top', once: true, onEnter: playOnce });
     } else {
       ScrollTrigger.create({ trigger: sec, start: 'top 78%', once: true, onEnter: playOnce });
     }
-    // Already viewed this session → render complete now (no hide, no replay); pin still works.
-    if (seen) finish();
   };
 
   void reveal;   // section headings are now handled by each chapter's sectionIntro
@@ -285,9 +250,7 @@
     const brand = $('#brand'); if (!brand) return;
     const nums = $$('.x-kpi-n', brand);
     const jobs = nums.map((el) => ({ el, to: +el.textContent.replace(/,/g, ''), comma: el.textContent.indexOf(',') > -1 }));
-    if (reduce) return;                                  // static finals under reduced motion
-    nums.forEach((el) => (el.textContent = '0'));
-    gsap.set('.x-kpi-s', { opacity: 0, x: -5 });         // '+' hidden until the count lands
+    nums.forEach((el) => (el.textContent = '0'));       // '+' is shown instantly (fade removed)
     ScrollTrigger.create({
       trigger: brand, start: 'top top', once: true,
       onEnter: () => {
@@ -296,7 +259,6 @@
           gsap.to(o, { v: j.to, duration: 1.8, ease: 'power2.out',
             onUpdate() { const v = Math.round(o.v); j.el.textContent = j.comma ? v.toLocaleString('en-IN') : v; } });
         });
-        gsap.to('.x-kpi-s', { opacity: 1, x: 0, duration: 0.5, delay: 1.45, ease: 'power2.out' });
       }
     });
   })();
@@ -328,14 +290,14 @@
      word in an inline-block broke the line spacing around the italic phrase and opened a
      blank gap). The block-level entrance below reveals it as a finished editorial layout. */
   /* FOUNDER chapter: pin + float the quote + signature in once */
-  sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: true, hold: 0.55 });
+  // Founder is NOT pinned: it's a single short quote, so a full-viewport pinned chapter just
+  // strands it in blank space. It flows at its own content height instead (content still shows
+  // instantly). Its CSS below drops the forced 100vh so the section is only as tall as it needs.
+  sectionIntro('.x-founder', null, '.x-founder-quote, .x-founder-sign', { pin: false });
 
   /* ================= FINAL CTA chapter: pin + float heading then cards in once ================= */
   sectionIntro('.x-finale', '.x-finale-copy', '.x-finale-cards .fin-card', { collapse: true });
-  gsap.from('.x-finale .fin-blob', {
-    scrollTrigger: { trigger: '.x-finale', start: 'top 80%', once: true },
-    opacity: 0, scale: 0.6, duration: 1.4, ease: 'power2.out', stagger: 0.15
-  });
+  // decorative background blobs shown instantly (fade/scale-in reveal removed)
 
   /* ================= Magnetic buttons ================= */
   if (hover) {
